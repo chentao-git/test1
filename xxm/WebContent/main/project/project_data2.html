@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>项目详情</title>
+	    <meta name="keywords" content="项目详情">
+	    <meta name="description" content="项目详情">
+	   	<link rel="shortcut icon" href="favicon.ico"> 
+	   	<link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	    <link href="../css/plugins/iCheck/custom.css" rel="stylesheet">
+	    <link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	    <link href="../common/loading/load.css" rel="stylesheet" />
+	    <!-- 轮播 -->
+   		<link rel="stylesheet" type="text/css" href="../css/boxImg.css">
+	</head>
+	<style>
+		.tab-custom td:nth-child(odd) {
+			background-color: #f9f9f9;
+			width: 12%;
+			text-align: right;
+		}
+		
+		.tab-custom td:nth-child(even) {
+			width: 21%;
+		}
+		
+		.tab-custom td, th {
+			border: 1px solid #DDD !important
+		}
+		
+		.tab-img img {
+			width: 100px;
+			height: 80px;
+		}
+		
+		.wrap {
+			width: 100px;
+			height: 100px;
+			float: left;
+			margin-right: 10px;
+		}
+		/* 文本不换行，这样超出一行的部分被截取，显示... */
+		.line-limit-length {
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+		}
+		
+		.form-group-extend {
+			margin-bottom: 10px;
+		}
+		
+		/***/
+		body, ul, li, dl, ol {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			z-index: 88888
+		}
+		
+		i {
+			font-style: normal;
+			color: white;
+			font-weight: 700;
+		}
+		
+		.fixedmeau {
+			width: 26px;
+			position: fixed;
+			top: 50px;
+			left: 0px;
+			display: none;
+			background: #fff
+		}
+		
+		.fixedmeau li {
+			width: 26px;
+			height: 30px;
+			line-height: 30px;
+			text-align: center;
+			cursor: pointer;
+			background: #23c6c8;
+			border-radius: 5px;
+		}
+		
+		.fixedmeau li+li {
+			border-top: 1px solid #ececec;
+		}
+		
+		.fixedmeau span {
+			display: none;
+			border-radius: 5px;
+		}
+		
+		.fixedmeau .active {
+			background: #f8ac59;
+			color: white;
+			font-weight: 700
+		}
+		
+		.fixedmeau li:hover span {
+			display: block;
+			font-size: 12px;
+			background: #f8ac59;
+			color: white;
+			width: 120px;
+			font-weight: 700
+		}
+		
+		.fixedmeau li:hover i {
+			display: none;
+		}
+		
+		.totop {
+			width: 40px;
+			height: 40px;
+			text-align: center;
+			background: #23c6c8;
+			position: fixed;
+			bottom: 30px;
+			right: 30px;
+			cursor: pointer;
+			border-radius: 5px;
+			display: none;
+			color: #fff;
+			z-index: 88888
+		}
+		
+		.totop>span {
+			display: block;
+			line-height: 15px;
+			font-size: 12px;
+			color: #fff;
+		}
+		
+		.header_box {
+			width: 100%;
+			height: 160px;
+			text-align: center;
+			margin: 0 auto;
+		}
+		
+		.header_box>.header {
+			line-height: 120px;
+			font-size: 64px;
+			color: #4b4b4b;
+			background: #fff;
+		}
+		
+		.header_box>.meau {
+			background: darkred;
+			height: 40px;
+			line-height: 40px;
+			color: #fff
+		}
+		
+		.louceng {
+			margin: 0 auto;
+			border: 1px solid #ECECEC;
+			background: #fff
+		}
+		
+		.louceng>.title {
+			width: 100%;
+			height: 50px;
+			font-size: 18px;
+			line-height: 50px;
+			text-align: left;
+			font-weight: 700;
+			color: #333;
+		}
+		
+		.louceng>.title>span {
+			margin-left: 5px;
+			font-weight: normal
+		}
+		
+		.louceng>.con {
+			width: 100%;
+			height: 735px;
+			background: #F1F1F1;
+			font-size: 64px;
+			line-height: 735px;
+			color: #333333
+		}
+	</style>
+	
+	<body class="gray-bg">
+		<!--右侧固定导航-->
+		<ul class="fixedmeau">
+		    <li class="active"><i>1F</i><span>基本信息</span></li>
+		    <li><i>2F</i><span>客户信息</span></li>
+		    <li><i>3F</i><span>报价信息</span></li>
+		    <li><i>4F</i><span>租赁物信息</span></li>
+		    <li><i>5F</i><span>车辆保险信息</span></li>
+		    <li><i>6F</i><span>保证保险信息</span></li>
+		    <li><i>7F</i><span>担保人信息</span></li>
+		    <li><i>8F</i><span>投保单归属机构信息</span></li>
+		    <li><i>9F</i><span>方案信息</span></li>
+		    <li><i>10F</i><span>被保人信息</span></li>
+		    <li><i>11F</i><span>放款信息</span></li>
+		    <li><i>12F</i><span>抵押登记信息</span></li>
+		    <li><i>13F</i><span>签约信息</span></li>
+		    <li><i>14F</i><span>审批信息</span></li>
+		</ul>
+		<!--返回顶部-->
+		<div class="totop"><span>▲</span>Top</div>
+		<!--模块-->
+	    <div class="wrapper wrapper-content animated fadeIn">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="tabs-container">
+		              
+		               <div class="tab-content">
+		               
+			               <div class="panel-body">
+				                <div class="row">
+			            			<div id="contDiv" class="col-sm-8">
+				                      <div class="panel-group louceng_box" id="accordion">
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h5 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse1"> 基本信息</a>
+				                                  </h5>
+				                              </div>
+				                              <div id="collapse1" class="panel-collapse collapse in">
+				                              	
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+							                           <p>
+					                           			<!-- 预审单号 -->
+	                            						<input type="hidden" id="prejudicNo">
+							                           		<strong>基本信息</strong>
+							                           		<table class="table table-bordered tab-custom" id="supplement-base-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td>产品：<input type="hidden" name="supplementBaseId"></td>
+									                                    <td>
+									                                    	<label id="productionVl" name="productionName"></label>
+									                                    </td>
+									                                    <td>申请贷款数额(元)：</td>
+									                                    <td><label name="applyLoansAmount"></label></td>
+									                                    <td><font color="red">*</font>还款途径：</td>
+									                                    <td><label name="paymentApproachName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td><font color="red">*</font>还款方式：</td>
+									                                    <td><label name="paymentMethodName"></label></td>
+									                                    <td><font color="red">*</font>期数：</td>
+									                                    <td><label name="paymentPeriods"></label></td>
+									                                    <td>自动扣款还款：</td>
+									                                    <td><label name="isAutoPayName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>利率计算方式：</td>
+									                                    <td><label name="interestCalculatedName"></label></td>
+									                                    <td>利息：</td>
+									                                    <td><label name="interest"></label></td>
+									                                    <td>还款手续费承担方：</td>
+									                                    <td><label name="payBearerName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>手续费(%)：</td>
+									                                    <td><label name="serviceCharge"></label></td>
+									                                    <td>还款日期类型：</td>
+									                                    <td>
+									                                    	<label name="paymentDateTypeName"></label>&nbsp;&nbsp;&nbsp;
+									                                    	<label name="paymentDateNum"></label>
+									                                    </td>
+									                                    <td>担保费计算方式：</td>
+									                                    <td><label name="guaranteeCalculatedName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>中介手续费(%)：</td>
+									                                    <td><label name="agentServiceCharge"></label></td>
+									                                    <td>担保费(%)：</td>
+									                                    <td><label name="guarantee"></label></td>
+									                                    <td>贷款合同编号：</td>
+									                                    <td><label name="loanContractNo" id="loanContractNo"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>保险费率(%)：</td>
+									                                    <td><label name="rateOfPremium"></label></td>
+									                                    <td>起保日期：</td>
+								                                    	<td><label name="startDate"></label></td>
+								                                    	<td>终保日期：</td>
+								                                    	<td><label name="endDate"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>起保小时：</td>
+									                                    <td><label name="startHour"></label></td>
+									                                    <td>终保小时：</td>
+								                                    	<td><label name="endHour"></label></td>
+								                                    	<td>保单总保险金额：</td>
+								                                    	<td><label name="sumAmount"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>保单总保险费：</td>
+									                                    <td><label name="sumPremium"></label></td>
+									                                    <td>争议解决方式：</td>
+								                                    	<td><label name="arguSolutionName"></label></td>
+								                                    	<td>是否是联保业务出单：</td>
+								                                    	<td><label name="iscoinTypeFlagName"></label></td>
+									                                </tr>
+									                                
+									                                <tr>
+									                                    <td>投保人是否非首次购车：</td>
+									                                    <td><label name="noFirstFlagName"></label></td>
+									                                    <td>出租车企业贷款购车数量：</td>
+								                                    	<td><label name="taxiComQuantity"></label></td>
+								                                    	<td>企事业单位贷款团购数量：</td>
+								                                    	<td><label name="enterpQuantity"></label></td>
+									                                </tr>
+<!-- 									                                <tr> -->
+<!-- 									                                    <td>抵(质)押物性质：</td> -->
+<!-- 									                                    <td><label name="guaranteeTypeName"></label></td> -->
+<!-- 									                                    <td>抵(质)押物名称：</td> -->
+<!-- 								                                    	<td><label name="guaranteeName"></label></td> -->
+<!-- 								                                    	<td>抵(质)押权生效日期：</td> -->
+<!-- 								                                    	<td><label name="deliverDate"></label></td> -->
+<!-- 									                                </tr> -->
+									                                <tr>
+									                                    <td>登记证号：</td>
+									                                    <td><label name="mortgageNo"></label></td>
+<!-- 									                                    <td>借款合同号：</td> -->
+<!-- 								                                    	<td><label name="loanContractNo"></label></td> -->
+								                                    	<td>贷款期限起期：</td>
+								                                    	<td><label name="loanStartDate"></label></td>
+									                                    <td>贷款期限止期：</td>
+									                                    <td><label name="loanEndDate"></label></td>
+								                                   </tr>
+									                                <tr>
+									                                    <td>首付款比例：</td>
+								                                    	<td><label name="firstpayRAate"></label></td>
+								                                    	<td>未保责任比例：</td>
+								                                    	<td><label name="firstRate"></label></td>
+									                                    <td>被保险人自担责任比例：</td>
+									                                    <td><label name="ownLiabRatio"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>第三方承担责任比例：</td>
+								                                    	<td><label name="otherLiabRatio"></label></td>
+								                                    	<td>责任保证金：</td>
+								                                    	<td><label name="recognizance"></label></td>
+									                                    <td>贷款本金：</td>
+									                                    <td><label name="loanAmount"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>贷款利率：</td>
+								                                    	<td><label name="loanRate"></label></td>
+								                                    	<td>月均还款额：</td>
+								                                    	<td><label name="perRepaidAmount"></label></td>
+									                                    <td>还款频率：</td>
+									                                    <td><label name="repyFq"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>流程标志：</td>
+									                                    <td><label name="mktProdTypeName"></label></td>
+									                                    <td>资金用途：</td>
+								                                    	<td><label name="loanPurpostName"></label></td>
+								                                    	<td>入账是否借款人账号：</td>
+								                                    	<td><label name="isLoanAccountName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>贷款接收账号名称：</td>
+									                                    <td><label name="loanAcount"></label></td>
+									                                    <td>贷款接收账号：</td>
+								                                    	<td><label name="loanAcountNo"></label></td>
+								                                    	<td>贷款接收账号开户行名称：</td>
+								                                    	<td><label name="loanAcountBank"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>贷款接收账号开户行联行行号：</td>
+									                                    <td><label name="loanAcountBankNo"></label></td>
+									                                    <td>申请币种：</td>
+								                                    	<td><label name="applyCurrency"></label></td>
+								                                    	<td>申请金额：</td>
+								                                    	<td><label name="applyAmt"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>申请期限：</td>
+									                                    <td><label name="applNosInst"></label></td>
+									                                    <td>申请日期：</td>
+								                                    	<td><label name="applyDate"></label></td>
+								                                    	<td>还款日：</td>
+								                                    	<td><label name="atrsDueDay"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>利率模式：</td>
+									                                    <td><label name="tateModeName"></label></td>
+									                                    <td>利率调整方式：</td>
+									                                    <td><label name="nextRepcOption"></label></td>
+									                                    <td>是否固定利率：</td>
+								                                    	<td><label name="fixRateIndName"></label></td>
+							                                    	</tr>
+									                                <tr>
+								                                    	<td>正常利率上浮比例：</td>
+								                                    	<td><label name="intAdjPct"></label></td>
+									                                    <td>客户利率：</td>
+									                                    <td><label name="custRate"></label></td>
+									                                    <td>申请用途：</td>
+								                                    	<td><label name="applyPurpost"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>联系方式：</td>
+								                                    	<td><label name="contctName"></label></td>
+								                                    	<td>电话号码：</td>
+								                                    	<td><label name="telNum"></label></td>
+									                                    <td>经销商联系电话：</td>
+									                                    <td><label name="dlerPh"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>联系人类别：</td>
+								                                    	<td><label name="linkTypeName"></label></td>
+								                                    	<td>联系人姓名：</td>
+								                                    	<td><label name="linkName"></label></td>
+									                                    <td>联系人电话：</td>
+									                                    <td><label name="linkPhone"></label></td>
+								                                   </tr>
+									                                <tr>
+									                                    <td><font color="red">*</font>首付金额 ：</td>
+									                                    <td><label name="firstPaid"></label></td>
+									                                	<td><font color="red">*</font>险种代码：</td>
+									                                    <td><label name="riskCode"></label></td>
+									                                    <td>申请书编号：</td>
+								                                    	<td><label name="applyNo"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+							                           
+							                           <strong>借款需求</strong>
+							                           <p>
+							                           		<table class="table table-bordered tab-custom" id="applyInfo-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td>存量车：<input type="hidden" id="applyInfoId" name="applyInfoId"></td>
+									                                    <td><label name="stockCarName"></label></td>
+									                                    <td>操作公司：</td>
+									                                    <td><label name="operatingCompanyVl"></label></td>
+									                                    <td>汽车经销商：</td>
+									                                    <td><label name="autoDealerName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>挂靠商：</td>
+									                                    <td><label name="companyAffiliatedId"></label></td>
+									                                    <td>保险公司：</td>
+									                                    <td><label name="insuranceCompanyName"></label></td>
+									                                    <td>资方管理：</td>
+									                                    <td><label name="managementOfCapitalName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>业务员：</td>
+									                                    <td><label name="salesmanName"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+				                                  </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse2"> 客户信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse2" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+							                           <strong>基本信息</strong>
+							                           <p>
+							                           		<table class="table table-bordered tab-custom" id="customer-base-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td><font color="red">*</font>姓名：</td>
+									                                    <td><label name="baseCustomerName"></label></td>
+									                                    <td>性别：</td>
+									                                    <td>
+										                                    <label name="baseCustomerSexName"></label>
+									                                    </td>
+									                                    <td>婚姻状况：</td>
+									                                    <td>
+									                                    	<label name="marriageStatusName"></label>
+									                                    </td>
+									                                </tr>
+									                                <tr>
+									                                    <td>证件类型：</td>
+									                                    <td><label name="certTypeName"></label></td>
+									                                    <td><font color="red">*</font>证件号码：</td>
+								                                    <td><label name="certNo" id="certNo"></label></td>
+									                                    <td>户籍所在地：</td>
+									                                    <td><label name="censusRegisterPlace"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>出生年月日：</td>
+									                                    <td><label name="birthDate"></label></td>
+									                                    <td><font color="red">*</font>手机号：</td>
+									                                    <td><label name="mobileNo"></label></td>
+									                                    <td>家庭固话：</td>
+									                                    <td><label name="fixedLine"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>投保人邮箱：</td>
+									                                    <td><label name="appliIdEmail"></label></td>
+									                                    <td>家庭邮编：</td>
+									                                    <td><label name="appliPost"></label></td>
+									                                    <td>住宅电话区号：</td>
+									                                    <td><label name="familyTelcode"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>现居住地：</td>
+									                                    <td><label name="liveAddr"></label></td>
+									                                    <td>受教育程度：</td>
+									                                    <td><label name="educationTypeName"></label></td>
+									                                    <td>健康状况：</td>
+									                                    <td><label name="appliHealthName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>户籍状况：</td>
+									                                    <td><label name="appliResidence"></label></td>
+									                                    <td>职业代码：</td>
+									                                    <td><label name="appliWorkName"></label></td>
+									                                    <td>从事现职业年限：</td>
+									                                    <td><label name="serviceYear"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>现任职务：</td>
+									                                    <td><label name="positionsName"></label></td>
+									                                    <td>主要收入来源：</td>
+									                                    <td><label name="incomeSourceName"></label></td>
+									                                    <td>所购车辆净价格与前一年家庭总收入的比例：</td>
+									                                    <td><label name="piscale"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>月均收入-已有借款月还款额-本项借款月还款额)/人口数-扣除额：</td>
+									                                    <td><label name="monthEconomy"></label></td>
+									                                    <td>住房产权：</td>
+									                                    <td><label name="houseStatName"></label></td>
+									                                    <td>住房来源：</td>
+									                                    <td><label name="houseSourceName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>住房类型：</td>
+									                                    <td><label name="houseTypeName"></label></td>
+									                                    <td>居住状况：</td>
+									                                    <td><label name="familyStsName"></label></td>
+									                                    <td>居住年限：</td>
+									                                    <td><label name="familyYear"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>信用还款记录：</td>
+									                                    <td><label name="repayRecName"></label></td>
+									                                    <td>公用事业付费记录：</td>
+									                                    <td><label name="pubRecName"></label></td>
+									                                    <td>其他记录：</td>
+									                                    <td><label name="othRecName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>资信调查报告：</td>
+									                                    <td><label name="remark"></label></td>
+									                                    <td>得分合计：</td>
+									                                    <td><label name="sumScore"></label></td>
+									                                    <td>资信调查人：</td>
+									                                    <td><label name="creditManCode"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>统谈资信标志：</td>
+									                                    <td><label name="creditFlag"></label></td>
+									                                    <td>单位地址：</td>
+									                                    <td><label name="companyAddr"></label></td>
+									                                    <td>公司邮编：</td>
+									                                    <td><label name="companyZip"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>单位电话区号：</td>
+									                                    <td><label name="companyTelCode"></label></td>
+									                                    <td>单位电话：</td>
+									                                    <td><label name="companyTel"></label></td>
+									                                    <td>申请用途：</td>
+									                                    <td><label name="applyPurpose"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>个人月收入：</td>
+									                                    <td><label name="monthlyWages"></label></td>
+									                                    <td>月支出：</td>
+									                                    <td><label name="mothEp"></label></td>
+									                                    <td>单位性质：</td>
+									                                    <td><label name="unitTypeName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>工作单位：</td>
+									                                    <td><label name="employment"></label></td>
+									                                    <td>部门：</td>
+									                                    <td><label name="department"></label></td>
+									                                    <td>年收入：</td>
+									                                    <td><label name="yearIncome"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>还款账户：</td>
+									                                    <td><label name="paymentAcctno"></label></td>
+									                                    <td>证件有效期自：</td>
+									                                    <td><label name="idvalidStart"></label></td>
+									                                    <td>证件有效期至：</td>
+									                                    <td><label name="idvalidEnd"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>发证国家：</td>
+									                                    <td><label name="issCtry"></label></td>
+									                                    <td>投保人年龄：</td>
+									                                    <td><label name="appliAge"></label></td>
+									                                    <td>职位：</td>
+									                                    <td><label name="position"></label></td>
+									                                </tr>
+									                            </tbody>
+								                        	</table>
+							                           </p>
+							                           <div id="spouse-div">
+								                           <strong>配偶信息</strong>
+								                           <p>
+								                           		<table class="table table-bordered tab-custom" id="customer-spouse-tab">
+										                            <tbody>
+										                                <tr>
+										                                    <td>配偶姓名：</td>
+										                                    <td><label name="spouseName"></label></td>
+										                                    <td>配偶证件类型：</td>
+										                                    <td><label name="spouseIdTypeName"></label></td>
+										                                    <td>配偶证件号：</td>
+										                                    <td><label name="spouseIdNo"></label></td>
+										                                </tr>
+										                                <tr>
+										                                    <td>配偶职业：</td>
+										                                    <td><label name="spousePosition"></label></td>
+										                                    <td>配偶电话1：</td>
+										                                    <td><label name="spouseMobile"></label></td>
+										                                    <td>配偶电话2：</td>
+										                                    <td><label name="spousePhone2"></label></td>
+										                                </tr>
+										                            </tbody>
+										                        </table>
+								                           </p>
+							                           </div>
+							                           
+							                           <strong>账号信息</strong>
+							                           <p>
+							                           		<table class="table table-bordered tab-custom" id="customer-account-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td><font color="red">*</font>扣款银行：</td>
+									                                    <td><label name="openBankBaseName"></label></td>
+									                                    <td><font color="red">*</font>账户名称：</td>
+									                                    <td><label name="accountName"></label></td>
+									                                    <td><font color="red">*</font>扣款账号：</td>
+									                                    <td><label name="openBankNo"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>扣款对象分类：</td>
+									                                    <td><label name="deductionsObjectTypeName"></label></td>
+									                                    <td>付款银行：</td>
+									                                    <td><label name="draweeBank"></label></td>
+									                                    <td>付款银行账号：</td>
+									                                    <td><label name="draweeBankAccount"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>付款账户户名：</td>
+									                                    <td><label name="draweeBankName"></label></td>
+									                                    <td>是否农行：</td>
+									                                    <td><label name="isABCName"></label></td>
+									                                    <td>大额行号：</td>
+									                                    <td><label name="largeLineNo"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+							                       </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse3"> 报价信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse3" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                           <strong>报价信息</strong>
+						                           <p>
+						                           		<table class="table table-bordered tab-custom" id="quotedPrice-tab">
+								                            <tbody>
+								                                <tr>
+								                                    <td>成交价：<input type="hidden" name="quotedPriceId"></td>
+								                                    <td><label name="actualPrice"></label></td>
+								                                    <td>车辆指导价：</td>
+								                                    <td><label name="guidePrice"></label></td>
+								                                    <td>首付款：</td>
+								                                    <td><label name="downPayment"></label></td>
+								                                </tr>
+								                                <tr>
+								                                    <td>预付租金比例：</td>
+								                                    <td><label name="preRentRateName"></label></td>
+								                                    <td>供应商保证金池：</td>
+								                                    <td><label name="supplierCashPool"></label></td>
+								                                    <td>签约日期：</td>
+								                                    <td><label name="signDate"></label></td>
+								                                </tr>
+								                                <tr>
+								                                    <td>融资金额：</td>
+								                                    <td><label name="financingAmount"></label></td>
+								                                    <td>厂家贴息：</td>
+								                                    <td><label name="factoryDiscount"></label></td>
+								                                    <td>代收担保费：</td>
+								                                    <td><label name="collectPremium"></label></td>
+								                                </tr>
+								                                <tr>
+								                                    <td>咨询费：</td>
+								                                    <td><label name="consultingFee"></label></td>
+								                                    <td>方案：</td>
+								                                    <td><label name="planName"></label></td>
+								                                    <td>留购价：</td>
+								                                    <td><label name="purchasePrice"></label></td>
+								                                </tr>
+								                                <tr>
+								                                    <td>租金总额：</td>
+								                                    <td><label name="rentTotalAmount"></label></td>
+								                                    <td>利息总额：</td>
+								                                    <td><label name="interestTotalAmount"></label></td>
+								                                    <td>保证保险承保金额：</td>
+								                                    <td><label name="amountInsured"></label></td>
+								                                </tr>
+								                                <tr>
+								                                    <td>手续费：</td>
+								                                    <td><label name="serviceCharge"></label></td>
+								                                </tr>
+								                            </tbody>
+								                        </table>
+						                           </p>
+						                           <p>
+<!-- 							                        	<div class="panel panel panel-default"> -->
+<!-- 						                                    <div class="panel-heading">还款计划</div> -->
+<!-- 						                                    <div class="panel-body"> -->
+<!-- 							                                    <table class="table table-bordered" id="repaymentPlan-tab"> -->
+<!-- 							                                    	<th>期数</th> -->
+<!-- 							                                    	<th>应还本金(元)</th> -->
+<!-- 							                                    	<th>应还利息(元)</th> -->
+<!-- 							                                    	<th>应还罚息(元)</th> -->
+<!-- 							                                    	<th>担保费(元)</th> -->
+<!-- 							                                    	<th>应还金额</th> -->
+<!-- 							                                    	<th>应还日期</th> -->
+<!-- 							                                    	<th>备注</th> -->
+<!-- 										                        </table> -->
+<!-- 						                                    </div> -->
+<!-- 						                                </div> -->
+							                        </p>
+						                       </div>
+				                              </div>
+				                          </div>
+				                      	 <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse4"> 租赁物信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse4" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                          		<strong>车产信息</strong>
+								                           <p>
+								                           		<table class="table table-bordered tab-custom" id="leaseInfo-tab">
+										                            <tbody>
+										                                <tr>
+										                                    <td>主车/挂车：<input type="hidden" name="leaseInfoId"></td>
+										                                    <td><label name="carTypeVLName"></label></td>
+										                                    <td>所购车辆种类：</td>
+                                   											<td><label name="stepHull"></label></td>
+										                                    <td>制造商：</td>
+										                                    <td><label name="manufacturer"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>品牌：</td>
+										                                    <td><label name="brand"></label></td>
+										                                    <td>名称：</td>
+										                                    <td><label name="carName"></label></td>
+										                                    <td>型号：</td>
+										                                    <td><label name="model"></label></td>
+									                                    </tr>
+										                                <tr>
+<!-- 										                                    <td>价格：</td> -->
+<!-- 										                                    <td><label name="isAutoPayName"></label></td> -->
+										                                    <td>租赁物使用用途：</td>
+										                                    <td><label name="leaseholdUseName"></label></td>
+										                                    <td>租赁物使用区域：</td>
+										                                    <td><label name="leaseholdArea"></label></td>
+										                                    <td>发动机号：</td>
+										                                    <td><label name="engineNumber"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>车架号：</td>
+										                                    <td><label name="frameNumber"></label></td>
+										                                    <td>驱动形式：</td>
+										                                    <td><label name="drivingForm"></label></td>
+										                                    <td>发动机型号：</td>
+										                                    <td><label name="engineModel"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>发动机功率：</td>
+										                                    <td><label name="enginePower"></label></td>
+										                                    <td>车辆颜色：</td>
+										                                    <td><label name="carColor"></label></td>
+										                                    <td>车牌号：</td>
+										                                    <td><label name="plateNumber"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>车险保单号：</td>
+										                                    <td><label name="runAreaName"></label></td>
+										                                    <td>续保车险保单号一：</td>
+										                                    <td><label name="startSiteName"></label></td>
+										                                    <td>号牌种类：</td>
+										                                    <td><label name="licenseTypeProductConfigName"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>车辆种类：</td>
+										                                    <td><label name="carKindCodeName"></label></td>
+										                                    <td>初登日期：</td>
+										                                    <td><label name="enrollDate"></label></td>
+										                                    <td>车型代码：</td>
+										                                    <td><label name="brandName"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>车型名称：</td>
+			                                    							<td><label name="modelName"></label></td>
+										                                    <td>底色：</td>
+										                                    <td><label name="licenseColorCodeProductConfig"></label></td>
+										                                    <td>载客：</td>
+										                                    <td><label name="seatCount"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>载质量(吨)：</td>
+										                                    <td><label name="tonCount"></label></td>
+										                                    <td>车辆净价：</td>
+										                                    <td><label name="purchasePrice"></label></td>
+										                                    <td>购车发票号：</td>
+										                                    <td><label name="invoiceNo"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>购车合同号：</td>
+										                                    <td><label name="loanNo1"></label></td>
+										                                    <td>排量：</td>
+										                                    <td><label name="exhaustScale"></label></td>
+										                                    <td>续保保证金：</td>
+										                                    <td><label name="planAmount"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>抵押保证金：</td>
+										                                    <td><label name="unitAmount"></label></td>
+										                                    <td>客户来源：</td>
+										                                    <td><label name="loanWayName"></label></td>
+										                                    <td>购车人：</td>
+										                                    <td><label name="buycarcustname"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>所购/所租车辆类型：</td>
+										                                    <td><label name="carTypeName"></label></td>
+										                                    <td>主品牌：</td>
+										                                    <td><label name="mainBd"></label></td>
+										                                    <td>车系：</td>
+										                                    <td><label name="carlne"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>车款：</td>
+										                                    <td><label name="carTp"></label></td>
+										                                    <td>原车牌号：</td>
+										                                    <td><label name="regsNo"></label></td>
+										                                    <td>抵押登记日期：</td>
+										                                    <td><label name="gtreDt"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>销售指导价：</td>
+										                                    <td><label name="sealAm"></label></td>
+										                                    <td>第三方评估价：</td>
+										                                    <td><label name="tripartiteEv"></label></td>
+										                                    <td>人保评估价：</td>
+										                                    <td><label name="rbEvaluate"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>行驶里程数(公里)：</td>
+										                                    <td><label name="drivingMileage"></label></td>
+										                                    <td>实际成交价：</td>
+										                                    <td><label name="tranAm"></label></td>
+										                                    <td>车龄(年)：</td>
+										                                    <td><label name="carAge"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>动力系统类别：</td>
+										                                    <td><label name="powerctetype"></label></td>
+										                                	<td>渠道商唯一标识：</td>
+										                                    <td><label name="chnelbusno"></label></td>
+										                                    <td>渠道商名称：</td>
+										                                    <td><label name="chnelbusname"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>渠道商所在地：</td>
+										                                    <td><label name="chnelbusadr"></label></td>
+										                                    <td>售车方名称：</td>
+										                                    <td><label name="sellername"></label></td>
+										                                    <td>售车方所在地：</td>
+										                                    <td><label name="selleraddress"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>收款方名称：</td>
+										                                    <td><label name="payeename"></label></td>
+										                                    <td>是否他行：</td>
+										                                    <td><label name="isotherbankName"></label></td>
+										                                    <td>收款方账号类型：</td>
+										                                    <td><label name="payeetypeName"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>收款方账号：</td>
+										                                    <td><label name="payeeacct"></label></td>
+										                                    <td>收款方开户行：</td>
+										                                    <td><label name="payeebank"></label></td>
+										                                    <td>收款方开户行行号：</td>
+										                                    <td><label name="payeebankno"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>车辆所有人：</td>
+										                                    <td><label name="carowner"></label></td>
+										                                    <td>租赁公司名称：</td>
+										                                    <td><label name="leasecmpname"></label></td>
+										                                    <td>租赁公司地址：</td>
+										                                    <td><label name="leasecmpadr"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>IMEI编号：</td>
+										                                    <td><label name="imeino"></label></td>
+										                                    <td>GPS状态：</td>
+										                                    <td><label name="gpssttName"></label></td>
+										                                    <td>GPS厂家：</td>
+			                                    							<td><label name="gpsput"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>是否为‘白户’：</td>
+										                                    <td><label name="ifwhiteflagName"></label></td>
+										                                    <td>原车辆使用性质：</td>
+										                                    <td><label name="useNatureName"></label></td>
+										                                    <td>车辆用途：</td>
+										                                    <td><label name="usesTpName"></label></td>
+									                                    </tr>
+										                                <tr>
+										                                    <td>发票金额：</td>
+										                                    <td><label name="invoiceValue"></label></td>
+										                                    <td>4s店名称：</td>
+										                                    <td><label name="storena"></label></td>
+										                                    <td>SN号：</td>
+			                                    							<td><label name="sealsn"></label></td>
+									                                   </tr>
+										                                <tr>
+										                                    <td>其他配置说明：</td>
+										                                    <td colspan="5"><label name="otherInstructions"></label></td>
+										                                </tr>
+										                                <tr>
+										                            </tbody>
+										                        </table>
+								                           </p>
+						                       	  </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse5"> 车辆保险信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse5" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                           	<strong>车产保险</strong>
+							                           <p>
+							                           		<table class="table table-bordered tab-custom" id="carInsurance-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td>主车/挂车：<input type="hidden" name="carInsuranceId"></td>
+									                                    <td><label name="carTypeVLName"></label></td>
+									                                    <td>商业第三者责任险：</td>
+									                                    <td><label name="thirdInsuranceName"></label></td>
+									                                    <td>玻璃单独破碎险：</td>
+									                                    <td><label name="riskGlassBreakage"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>其他1：</td>
+									                                    <td><label name="otherInsurance1"></label></td>
+									                                    <td>其他2：</td>
+									                                    <td><label name="otherInsurance2"></label></td>
+									                                    <td>其他3：</td>
+									                                    <td><label name="otherInsurance3"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>其他4：</td>
+									                                    <td><label name="otherInsurance4"></label></td>
+									                                    <td>其他5：</td>
+									                                    <td><label name="otherInsurance5"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>主要险种：</td>
+									                                    <td colspan="5">
+									                                    	<div class="i-checks" id="majorInsuranceVLS-div"></div>
+									                                    </td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+						                       	  </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse6"> 保证保险信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse6" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                           	<strong>租赁物保险</strong>
+						                           <p>
+						                           		<table class="table table-bordered tab-custom" id="guaranteeInsurance-tab">
+								                            <tbody>
+								                                <tr>
+								                                    <td>主车／挂车：<input type="hidden" name="guaranteeInsuranceId"></td>
+								                                    <td><label name="carTypeVLName"></label></td>
+								                                    <td>主联保险公司：</td>
+								                                    <td><label name="mainInsuranceCompany"></label></td>
+								                                    <td>保险公司：</td>
+								                                    <td><label name="insuranceCompanyVL"></label></td>
+								                                </tr>
+								                                <tr>
+								                                    <td>承诺意向书编号：</td>
+								                                    <td><label name="letterIntentNo"></label></td>
+<!-- 								                                    <td>贷款金额：</td> -->
+<!-- 								                                    <td><label name=""></label></td> -->
+<!-- 								                                    <td>保费金额：</td> -->
+<!-- 								                                    <td><label name=""></label></td> -->
+								                                </tr>
+								                            </tbody>
+								                        </table>
+						                           </p>
+						                       	  </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse7"> 担保人信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse7" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                            <strong>担保人信息</strong>
+						                           <p>
+						                           		<div id="sponsor-area">
+								                        	<div name="sponsor-div" style="margin-bottom:70px;">
+								                                <h2>担保人<span name="order-span">1</span>-信息</h2>
+														        <table class="table table-bordered tab-custom" name="sponsor-tab">
+										                            <tbody>
+										                                <tr>
+										                                    <td>姓名：<input type="hidden" name="sponsorId"></td>
+										                                    <td><label name="sponsorName"></label></td>
+										                                    <td>证件类型：</td>
+										                                    <td><label name="certTypeName"></label></td>
+										                                    <td>证件号：</td>
+										                                    <td><label name="certNo"></label></td>
+										                                </tr>
+										                                <tr>
+										                                    <td>性别：</td>
+										                                    <td><label name="sponsorSexName"></label></td>
+										                                    <td>手机：</td>
+										                                    <td><label name="sponsorMobile"></label></td>
+										                                    <td>关系：</td>
+										                                    <td><label name="relationName"></label></td>
+										                                </tr>
+										                                <tr>
+										                                    <td>籍贯：</td>
+										                                    <td><label name="nativePlace"></label></td>
+										                                    <td>年龄：</td>
+										                                    <td><label name="sponsorAge"></label></td>
+										                                    <td>最高学历：</td>
+										                                    <td><label name="educationTypeName"></label></td>
+										                                </tr>
+										                                <tr>
+										                                    <td>公司名称：</td>
+										                                    <td><label name="companyName"></label></td>
+										                                    <td>地址：</td>
+										                                    <td><label name="companyAddr"></label></td>
+										                                    <td>月薪收入：</td>
+										                                    <td><label name="income"></label></td>
+										                                </tr>
+										                                <tr>
+										                                    <td>单位电话：</td>
+										                                    <td><label name="companyPhone"></label></td>
+										                                    <td>任职岗位：</td>
+										                                    <td><label name="position"></label></td>
+										                                    <td>其他收入：</td>
+										                                    <td><label name="otherIncome"></label></td>
+										                                </tr>
+										                                <tr>
+										                                    <td>固话：</td>
+										                                    <td><label name="telephone"></label></td>
+										                                </tr>
+										                            </tbody>
+										                        </table>
+										                        <button type="button" name="addSponsor" style="display:none;" class="btn btn-w-m btn-primary">新增担保人</button>
+									                        </div>
+									                     </div>
+						                           </p>
+						                          </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse8"> 投保单归属机构信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse8" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                           	<strong>投保单归属机构信息</strong>
+						                           <p>
+						                           		<table class="table table-bordered tab-custom" id="coin-tab">
+								                            <tbody>
+								                                <tr>
+								                                    <td>主联机构代码：<input type="hidden" name="coinId"></td>
+								                                    <td><label name="maincomcode"></label></td>
+								                                    <td>从联机构代码：</td>
+								                                    <td><label name="depcomcode"></label></td>
+								                                    <td>主联归属业务员代码：</td>
+								                                    <td><label name="mainhandlercode"></label></td>
+								                                </tr>
+								                                <tr>
+								                                    <td>从联归属业务员代码：</td>
+								                                    <td><label name="dephandlercode"></label></td>
+								                                </tr>
+								                            </tbody>
+								                        </table>
+						                           </p>
+						                          </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse9"> 方案信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse9" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                            <strong>方案信息</strong>
+							                           <p>
+							                           		<table class="table table-bordered" id="insuredPlan-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td style="background-color:#f9f9f9;width:12%;text-align:right;">方案代码：<input type="hidden" name="insuredPlanId"></td>
+									                                    <td colspan="5"><label name="rationType"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+							                           <strong>条款信息</strong>
+							                           <p>
+								                        	<table class="table table-bordered tab-custom" id="scheme-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td>编号：<input type="hidden" name="schemeId"></td>
+									                                    <td><label name="schemeCode"></label></td>
+									                                    <td>保额：</td>
+									                                    <td><label name="schemeAmount"></label></td>
+									                                    <td>保费：</td>
+									                                    <td><label name="schemePremium"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+								                        </p>
+								                        <strong>特别约定信息</strong>
+							                            <p>
+								                        	<table class="table table-bordered tab-custom" id="engage-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td>特别约定代码：<input type="hidden" name="engageId"></td>
+									                                    <td><label name="engageCode"></label></td>
+									                                    <td>特别约定名称：</td>
+									                                    <td><label name="engageName"></label></td>
+									                                    <td>特别约定具体内容：</td>
+									                                    <td><label name="engagedesc"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+								                        </p>
+						                          </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse10"> 被保人信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse10" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                             <strong>被保人信息</strong>
+							                           <p>
+							                           		<table class="table table-bordered tab-custom" id="insured-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td>被保险人全称：<input type="hidden" name="insuredId"></td>
+									                                    <td><label name="insuredName"></label></td>
+									                                    <td>被保险人组织机构代码：</td>
+									                                    <td><label name="insuredIdType"></label></td>
+									                                    <td>被保险人组织机构证件号：</td>
+									                                    <td><label name="insuredIdNo"></label></td>
+									                                </tr>
+									                                <tr>
+									                                    <td>银行代码：</td>
+									                                    <td><label name="bankcode"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+							                           <strong>受益人信息</strong>
+							                           <p>
+							                           		<table class="table table-bordered" id="beneficiarys-tab">
+									                            <tbody>
+									                                <tr>
+									                                    <td style="background-color:#f9f9f9;width:12%;text-align:right;">受益人名称：<input type="hidden" name="beneficiaryId"></td>
+									                                    <td colspan="5"><label name="beneficiary"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+						                          </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse11"> 放款信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse11" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                            <strong>放款信息</strong>
+							                           <p>
+							                           		<table class="table table-bordered tab-custom" id="loanInfo-tab">
+									                            <tbody>
+									                                <tr>
+<!-- 									                                    <td>投保单号：</td> -->
+<!-- 									                                    <td><label name="proposalNo"></label></td> -->
+									                                    <td>申请放款时间：<input type="hidden" id="loanInfoId" name="loanInfoId"></td>
+									                                    <td><label name="applyLoanTimes"></label></td>
+									                                    <td>申请人：</td>
+									                                    <td><label name="applicant"></label></td>
+									                                	<td>放/还款账户：</td>
+									                                    <td><label name="eacNo"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>扣款日：</td>
+									                                    <td><label name="atrsDueDay"></label></td>
+									                                    <td>放款卡号：</td>
+									                                    <td><label name="tacNo"></label></td>
+									                                    <td>商业车险保单号：</td>
+									                                    <td><label name="coverNo"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>租赁公司购车付款流水号：</td>
+									                                    <td><label name="payJnlNo"></label></td>
+									                                    <td>租赁公司购车付款日期：</td>
+									                                    <td><label name="payDate"></label></td>
+									                                    <td>租赁公司购车付款金额：</td>
+									                                    <td><label name="payAmount"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>租赁公司购车收款方：</td>
+									                                    <td><label name="payeeName"></label></td>
+									                                    <td>租赁公司购车收款账号：</td>
+									                                    <td><label name="payeeAcct"></label></td>
+									                                    <td>首付款金额：</td>
+									                                    <td><label name="downPayment"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>租赁合同编号：</td>
+									                                    <td><label name="leaseCtctNo"></label></td>
+									                                    <td>租赁合同生效日：</td>
+									                                    <td><label name="leaseStarTime"></label></td>
+									                                    <td>租赁合同到期日：</td>
+									                                    <td><label name="leaseEndTime"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>租赁合同金额：</td>
+									                                    <td><label name="leaseCtctAm"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+							                           <p id="loanReturn-div">
+							                           		<strong>放款信息</strong>
+							                           		<button type="button" id="loanInfoBu" class="btn btn-w-m btn-primary">点击请求放款</button>
+							                           		<table class="table table-bordered">
+						                                    	<tr>
+							                                    	<th>投保单号</th>
+							                                    	<th>响应信息描述</th>
+							                                    	<th>创建人</th>
+							                                    	<th>创建时间</th>
+							                                    	<th>结果通知</th>
+						                                    	</tr>
+						                                    	<tbody id="loanReturnTbody"></tbody>
+						                                    </table>
+							                           </p>
+						                          </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse12"> 抵押登记信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse12" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                             <strong>车辆抵押登记信息</strong>
+							                           <p>
+							                           		<table class="table table-bordered tab-custom" id="mortgageInfo-tab">
+									                            <tbody>
+						<!-- 			                                <tr> -->
+						<!-- 			                                    <td>投保单号：<input type="hidden" name="mortgageInfoId"></td> -->
+						<!-- 			                                    <td><input type="text" name="proposalNo" class="form-control"></td> -->
+						<!-- 			                                    <td>借据号：</td> -->
+						<!-- 			                                    <td><input type="text" name="loanNo" class="form-control"></td> -->
+						<!-- 			                                    <td>申请书编号：</td> -->
+						<!-- 			                                    <td><input type="text" name="applyNo" class="form-control"></td> -->
+						<!-- 			                                </tr> -->
+									                                <tr>
+									                                    <td>保单号：<input type="hidden" id="mortgageInfoId" name="mortgageInfoId"></td>
+									                                    <td><label name="policyNo"></label></td>
+									                                    <td>投保人名称：</td>
+									                                    <td><label name="appliName"></label></td>
+									                                    <td>被保险人名称：</td>
+									                                    <td><label name="insuredName"></label></td>
+									                                </tr>
+									                                <tr>
+									                                	<td>抵押登记日期：</td>
+									                                    <td><label name="mortRegDate"></label></td>
+									                                	<td>抵押保证金：</td>
+									                                    <td><label name="unitAmount"></label></td>
+									                                    <td>抵押合同号：</td>
+									                                    <td><label name="loanNo3"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>抵(质)押物性质：</td>
+									                                    <td><label name="guaranteeTypeName"></label></td>
+									                                    <td>抵(质)押物名称：</td>
+									                                    <td><label name="guaranteeName"></label></td>
+									                                    <td>抵(质)押权生效日期：</td>
+									                                    <td><label name="deliverDate"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>押品所有人所占份额(%)：</td>
+									                                    <td><label name="paidTimes"></label></td>
+									                                    <td>是否需要办理保险：</td>
+									                                    <td><label name="repaidTypeName"></label></td>
+									                                    <td>抵质押品法律有效性：</td>
+									                                    <td><label name="loanBankCodeName"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>抵质押品变现能力：</td>
+									                                    <td><label name="loanBankName"></label></td>
+									                                    <td>押品是否已出租：</td>
+									                                    <td><label name="loanNatureName"></label></td>
+									                                    <td>是否在其它机构设置抵质押：</td>
+									                                    <td><label name="otherMortgage"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>行驶里程数(公里)：</td>
+									                                    <td><label name="otherNature"></label></td>
+									                                    <td>是否运营车辆：</td>
+									                                    <td><label name="useNatureCodeName"></label></td>
+									                                    <td>权证完备状态：</td>
+									                                    <td><label name="preChar1Name"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>抵押权证信息—抵押权人：</td>
+									                                    <td><label name="landAgent"></label></td>
+									                                    <td>抵押权证信息—抵押人：</td>
+									                                    <td><label name="preChar2"></td>
+									                                    <td>抵押权证信息—抵押期限：</td>
+									                                    <td><label name="preChar3"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>抵押登记所在地：</td>
+									                                    <td><label name="preChar4"></label></td>
+									                                    <td>抵押物状态—阶段：</td>
+									                                    <td><label name="loanYearName"></label></td>
+									                                    <td>抵押物状态—是否扣押：</td>
+									                                    <td><label name="nonlocalFlagName"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>行驶证编号：</td>
+									                                    <td><label name="licenseNo2"></label></td>
+									                                    <td>所购车辆种类：</td>
+									                                    <td><label name="stepHullName"></label></td>
+									                                    <td>所在/注册省份：</td>
+									                                    <td><label name="aliasName"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>所在/注册城市：</td>
+									                                    <td><label name="modelCodeAlias"></label></td>
+									                                    <td>品牌/生产厂商：</td>
+									                                    <td><label name="carDealerName"></label></td>
+									                                    <td>变速类型：</td>
+									                                    <td><label name="monopolyName"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>出厂日期或报关日期：</td>
+									                                    <td><label name="makeDate"></label></td>
+									                                    <td>设计使用到期日期：</td>
+									                                    <td><label name="suspendStartDate"></label></td>
+									                                    <td>押品所有人：</td>
+									                                    <td><label name="warrantorName"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>押品所有人证件类型：</td>
+									                                    <td><label name="loanUsageName"></label></td>
+									                                    <td>押品所有人证件号码：</td>
+									                                    <td><label name="loanNo5"></label></td>
+									                                    <td>机动车登记证书编号：</td>
+									                                    <td><label name="vehCertNo"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>拍照号码：</td>
+									                                    <td><label name="photoNo"></label></td>
+									                                    <td>是否共有财产：</td>
+									                                    <td><label name="communityPropertyName"></label></td>
+									                                    <td>租赁起始日：</td>
+									                                    <td><label name="makeStartDate"></label></td>
+								                                    </tr>
+									                                <tr>
+									                                    <td>租赁到期日：</td>
+									                                    <td><label name="makeEndDate"></label></td>
+									                                </tr>
+									                            </tbody>
+									                        </table>
+							                           </p>
+							                           <p id="mortgageInfoReturn-div">
+							                           		<strong>车辆抵押响应历史</strong>
+							                           		<button type="button" id="mortgageInfoBu" class="btn btn-w-m btn-primary">点击请求车辆抵押</button>
+								                        	<table class="table table-bordered">
+						                                    	<tr>
+							                                    	<th>投保单号</th>
+							                                    	<th>响应信息描述</th>
+							                                    	<th>创建人</th>
+							                                    	<th>创建时间</th>
+						                                    	</tr>
+						                                    	<tbody id="mortgageInfoReturnTbody"></tbody>
+						                                    </table>
+							                           </p>
+						                          </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse13"> 签约信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse13" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                              <strong>签约信息</strong>
+							                           <button type="button" id="signInfoBu" class="btn btn-w-m btn-primary">点击获取签约响应</button>
+							                           <p>
+							                           		<table class="table table-bordered">
+						                                    	<tr>
+							                                    	<th>当前申请状态</th>
+							                                    	<th>银行审批金额</th>
+							                                    	<th>正常利率上浮比例</th>
+							                                    	<th>响应信息描述</th>
+							                                    	<th>创建人</th>
+							                                    	<th>创建时间</th>
+						                                    	</tr>
+						                                    	<tbody id="signInfoReturnTbody"></tbody>
+						                                    </table>
+							                           </p>
+						                          </div>
+				                              </div>
+				                          </div>
+				                          <div class="panel panel-info louceng">
+				                              <div class="panel-heading">
+				                                  <h4 class="panel-title">
+				                                      <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapse14"> 审批信息</a>
+				                                  </h4>
+				                              </div>
+				                              <div id="collapse14" class="panel-collapse collapse">
+				                                  <div class="panel-body" style="border-left: none;border-right: none;">
+						                             <div class="ibox-content forum-container">
+							                            <div id="logDiv" class="forum-item active" style="display: none;">
+							                                <div class="row">
+							                                    <div class="col-sm-8">
+							                                        <div class="forum-icon">
+							                                            <i class="fa fa-shield"></i>
+							                                        </div>
+							                                        <a class="forum-item-title"><span id="taskName">-</span>&nbsp;<small style="font-size: 12px;"><i class="fa fa-clock-o"></i> <span id="processingTime"></span></small></a>
+							                                        <div class="forum-sub-title" id="reasonRemark"></div>
+							                                    </div>
+							                                    <div class="col-sm-2 forum-info">
+							                                        <span id="pass" class="views-number">-</span>
+							                                        <div>
+							                                            <small>结果</small>
+							                                        </div>
+							                                    </div>
+							                                    <div class="col-sm-2 forum-info">
+							                                        <span id="handler" class="views-number">-</span>
+							                                        <div>
+							                                            <small>处理人</small>
+							                                        </div>
+							                                    </div>
+							                                </div>
+							                            </div>
+							                            <div id="auditDiv" class="forum-item active">
+							                                <div class="row">
+							                                    <div class="col-sm-12">
+							                                    <div class="panel panel panel-default">
+								                                    <div class="panel-heading">审批</div>
+								                                    <div class="panel-body ">
+								                                    	<form id="auditForm" class="form-horizontal m-t">
+									                                    	<div class="form-group">
+												                                <div class="col-sm-12">
+<!-- 												                                   <table class="table table-hover"> -->
+<!-- 															                            <thead> -->
+<!-- 															                                <tr> -->
+<!-- 															                                    <th>放款金额</th> -->
+<!-- 															                                    <th>期数</th> -->
+<!-- 															                                    <th>车辆评估</th> -->
+<!-- 															                                    <th>操作</th> -->
+<!-- 															                                </tr> -->
+<!-- 															                            </thead> -->
+<!-- 															                            <tbody> -->
+<!-- 															                                <tr> -->
+<!-- 															                                    <td>1</td> -->
+<!-- 															                                    <td><span class="line" style="display: none;">5,3,2,-1,-3,-2,2,3,5,2</span><svg class="peity" height="16" width="32"><polygon fill="#1ab394" points="0 9.375 0 0.5 3.5555555555555554 4.25 7.111111111111111 6.125 10.666666666666666 11.75 14.222222222222221 15.5 17.77777777777778 13.625 21.333333333333332 6.125 24.888888888888886 4.25 28.444444444444443 0.5 32 6.125 32 9.375"></polygon><polyline fill="transparent" points="0 0.5 3.5555555555555554 4.25 7.111111111111111 6.125 10.666666666666666 11.75 14.222222222222221 15.5 17.77777777777778 13.625 21.333333333333332 6.125 24.888888888888886 4.25 28.444444444444443 0.5 32 6.125" stroke="#169c81" stroke-width="1" stroke-linecap="square"></polyline></svg> -->
+<!-- 															                                    </td> -->
+<!-- 															                                    <td>张三</td> -->
+<!-- 															                                    <td class="text-navy"> <i class="fa fa-level-up"></i> 40%</td> -->
+<!-- 															                                </tr> -->
+<!-- 															                                <tr> -->
+<!-- 															                                    <td>2</td> -->
+<!-- 															                                    <td><span class="line" style="display: none;">5,3,9,6,5,9,7,3,5,2</span><svg class="peity" height="16" width="32"><polygon fill="#1ab394" points="0 15 0 7.166666666666666 3.5555555555555554 10.5 7.111111111111111 0.5 10.666666666666666 5.5 14.222222222222221 7.166666666666666 17.77777777777778 0.5 21.333333333333332 3.833333333333332 24.888888888888886 10.5 28.444444444444443 7.166666666666666 32 12.166666666666666 32 15"></polygon><polyline fill="transparent" points="0 7.166666666666666 3.5555555555555554 10.5 7.111111111111111 0.5 10.666666666666666 5.5 14.222222222222221 7.166666666666666 17.77777777777778 0.5 21.333333333333332 3.833333333333332 24.888888888888886 10.5 28.444444444444443 7.166666666666666 32 12.166666666666666" stroke="#169c81" stroke-width="1" stroke-linecap="square"></polyline></svg> -->
+<!-- 															                                    </td> -->
+<!-- 															                                    <td>李四</td> -->
+<!-- 															                                    <td class="text-warning"> <i class="fa fa-level-down"></i> -20%</td> -->
+<!-- 															                                </tr> -->
+<!-- 															                                <tr> -->
+<!-- 															                                    <td>3</td> -->
+<!-- 															                                    <td><span class="line" style="display: none;">1,6,3,9,5,9,5,3,9,6,4</span><svg class="peity" height="16" width="32"><polygon fill="#1ab394" points="0 15 0 13.833333333333334 3.2 5.5 6.4 10.5 9.600000000000001 0.5 12.8 7.166666666666666 16 0.5 19.200000000000003 7.166666666666666 22.400000000000002 10.5 25.6 0.5 28.8 5.5 32 8.833333333333332 32 15"></polygon><polyline fill="transparent" points="0 13.833333333333334 3.2 5.5 6.4 10.5 9.600000000000001 0.5 12.8 7.166666666666666 16 0.5 19.200000000000003 7.166666666666666 22.400000000000002 10.5 25.6 0.5 28.8 5.5 32 8.833333333333332" stroke="#169c81" stroke-width="1" stroke-linecap="square"></polyline></svg> -->
+<!-- 															                                    </td> -->
+<!-- 															                                    <td>王麻子</td> -->
+<!-- 															                                    <td class="text-navy"> <i class="fa fa-level-up"></i> 26%</td> -->
+<!-- 															                                </tr> -->
+<!-- 															                            </tbody> -->
+<!-- 															                        </table> -->
+												                                </div>
+													                        </div>
+													                        <div class="form-group form-group-extend">
+												                                <label class="col-sm-2 control-label">审核意见：</label>
+												                                <div class="col-sm-10">
+												                                    <div class="i-checks" id="baseCustomerSex-div">
+														                        		<label class="radio-inline" style="padding-left: 0px;"><input type="radio" name='reject_result' value='1'> 通过</label>
+														                        		<!-- <label class="radio-inline" style="padding-left: 0px;"><input type="radio" name='reject_result' value='2'> 拒绝</label> -->
+														                        		<label class="radio-inline" style="padding-left: 0px;"><input type="radio" name='reject_result' value='3'> 驳回</label>
+														                        	</div>
+												                                </div>
+												                            </div>
+												                            <div id="resonDiv" class="form-group form-group-extend" style="display: none;">
+												                                <label class="col-sm-2 control-label">审核原因：</label>
+												                                <div class="col-sm-10">
+												                                    <select id="reject_reason" name="reason" class="form-control" style="width: 30%;"></select>
+												                                </div>
+												                            </div>
+									                                    	<div class="form-group form-group-extend">
+												                                <label class="col-sm-2 control-label">备注说明：</label>
+												                                <div class="col-sm-10">
+												                                    <textarea rows="5" cols="50" style="width: 100%;"  name="remark" id="remark"></textarea>
+												                                </div>
+												                            </div>
+												                            <div class="form-group form-group-extend">
+												                                <div class="col-sm-4 col-sm-offset-2">
+												                                    <button id="btnSbumitAudit" class="btn btn-primary" type="button">  提  交  </button>
+												                                    <button id="btnSubmitClose" class="btn btn-outline btn-primary" type="button">  关  闭 </button>
+												                                </div>
+												                            </div>
+							                                    		</form>
+							                                    	</div>
+								                                </div>
+							                                    </div>
+							                                </div>
+							                            </div>
+							                        </div>
+						                          </div>
+				                              </div>
+				                          </div>
+				                      
+				                      
+				                      </div>
+				               		</div>
+			            			<div class="col-sm-4">
+			            				
+			            				<div class="row" style="padding: 0px 10px 0px 10px;">
+					                    	<div class="ibox float-e-margins" style="margin: 0px;position: fixed;">
+							                    <div class="ibox-content" style="border-style:none;padding:0px;">
+							                        <div class="file-manager">
+							                        	<div class="row" style="margin: 3px;">
+					                    					<label class="col-sm-2 control-label" style="padding-top: 10px;">显示：</label>
+					                    					<div class="col-sm-10">
+					                    						<div class="i-checks" id="attachmentType-div">
+							                              			<label class="radio-inline" style="padding-left: 5px;margin: 10px 0px;"><input type="radio" name="attachment-type" checked="" value="1"> 全部</label>
+							                              			<label class="radio-inline" style="padding-left: 5px;margin: 10px 0px;"><input type="radio" name="attachment-type" value="2"> 图片</label>
+							                              			<label class="radio-inline" style="padding-left: 5px;margin: 10px 0px;"><input type="radio" name="attachment-type" value="3"> 文档</label>
+						                              			</div>
+					                    					</div>
+					                    				</div>
+							                            <div class="row" style="margin: 3px;">
+							                            	<label class="col-sm-2 control-label" style="padding-top: 10px;">阶段：</label>
+					                    					<div class="col-sm-10">
+					                    						 <select id="stage-condition"  class="form-control"></select>
+					                    					</div>
+					                    				</div>
+					                    				<div class="row" style="margin: 3px;">
+					                    					<label class="col-sm-2 control-label" style="padding-top: 10px;">类别：</label>
+					                    					<div class="col-sm-10">
+					                    						<select id="category-condition" class="form-control">
+					                    							<option value="">请选择</option>
+					                    						</select>
+					                    					</div>
+					                    				</div>
+														<div id="upload-buttons" class="row" style="margin: 3px;display: none;" >
+					                    					<label class="col-sm-2 control-label" style="padding-top: 10px;">上传：</label>
+					                    					<div class="col-sm-6 btn-group">
+							                                    <label title="上传图片" class="btn btn-primary">
+							                                        <input type="file" name="file" class="hide" accept="image/png,image/gif,image/jpg,image/jpeg" multiple="multiple"> 上传图片
+							                                    </label>
+							                                    <label title="上传文件" class="btn btn-primary">
+							                                        <input type="file" name="file2" class="hide" multiple="multiple"> 上传文件
+							                                    </label>
+					                    					</div>
+					                    					<label class="col-sm-2 control-label" style="padding-top: 10px;">提交：</label>
+					                    					<div class="col-sm-2 btn-group">
+					                    						<button id="upload-submit" class="btn btn-primary btn-block">确定</button>
+					                    					</div>
+					                    				</div>
+					                    				<div class="hr-line-dashed"></div> 
+							                        </div>
+							                    </div>
+							                </div>
+						                    <div id="upload-div" class="col-sm-12" style="position: fixed;overflow-y: scroll;overflow-x: hidden;">
+						                    </div>
+						                </div>
+								        
+			            			</div>
+		                  		</div>
+			                </div>
+			                
+		               </div>
+		           </div>
+	           </div>
+			</div>
+
+	    </div>
+	    
+	    <div class="modal inmodal fade" id="loan-informModal" tabindex="-1" role="dialog" aria-hidden="true">
+        	<div class="modal-dialog modal-lg">
+                 <div class="modal-content animated">
+                     <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                         <h4 class="modal-title">放款通知</h4>
+                     </div>
+                     <div class="modal-body">
+	                 	<div id="detail" class="form-horizontal m-t">
+			            	<div class="form-group">
+			                	<label class="col-sm-2 control-label">投保单号：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="proposalNo" class="form-control"></label>
+			                    </div>
+			                    <label class="col-sm-2 control-label">放款结果：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="loanResult" class="form-control"></label>
+			                    </div>
+			                </div>
+			                <div class="form-group">
+			                	<label class="col-sm-2 control-label">借据号：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="loanNo" class="form-control"></label>
+			                    </div>
+			                    <label class="col-sm-2 control-label">正常执行利率：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="intRate" class="form-control"></label>
+			                    </div>
+			                </div>
+			                <div class="form-group">
+			                	<label class="col-sm-2 control-label">罚息执行利率：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="odIntRate" class="form-control"></label>
+			                    </div>
+			                    <label class="col-sm-2 control-label">每月的还款日：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="atrsDueDay" class="form-control"></label>
+			                    </div>
+			                </div>
+			                <div class="form-group">
+			                	<label class="col-sm-2 control-label">首次还款日：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="firstDueDt" class="form-control"></label>
+			                    </div>
+			                    <label class="col-sm-2 control-label">首次还款金额：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="firstPayAmt" class="form-control"></label>
+			                    </div>
+			                </div>
+			                <div class="form-group">
+			                	<label class="col-sm-2 control-label">贷款到期日：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="lastDueDt" class="form-control"></label>
+			                    </div>
+			                    <label class="col-sm-2 control-label">受托支付结果：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="payRetCode" class="form-control"></label>
+			                    </div>
+			                </div>
+			                <div class="form-group">
+			                	<label class="col-sm-2 control-label">创建时间：</label>
+			                    <div class="col-sm-4">
+			                    	<label name="createDate" class="form-control"></label>
+			                    </div>
+			                    <label class="col-sm-2 control-label"></label>
+			                    <div class="col-sm-4">
+			                    </div>
+			                </div>
+	                    </div>
+                     </div>
+                     <div class="modal-footer">
+                     	<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                     </div>
+                 </div>
+             </div>
+         </div>
+	    
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <script src="../common/loading/load.js" charset="utf-8"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="../common/js/floor.js"></script>
+	    <script src="project_data2.js"></script>
+	    <script src="../activti/apply_todo.js"></script>
+	    
+	    
+	    <script type="text/javascript">
+		    /*
+		     totop  //返回顶部按钮
+		     fixedevery   // 左侧固定导航的每一项
+		     louceng  //模块的每一项
+		     header   //头部
+		     */
+		    $(function(){
+		        var obj = new floor('.totop','.fixedmeau>li','.louceng_box>.louceng','.header_box');
+		        obj.init()
+		    })
+		</script>
+	    
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

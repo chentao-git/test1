@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>申请信息</title>
+	    <meta name="keywords" content="申请信息">
+	    <meta name="description" content="申请信息">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	    <link href="../css/plugins/steps/jquery.steps.css" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link href="../css/plugins/iCheck/custom.css" rel="stylesheet">
+	</head>
+	<style>
+		.tab-custom td:nth-child(odd){background-color:#f9f9f9;width:10%;text-align:right; }
+		.tab-custom td:nth-child(even){width:23%; }
+		.tab-custom td,th{border:1px solid #DDD!important}
+		.wizard > .steps > ul > li {
+			width: auto;
+		}
+		.wizard > .steps a,
+		.wizard > .steps a:hover,
+		.wizard > .steps a:active
+		{
+		    margin: 0 0.1em 0.2em;
+		}
+		form table,input,select{
+			font-size: 12px!important;
+		}
+		.must {
+			font-size: 20px;
+		    font-weight: bold;
+		    vertical-align: middle;
+		}
+	</style>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight" style="padding:0px;">
+	        <div class="ibox float-e-margins" style="margin-bottom:0px;">
+                <div class="panel-body">
+	                <div class="ibox-content" style="border-style:none;padding: 5px 10px 0px 10px;">
+                        <form id="form"  class="wizard-big">
+                            <h1>借款需求</h1>
+                            <fieldset>
+                                <h2>借款需求</h2>
+                                <div class="row">
+                                    <table class="table table-bordered tab-custom" id="applyInfo-table">
+			                            <tbody>
+			                                <tr>
+			                                    <td>产品：</td>
+			                                    <td><select name="productionVl" id="produceType" class="form-control"></select></td>
+			                                    <td>存量车：</td>
+			                                    <td><select name="stockCarVl" id="stockCarVl" class="form-control"></select></td>
+			                                    <td>操作公司：</td>
+			                                    <td><input name="operatingCompanyVl" id="operatingCompanyVl" type="text" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>汽车经销商：</td>
+			                                    <td><select name="autoDealerVl" id="autoDealerVl" class="form-control"></select></td>
+			                                	<td>保险公司：</td>
+			                                    <td><select name="insuranceCompanyVl" id="insuranceCompanyVl" class="form-control"></select></td>
+			                                    <td>资方管理：</td>
+			                                    <td><select name="managementOfCapitalVl" id="managementOfCapitalVl" class="form-control"></select></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>业务员：</td>
+			                                    <td>
+<!-- 			                                    	<select name="salesman" id="salesman" class="form-control"></select> -->
+		                                    		<input type="text" id="salesman" class="form-control" disabled>
+		                                    		<input type="hidden" name="salesman" id="salesmanId">
+		                                    	</td>
+			                                    <td>贷款银行：</td>
+			                                    <td><select name="loanBankVl" id="loanBankVl" class="form-control"></select></td>
+			                                    <td>贷款业务：</td>
+			                                    <td><select name="loanBusinessVl" id="loanBusinessVl" class="form-control"></select></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>车辆类型：</td>
+			                                    <td><select name="vehicleTypeVl" id="vehicleTypeVl" class="form-control"></select></td>
+			                                    <td>流程标志：</td>
+			                                    <td>
+			                                    	<select name="mktProdType" id="mktProdType" class="form-control">
+			                                    		<option value="A202009-PRE">人保租赁贷</option>
+			                                    		<option value="A202010-PRE">人保车抵贷</option>
+			                                    		<option value="A201002-PRE">人保车按揭</option>
+			                                    	</select>
+			                                    </td>
+			                                    <td>合作商产品类型：</td>
+			                                    <td>
+			                                    	<select name="cooprProdType" id="cooprProdType" class="form-control">
+			                                    	</select>
+			                                    </td>
+			                                </tr>
+			                                <tr>
+			                                    <td>银行代码：</td>
+			                                    <td><select name="bankCode" id="bankCode" class="form-control"></select></td>
+			                                    <td>归属机构代码：</td>
+			                                    <td><select name="maincomCode" id="maincomCode" class="form-control"></select></td>
+			                                </tr>
+			                            </tbody>
+			                        </table>
+                                </div>
+                            </fieldset>
+                            <h1>客户信息</h1>
+                            <fieldset>
+                                <h2>客户信息</h2>
+                                <div class="row">
+                                    <table class="table table-bordered tab-custom" id="baseCustomerInfo-table">
+			                            <tbody>
+			                                <tr>
+			                                    <td><font color="red" class="must">*</font>姓名：</td>
+			                                    <td><input type="text" name="baseCustomerName" class="form-control required"></td>
+			                                    <td>证件类型：</td>
+			                                    <td><select id="baqsngPaperType" name="certType" class="form-control"></select></td>
+			                                    <td><font color="red" class="must">*</font>证件号码：</td>
+			                                    <td><input name="certNo" type="text" class="form-control required"></td>
+			                                </tr>
+			                                <tr>
+			                                	<td>性别：</td>
+			                                    <td>
+													<div class="i-checks" id="baseCustomerSex-div"></div>
+			                                    </td>
+			                                    <td>出生年月日：</td>
+		                                    	<td><input type="text" name="birthDate" id="birthDate" class="laydate-icon form-control layer-date"></td>
+			                                	<td><font color="red" class="must">*</font>手机号：</td>
+		                                    	<td><input type="text" name="mobileNo" class="form-control required"></td>
+			                                </tr>
+			                                <tr>
+			                                	<td>婚姻状况：</td>
+			                                    <td><select name="marriageStatus" id="marriageStatus" class="form-control"></select></td>
+			                                </tr>
+			                            </tbody>
+			                        </table>
+                                </div>
+                                
+		                        <h2 style="display:none">配偶信息</h2>
+		                        <div id="spouse-div" class="row" style="display:none">
+			                        <table class="table table-bordered tab-custom" id="spouse-tab">
+			                            <tbody>
+			                                <tr>
+			                                    <td>配偶姓名：</td>
+			                                    <td><input type="text" name="spouseName" class="form-control"></td>
+			                                    <td>配偶证件类型：</td>
+			                                    <td><select name="spouseIdType" id="spouseIdType" class="form-control"></select></td>
+			                                    <td>配偶证件号：</td>
+			                                    <td><input type="text" name="spouseIdNo" class="form-control"></td>
+			                                </tr>
+			                            </tbody>
+			                        </table>
+	                        	</div>
+                            </fieldset>
+                        </form>
+                    </div>
+			    </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <script src="../js/plugins/staps/jquery.steps.min.js"></script>
+    	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+    	<script src="../js/plugins/validate/messages_zh.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="apply_info.js"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

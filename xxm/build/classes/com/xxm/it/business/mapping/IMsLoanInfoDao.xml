@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.business.dao.IMsLoanInfoDao" >
+	<sql id="query_loanInfo_sql">
+		 SELECT
+			t.loanInfo_id AS loanInfoId,
+			t.proposal_no AS proposalNo,
+			t.apply_loan_times AS applyLoanTimes,
+			t.applicant AS applicant,
+			t.bank_code AS bankCode,
+			t.loan_no AS loanNo,
+			t.apply_no AS applyNo,
+			t.eac_no AS eacNo,
+			t.atrs_due_day AS atrsDueDay,
+			t.tac_no AS tacNo,
+			t.cover_no AS coverNo,
+			t.mort_reg_date AS mortRegDate,
+			t.pay_jnl_no AS payJnlNo,
+			t.pay_date AS payDate,
+			t.pay_amount AS payAmount,
+			t.payee_name AS payeeName,
+			t.payee_acct AS payeeAcct,
+			t.down_payment AS downPayment,
+			t.lease_ctct_no AS leaseCtctNo,
+			t.lease_star_time AS leaseStarTime,
+			t.lease_end_time AS leaseEndTime,
+			t.lease_ctct_am AS leaseCtctAm,
+			t.filekey_name AS filekeyName,
+			t.apply_Info_Id AS applyInfoId,
+			t.customer_Id AS customerId,
+			t.lease_info_id AS leaseInfoId,
+			t.loaninfo_status AS loaninfoStatus,
+			t.create_by AS createBy,
+			(select us.name from xxm_user_t us where us.user_id = t.create_by) createByName,
+			t.create_date AS createDate,
+			t.last_update_by AS lastUpdateBy,
+			(select us.name from xxm_user_t us where us.user_id = t.last_update_by) lastUpdateByName,
+			t.last_update_date AS lastUpdateDate,
+
+			l.loan_returnInfo_id AS 'loanReturnInfoVO.loanReturnInfoId',
+			l.proposalno AS 'loanReturnInfoVO.proposalno',
+			l.result_code AS 'loanReturnInfoVO.resultCode',
+			l.result_message AS 'loanReturnInfoVO.resultMessage'
+		FROM
+			ms_loanInfo t
+		LEFT JOIN ms_loan_returninfo l ON  l.loan_returnInfo_id=(select max(loan_returnInfo_id) from ms_loan_returninfo where request_Id=t.loanInfo_id)
+		WHERE
+			1 = 1
+	</sql>
+	
+	<sql id="loanInfo_select_condition">
+		 <if test="loanInfoId != null and loanInfoId !=''">
+	    	AND t.loanInfo_id=#{loanInfoId,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="proposalNo != null and proposalNo !=''">
+	    	AND t.proposal_no=#{proposalNo,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="applyInfoId != null and applyInfoId !=''">
+	    	AND t.apply_Info_Id=#{applyInfoId,jdbcType=VARCHAR}
+	  	 </if>
+	</sql>
+	
+	<!-- 请求放款列表 -->
+	<select id="findLoanInfoList" resultType="com.xxm.it.business.vo.MsLoanInfoVO" parameterType="com.xxm.it.business.vo.MsLoanInfoVO">
+		 <include refid="query_loanInfo_sql"></include>
+		 <include refid="loanInfo_select_condition"></include>
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 请求放款列表总数-->
+	<select id="findLoanInfoListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.business.vo.MsLoanInfoVO">
+		 SELECT count(loanInfo_id) FROM ms_loanInfo t 
+		 WHERE 1=1
+		 <include refid="loanInfo_select_condition"></include>
+	</select>
+	
+	<!-- 请求放款 -->
+	<select id="findLoanInfo" resultType="com.xxm.it.business.vo.MsLoanInfoVO" parameterType="com.xxm.it.business.vo.MsLoanInfoVO">
+		 <include refid="query_loanInfo_sql"></include>
+		 <include refid="loanInfo_select_condition"></include>
+	</select>
+	
+	<!-- 添加请求放款信息 -->
+	<insert id="addLoanInfo" parameterType="com.xxm.it.business.vo.MsLoanInfoVO" useGeneratedKeys="true" keyProperty="loanInfoId">
+		 INSERT INTO ms_loanInfo (
+			proposal_no,
+			apply_loan_times,
+			applicant,
+			bank_code,
+			loan_no,
+			apply_no,
+			eac_no,
+			atrs_due_day,
+			tac_no,
+			cover_no,
+			mort_reg_date,
+			pay_jnl_no,
+			pay_date,
+			pay_amount,
+			payee_name,
+			payee_acct,
+			down_payment,
+			lease_ctct_no,
+			lease_star_time,
+			lease_end_time,
+			lease_ctct_am,
+			filekey_name,
+			apply_Info_Id,
+			customer_Id,
+			lease_info_id,
+			loaninfo_status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+			(
+				#{proposalNo,jdbcType=VARCHAR},
+				#{applyLoanTimes,jdbcType=VARCHAR},
+				#{applicant,jdbcType=VARCHAR},
+				#{bankCode,jdbcType=VARCHAR},
+				#{loanNo,jdbcType=VARCHAR},
+				#{applyNo,jdbcType=VARCHAR},
+				#{eacNo,jdbcType=VARCHAR},
+				#{atrsDueDay,jdbcType=VARCHAR},
+				#{tacNo,jdbcType=VARCHAR},
+				#{coverNo,jdbcType=VARCHAR},
+				#{mortRegDate,jdbcType=VARCHAR},
+				#{payJnlNo,jdbcType=VARCHAR},
+				#{payDate,jdbcType=VARCHAR},
+				#{payAmount,jdbcType=VARCHAR},
+				#{payeeName,jdbcType=VARCHAR},
+				#{payeeAcct,jdbcType=VARCHAR},
+				#{downPayment,jdbcType=VARCHAR},
+				#{leaseCtctNo,jdbcType=VARCHAR},
+				#{leaseStarTime,jdbcType=VARCHAR},
+				#{leaseEndTime,jdbcType=VARCHAR},
+				#{leaseCtctAm,jdbcType=VARCHAR},
+				#{filekeyName,jdbcType=VARCHAR},
+				#{applyInfoId,jdbcType=VARCHAR},
+				#{customerId,jdbcType=VARCHAR},
+				#{leaseInfoId,jdbcType=VARCHAR},
+				#{loaninfoStatus,jdbcType=VARCHAR},
+				#{createBy,jdbcType=VARCHAR},
+				sysdate(),
+				#{lastUpdateBy,jdbcType=VARCHAR},
+				sysdate()
+			)
+	</insert>
+	
+	<!-- 修改请求放款信息 -->
+	<update id="updateLoanInfo" parameterType="com.xxm.it.business.vo.MsLoanInfoVO">
+		UPDATE ms_loanInfo SET 
+			proposal_no = #{proposalNo,jdbcType=VARCHAR},
+			apply_loan_times = #{applyLoanTimes,jdbcType=VARCHAR},
+			applicant = #{applicant,jdbcType=VARCHAR},
+			bank_code = #{bankCode,jdbcType=VARCHAR},
+			loan_no = #{loanNo,jdbcType=VARCHAR},
+			apply_no = #{applyNo,jdbcType=VARCHAR},
+			eac_no = #{eacNo,jdbcType=VARCHAR},
+			atrs_due_day = #{atrsDueDay,jdbcType=VARCHAR},
+			tac_no = #{tacNo,jdbcType=VARCHAR},
+			cover_no = #{coverNo,jdbcType=VARCHAR},
+			mort_reg_date = #{mortRegDate,jdbcType=VARCHAR},
+			pay_jnl_no = #{payJnlNo,jdbcType=VARCHAR},
+			pay_date = #{payDate,jdbcType=VARCHAR},
+			pay_amount = #{payAmount,jdbcType=VARCHAR},
+			payee_name = #{payeeName,jdbcType=VARCHAR},
+			payee_acct = #{payeeAcct,jdbcType=VARCHAR},
+			down_payment = #{downPayment,jdbcType=VARCHAR},
+			lease_ctct_no = #{leaseCtctNo,jdbcType=VARCHAR},
+			lease_star_time = #{leaseStarTime,jdbcType=VARCHAR},
+			lease_end_time = #{leaseEndTime,jdbcType=VARCHAR},
+			lease_ctct_am = #{leaseCtctAm,jdbcType=VARCHAR},
+			filekey_name = #{filekeyName,jdbcType=VARCHAR},
+			loaninfo_status = #{loaninfoStatus,jdbcType=VARCHAR},
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			loanInfo_id = #{loanInfoId,jdbcType=VARCHAR}
+	</update>
+</mapper>

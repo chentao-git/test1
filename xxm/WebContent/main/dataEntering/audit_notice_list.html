@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>审核结果通知列表</title>
+	    <meta name="keywords" content="审核结果通知列表">
+	    <meta name="description" content="审核结果通知列表">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link href="../css/plugins/iCheck/custom.css" rel="stylesheet">
+	</head>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+	                	<!-- 
+                        <div class="panel-group" id="accordion">
+                             <div class="panel panel-default">
+                                 <div class="panel-heading">
+                                     <h5 class="panel-title">
+                                         <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapseOne">查询条件</a>
+                                     </h5>
+                                 </div>
+                                 <div id="collapseOne" class="panel-collapse collapse in">
+                                     <div class="panel-body">
+                                         <form id="formSearch" class="form-horizontal">
+						                    <div class="form-group" style="margin-top:15px">
+						                        <label class="control-label col-sm-1" for="txt_search_departmentname">预审单号</label>
+						                        <div class="col-sm-5">
+						                            <input type="text" placeholder="请输入预审单号" class="form-control" id="prejudicNo">
+						                        </div>
+						                        <label class="control-label col-sm-1" for="txt_search_statu">投保单号</label>
+						                        <div class="col-sm-5">
+						                            <input type="text" placeholder="请输入投保单号" class="form-control" id="proposalNo">
+						                        </div>
+						                    </div>
+					                        <div style="text-align:center;">
+					                            <button type="button" style="width:80px;" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+					                            <button type="reset" style="width:80px;" id="btnRest" class="btn btn-primary"> 重 置</button>
+					                        </div>
+						                </form>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                         -->
+				        <div id="toolbar" class="btn-group">
+				        	<form id="formSearch">
+				        		<div style="float: left;">
+						        	<button type="button" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+							        <button type="reset" id="btnRest" class="btn btn-primary"> 重 置</button>
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<input type="text" placeholder="请输入预审单号" class="form-control" id="prejudicNo">
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<input type="text" placeholder="请输入投保单号" class="form-control" id="proposalNo">
+						        </div>
+ 				            </form>
+				        </div>
+				        <table id="tbAuditNotice"></table>
+				    </div>
+				    
+				    <div class="modal inmodal fade" id="auditNoticeModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    	 <div class="modal-dialog">
+                         	<div class="modal-content animated">
+                            	<div class="modal-header">
+                                 	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                                 	<h4 class="modal-title"></h4>
+                                </div>
+                               	<div class="modal-body">
+                               		<div id="detail">
+	                                   	 <form class="form-horizontal m-t" id="auditNoticeForm">
+	                                   	 	<input type="hidden" id="modalType" value="" />
+	                                   	 	<input type="hidden" id="auditInfoId" value="" />
+				                            <div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-3 control-label">预审单号：</label>
+					                                <div class="col-sm-8">
+					                                	<label id="prejudicNo" name="prejudicNo" class="form-control"></label>
+					                                </div>
+				                                </div>
+				                           </div>
+				                           <div class="form-group">
+				                                <div>
+					                                <label class="col-sm-3 control-label">投保单号：</label>
+					                                <div class="col-sm-8">
+				                                        <label id="proposalNo" name="proposalNo" class="form-control"></label>
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                            	<div>
+					                            	<label class="col-sm-3 control-label">审核结果：</label>
+					                                <div class="col-sm-8">
+					                                    <label id="underwriteResult" name="underwriteResult" class="form-control"></label>
+					                                </div>
+					                            </div>
+					                       </div>
+				                           <div class="form-group">
+				                                <div>
+					                                <label class="col-sm-3 control-label">审核通过时间：</label>
+					                                <div class="col-sm-8">
+					                                    <label id="underwriteTimes" name="underwriteTimes" class="form-control" ></label>
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-3 control-label">审核结果描述：</label>
+					                                <div class="col-sm-8">
+					                                    <label name="errorMessage" id="errorMessage" class="form-control"></label>
+					                                </div>
+				                                </div>
+				                            </div>
+				                           	<div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-3 control-label">借据号：</label>
+					                                <div class="col-sm-8">
+					                                    <label id="loanNo" name="loanNo" type="text" class="form-control"></label>
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-3 control-label">证书申请号：</label>
+					                                <div class="col-sm-8">
+					                                    <label type="text" name="applyNo" id="applyNo" class="form-control"></label>
+					                                </div>
+				                                </div>
+				                            </div>
+				                        </form>
+			                        </div>
+                               	</div>
+                               	<div class="modal-footer">
+                                   	<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                   	<button type="submit" class="btn btn-primary" id="btnSave">保存</button>
+                               	</div>
+                             </div>
+                         </div>
+                     </div>
+				    
+				    
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    
+	    
+	    
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="audit_notice_list.js"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

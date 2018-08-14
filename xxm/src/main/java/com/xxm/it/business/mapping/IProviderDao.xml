@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.business.dao.IProviderDao">
+	<sql id="select_provider_sql">
+		SELECT 
+			t.sp_id as spId,
+			t.sp_name as spName,
+			t.sp_contacts as spContacts,
+			t.sp_phone as spPhone,
+			t.sp_mobile as spMobile,
+			t.sp_fax as spFax,
+			t.sp_mail as spMail,
+			t.sp_address as spAddress,
+			t.sp_url as spUrl,
+			t.sp_bank_account_name as spBankAccountName,
+			t.sp_bank_account as spBankAccount,
+			t.sp_bank_card_number as spBankCardNumber,
+			t.sp_login_name as spLoginName,
+			t.sp_business as spBusiness,
+			t.sp_superior as spSuperior,
+			t.sp_category as spCategory,
+			t.sp_insurance as spInsurance,
+			t.sp_status as spStatus,
+			t.balance as Balance
+			
+		FROM xxm_service_provider_t t
+			WHERE 1=1
+	</sql>
+	
+	<sql id="provider_select_condition">
+	    <if test="spId !=null and spId!=''">
+			AND t.sp_id =#{spId,jdbcType=VARCHAR}
+		</if>
+		<if test="spName != null and spName !=''">
+			AND t.sp_name =#{spName,jdbcType=VARCHAR}
+		</if>
+		<if test="spContacts !=null and spContacts!=''">
+			AND t.sp_contacts =#{spContacts,jdbcType=VARCHAR}
+		</if>
+	</sql>
+	<!-- 查询sp商跟进 -->
+	<sql id="select_follow_up_sql">
+	         SELECT 
+			  t.follow_id AS folowId,
+		      t.follow_up_type_vl AS followUpTypeVL,
+		      getBaseDateNameByCode('FOLLOW_UP_CATEGORY',t.follow_up_type_vl,1) AS followUpTypeName,
+		      t.follow_up_date AS followUpDate,
+		      t.follow_up_content AS followUpContent,
+		      status AS status,
+		      t.sp_id AS spId,
+		      (SELECT s.sp_name FROM xxm_service_provider_t s WHERE s.sp_id=t.sp_id) AS spName,
+		      t.last_update_by AS lastUpdateBy,
+			  (SELECT u.name FROM xxm_user_t u WHERE u.user_id=t.last_update_by) AS lastUpdateByName,
+			  t.last_update_date AS lastUpdateDate
+	    	FROM xxm_sp_follow_up_t t
+			WHERE 1=1
+	</sql>
+	<!-- sp商跟进查询条件 -->
+	<sql id="select_follow_up_conddtion">
+	    <if test="spId !=null and spId!=''">
+			AND t.sp_id =#{spId,jdbcType=VARCHAR}
+		</if>
+		<if test="followUpTypeVL != null and followUpTypeVL !=''">
+	     AND t.follow_up_type_vl=#{followUpTypeVL,jdbcType=VARCHAR}
+	  </if>
+	  <if test="followUpContent != null and followUpContent != ''">
+	     AND t.follow_up_content like concat('%',#{followUpContent,jdbcType=VARCHAR},'%')
+	  </if>
+	</sql>
+	
+	<!-- sp商服务 -->
+	<sql id="select_service_sql">
+	    SELECT
+		t.sps_id AS spsId,
+		t.sp_id AS spId,
+        (SELECT s.sp_name FROM xxm_service_provider_t s WHERE s.sp_id=t.sp_id) AS spName,   
+		t.sps_progress_vl AS spsProgressVL,
+	    getBaseDateNameByCode('PROCESSING_PROGRESS',t.sps_progress_vl,1) AS spsProgressName,
+     	t.sps_date AS spsDate,
+		t.sps_content AS spsContent,
+		t.sps_result AS spsResult,
+		t.status AS status,
+		t.last_update_by AS lastUpdateBy,
+	    (SELECT u.name FROM xxm_user_t u WHERE u.user_id=t.last_update_by) AS lastUpdateByName,
+		t.last_update_date AS lastUpdateDate
+	    FROM
+		xxm_sp_service_t t
+	    WHERE 1=1
+	</sql>
+	<!-- sp商服务查询条件 -->
+	<sql id="select_service_condidtion">
+	  <if test="spId !=null and spId!=''">
+			AND t.sp_id =#{spId,jdbcType=VARCHAR}
+		</if>
+		<if test="spsProgressVL != null and spsProgressVL != ''">
+	    AND t.sps_progress_vl=#{spsProgressVL,jdbcType=VARCHAR}
+	  </if>
+	  <if test="spsContent != null and spsContent !=''">
+	    AND t.sps_content like concat('%',#{spsContent,jdbcType=VARCHAR},'%')
+	  </if>
+	</sql>
+	
+	
+	<!-- sp商服务列表查询 -->
+	<select id="findSpServiceList" parameterType="com.xxm.it.business.vo.SpServiceVO" resultType="com.xxm.it.business.vo.SpServiceVO">
+	  <include refid="select_service_sql"></include>
+	  <include refid="select_service_condidtion"></include>
+	   AND status='0'
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	<!-- sp商服务总数查询 -->
+	<select id="findSpServiceListCount" parameterType="com.xxm.it.business.vo.SpServiceVO" resultType="java.lang.Integer">
+	 SELECT count(sps_id) FROM xxm_sp_service_t t WHERE 1=1 AND status='0'
+	  <include refid="select_service_condidtion"></include>
+	</select>
+	<!-- 根据id查询sp商服务详情 -->
+	<select id="findSpService" parameterType="com.xxm.it.business.vo.SpServiceVO" resultType="com.xxm.it.business.vo.SpServiceVO">
+	 <include refid="select_service_sql"></include>
+	  AND t.sps_id =#{spsId,jdbcType=VARCHAR}
+	</select>
+	<!-- 新增sp商服务记录 -->
+	<insert id="addSpService" parameterType="com.xxm.it.business.vo.SpServiceVO">
+	   INSERT INTO xxm_sp_service_t (
+			sps_progress_vl,
+			sps_date,
+			sps_content,
+            sps_result,
+			sp_id,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		 )
+	   VALUES
+		 (
+			#{spsProgressVL,jdbcType=VARCHAR},
+			#{spsDate,jdbcType=VARCHAR},
+			#{spsContent,jdbcType=VARCHAR},
+            #{spsResult,jdbcType=VARCHAR},
+			#{spId,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP (),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP ()
+		)
+	</insert>
+	<update id="updateSpService" parameterType="com.xxm.it.business.vo.SpServiceVO">
+	  UPDATE xxm_sp_service_t 
+	  SET
+		sps_progress_vl = #{spsProgressVL,jdbcType=VARCHAR},
+		sps_date = #{spsDate,jdbcType=VARCHAR},
+		sps_content = #{spsContent,jdbcType=VARCHAR},
+        sps_result = #{spsResult,jdbcType=VARCHAR},
+		last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+		last_update_date = sysdate()
+	 WHERE
+	    sps_id = #{spsId,jdbcType=VARCHAR}
+	</update>
+	<delete id="deleteSpService" >
+	   UPDATE xxm_sp_service_t SET 
+			status= #{status, jdbcType=VARCHAR}
+	   WHERE sps_id in 
+		<foreach collection="ids" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	
+	
+	
+	<!-- 查询sp跟进列表 -->
+	<select id="findSpFollowUpList" parameterType="com.xxm.it.business.vo.SpFollowUpVO" resultType="com.xxm.it.business.vo.SpFollowUpVO">
+	  <include refid="select_follow_up_sql"></include>
+	  <include refid="select_follow_up_conddtion"></include>
+	    AND status='0'
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	<!-- 查询sp列表总数 -->
+	<select id="findSpFollowUpListCount" parameterType="com.xxm.it.business.vo.SpFollowUpVO" resultType="java.lang.Integer">
+	    SELECT count(follow_id) FROM xxm_sp_follow_up_t t WHERE 1=1 AND status='0'
+		 <include refid="select_follow_up_conddtion"></include>
+	</select>
+	<!-- 根据id查询详情 -->
+	<select id="findSpFollowUp" parameterType="com.xxm.it.business.vo.SpFollowUpVO" resultType="com.xxm.it.business.vo.SpFollowUpVO">
+	 <include refid="select_follow_up_sql"></include>
+     AND t.follow_id =#{folowId,jdbcType=VARCHAR}
+	</select>
+	<!-- 添加sp跟进记录 -->
+	<insert id="addSpFollowUp" parameterType="com.xxm.it.business.vo.SpFollowUpVO">
+	   INSERT INTO xxm_sp_follow_up_t (
+			follow_up_type_vl,
+			follow_up_date,
+			follow_up_content,
+			sp_id,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{followUpTypeVL,jdbcType=VARCHAR},
+			#{followUpDate,jdbcType=VARCHAR},
+			#{followUpContent,jdbcType=VARCHAR},
+			#{spId,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP (),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP ()
+      )
+	</insert>
+	<update id="updateSpFollowUp" parameterType="com.xxm.it.business.vo.SpFollowUpVO">
+	   UPDATE xxm_sp_follow_up_t 
+	   SET
+		follow_up_type_vl = #{followUpTypeVL,jdbcType=VARCHAR},
+		follow_up_content = #{followUpContent,jdbcType=VARCHAR},
+		follow_up_date = #{followUpDate,jdbcType=VARCHAR},
+		last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+		last_update_date = sysdate()
+	   WHERE
+	    follow_id = #{folowId,jdbcType=VARCHAR}
+	</update>
+	<delete id="deleteSpFollowUp" parameterType="com.xxm.it.business.vo.SpFollowUpVO">
+	   UPDATE xxm_sp_follow_up_t SET 
+			status= #{status, jdbcType=VARCHAR}
+		WHERE follow_id in 
+		<foreach collection="followUpIds" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	
+	
+	
+	
+	
+	
+	 <!-- 查询列表信息-->
+	<select id="findProviderList" resultType="com.xxm.it.business.vo.ProviderVO" parameterType ="com.xxm.it.business.vo.ProviderVO">
+		 <include refid="select_provider_sql"></include>
+	  	 <include refid="provider_select_condition"></include>
+	  	 AND sp_status='0'
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+</select>
+
+<!-- 查询列表总数-->
+	<select id="findProviderListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.business.vo.ProviderVO">
+		 SELECT count(sp_id) FROM xxm_service_provider_t t WHERE 1=1 AND sp_status='0'
+		 <include refid="provider_select_condition"></include>
+	</select>
+	<insert id="addProvider" parameterType="com.xxm.it.business.vo.ProviderVO" useGeneratedKeys="true" keyProperty="spId">
+		INSERT INTO xxm_service_provider_t(
+			sp_name,
+			sp_contacts,
+			sp_phone,
+			sp_mobile,
+			sp_fax,
+			sp_mail,
+			sp_address,
+			sp_url,
+			sp_bank_account_name,
+			sp_bank_account,
+			sp_bank_card_number,
+			sp_login_name,
+			sp_business,
+			sp_superior,
+			sp_category,
+			sp_insurance,
+			sp_status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date,
+			balance
+		)VALUES(
+			#{spName,jdbcType=VARCHAR},
+			#{spContacts,jdbcType=VARCHAR},
+			#{spPhone,jdbcType=VARCHAR},
+			#{spMobile,jdbcType=VARCHAR},
+			#{spFax,jdbcType=VARCHAR},
+			#{spMail,jdbcType=VARCHAR},
+			#{spAddress,jdbcType=VARCHAR},
+			#{spUrl,jdbcType=VARCHAR},
+			#{spBankAccountName,jdbcType=VARCHAR},
+			#{spBankAccount,jdbcType=VARCHAR},
+			#{spBankCardNumber,jdbcType=VARCHAR},
+			#{spLoginName,jdbcType=VARCHAR},
+			#{spBusiness,jdbcType=VARCHAR},
+			#{spSuperior,jdbcType=VARCHAR},
+			#{spCategory,jdbcType=VARCHAR},
+			#{spInsurance,jdbcType=VARCHAR},
+			#{spStatus,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			sysdate(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			sysdate(),
+			#{balance,jdbcType=VARCHAR}
+)
+	</insert>
+	<!-- 查询服务商信息-->
+	<select id="findProvider" resultType="com.xxm.it.business.vo.ProviderVO" parameterType="com.xxm.it.business.vo.ProviderVO">
+		 <include refid="select_provider_sql"></include>
+	  	 <include refid="provider_select_condition"></include>
+	</select>
+		<!-- 查询服务商信息List-->
+	<select id="findProviders" resultType="com.xxm.it.business.vo.ProviderVO" parameterType="com.xxm.it.business.vo.ProviderVO">
+		 <include refid="select_provider_sql"></include>
+	  	 <include refid="provider_select_condition"></include>
+	</select>
+	<update id="updateProvider">
+		UPDATE xxm_service_provider_t SET 
+			sp_name = #{spName,jdbcType=VARCHAR},
+			sp_contacts = #{spContacts,jdbcType=VARCHAR},
+			sp_phone = #{spPhone,jdbcType=VARCHAR},
+			sp_mobile = #{spMobile,jdbcType=VARCHAR},
+			sp_fax = #{spFax,jdbcType=VARCHAR},
+			sp_mail = #{spMail,jdbcType=VARCHAR},
+			sp_address = #{spAddress,jdbcType=VARCHAR},
+			sp_url = #{spUrl,jdbcType=VARCHAR},
+			sp_bank_account_name = #{spBankAccountName,jdbcType=VARCHAR},
+			sp_bank_account = #{spBankAccount,jdbcType=VARCHAR},
+			sp_bank_card_number = #{spBankCardNumber,jdbcType=VARCHAR},
+			sp_login_name = #{spLoginName,jdbcType=VARCHAR},
+			sp_business = #{spBusiness,jdbcType=VARCHAR},
+			sp_superior = #{spSuperior,jdbcType=VARCHAR},
+			sp_category = #{spCategory,jdbcType=VARCHAR},
+			sp_insurance = #{spInsurance,jdbcType=VARCHAR},
+			last_update_date = sysdate(),
+			last_update_by =#{lastUpdateBy,jdbcType=VARCHAR},
+			balance = #{balance,jdbcType=VARCHAR}
+		WHERE
+			sp_id = #{spId,jdbcType=VARCHAR}
+	</update>
+	<delete id="deleteProvider" parameterType="com.xxm.it.business.vo.ProviderVO">
+		UPDATE xxm_service_provider_t SET 
+			sp_status= #{spStatus, jdbcType=VARCHAR}
+		WHERE sp_id in 
+		<foreach collection="spIds" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	
+	
+	
+	
+	<!-- sp分润配置 -->
+	<sql id="select_SpProfit_sql">
+		SELECT
+			s.profit_id AS profitId,
+			s.sp_id AS spId,
+		  	(SELECT p.sp_name FROM xxm_service_provider_t p WHERE p.sp_id=s.sp_id) AS spName,
+			s.profit_type_vl AS profitTypeVL,
+			getBaseDateNameByCode('SEPARATION_METHOD',s.profit_type_vl,1) AS profitTypeName,
+			s.profit_price AS profitPrice,
+			s.product_vl AS productVL,
+			getBaseDateNameByCode('PRODUCE_TYPE',s.product_vl,1) AS productName
+		FROM
+			xxm_sp_profit_t s
+		WHERE
+			1 = 1
+	</sql>
+	<!-- sp商查询条件 -->
+	<sql id="select_SpProfit_condidtion">
+		<if test="spId !=null and spId!=''">
+			AND s.sp_id = #{spId,jdbcType=VARCHAR}
+		</if>
+		<if test="productVL !=null and productVL !=''">
+			AND s.product_vl = #{productVL,jdbcType=VARCHAR}
+		</if>
+	</sql>
+	<!-- sp商分润配置列表 -->
+	<select id="findSpProfitList" parameterType="com.xxm.it.business.vo.SpProfitVO" resultType="com.xxm.it.business.vo.SpProfitVO">
+		<include refid="select_SpProfit_sql"></include>
+		<include refid="select_SpProfit_condidtion"></include>
+		AND s.status='0'
+		order by s.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	<!-- sp商分润配置列表总数 -->
+	<select id="findSpProfitListCount" parameterType="com.xxm.it.business.vo.SpProfitVO" resultType="java.lang.Integer">
+		 SELECT count(profit_id) FROM xxm_sp_profit_t s WHERE 1=1 AND status='0'
+	  <include refid="select_SpProfit_condidtion"></include>
+	</select>
+	<!-- 根据id查询sp商分润详情 -->
+	<select id="findSpProfit" parameterType="com.xxm.it.business.vo.SpProfitVO" resultType="com.xxm.it.business.vo.SpProfitVO">
+		<include refid="select_SpProfit_sql"></include>
+		AND s.profit_id = #{profitId,jdbcType=VARCHAR}
+	</select>
+	<!-- 添加sp商分润配置 -->
+	<insert id="addSpProfitVO" parameterType="com.xxm.it.business.vo.SpProfitVO">
+		 INSERT INTO xxm_sp_profit_t (
+			product_vl,
+			profit_type_vl,
+			profit_price,
+			sp_id,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{productVL,jdbcType=VARCHAR},
+			#{profitTypeVL,jdbcType=VARCHAR},
+			#{profitPrice,jdbcType=VARCHAR},
+			#{spId,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP (),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP ()
+      )
+	</insert>
+	<!-- 修改sp商分润配置 -->
+	<update id="updateSpProfit" parameterType="com.xxm.it.business.vo.SpProfitVO">
+		UPDATE xxm_sp_profit_t
+			SET product_vl = #{productVL,jdbcType=VARCHAR},
+			profit_type_vl = #{profitTypeVL,jdbcType=VARCHAR},
+			profit_price = #{profitPrice,jdbcType=VARCHAR},
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			profit_id = #{profitId,jdbcType=VARCHAR}
+	</update>
+	<!-- 删除sp商分润配置 -->
+	<delete id="deleteSpProfit" parameterType="com.xxm.it.business.vo.SpProfitVO">
+		UPDATE xxm_sp_profit_t SET 
+			status= #{status, jdbcType=VARCHAR}
+		WHERE profit_id in 
+		<foreach collection="profitIds" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+</mapper>

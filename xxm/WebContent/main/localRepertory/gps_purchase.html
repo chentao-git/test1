@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	
+   		  <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>gps采购</title>
+	    <meta name="keywords" content="gps采购">
+	    <meta name="description" content="gps采购">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	    <link href="../css/plugins/steps/jquery.steps.css" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link href="../css/plugins/iCheck/custom.css" rel="stylesheet">
+	</head>
+	<style>
+ 		.ttt td:nth-child(odd){background-color:#f9f9f9;width:10%;text-align:right; }  
+		table td:nth-child(even){width:23%; } 
+		table td,th{border:1px solid #DDD!important}
+		.btn{float:right;margin-right:10px;}
+		 table i {margin-left: 1px;}
+		.fa:hover {color:#1ab394;font-size:20px}
+	</style>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+                		<div class="ibox-content">
+                     		<h2>GPS信息</h2>
+		                       <div id="toolbar" class="btn-group">
+					        	<form id="formSearch">
+					        		<div style="float: right;margin-left: 10px;">
+							        	<button  style="float: left;" type="button" id="btnAdd" class="btn btn-primary"> 添加 </button>
+								        <button  type="reset" id="btnImport" class="btn btn-primary"> 导入</button>
+							        </div>
+							        <div style="float: left;">&nbsp;</div>
+							        <div style="float: left;">
+							        	<input type="text" id="snVal" placeholder="请输入SN" class=" form-control ">
+							        </div>
+							        <div style="float: left;">&nbsp;</div>
+							        <div style="float: left;">
+							        	<select id="gpsId" class="form-control"
+											name="gpsId">
+										</select>
+							        </div>
+						            </form>
+				     	   		</div>
+						         <form id="tbForm"  class="wizard-big"> 
+			                        <table id="tableAdd" class="table table-bordered">
+			                            <thead>
+			                                <tr>
+			                                    <th>SN</th>
+			                                    <th>型号</th>
+			                                    <th>品牌</th>
+			                                    <th>成本</th>
+			                                    <th>操作</th>
+			                                </tr>
+			                            </thead>
+			                            <tbody id="addLine">
+<!-- 			                                <tr> -->
+<!-- 			                                    <td><input style = "display:none;" type="text" name="gpsId" class="form-control"><label id="SN" name="SN" class="form-control"></label></td> -->
+<!-- 			                                    <td> -->
+<!-- 			                                    	<label id="model" name="model" class="form-control"></label> -->
+<!-- 			                                    </td> -->
+<!-- 			                                    <td> -->
+<!-- 			                                   		<label id="brand" name="brand" class="form-control"></label> -->
+<!-- 			                                    </td> -->
+<!-- 			                                    <td> -->
+<!-- 			                                    	<input type="text" name="cost" class="form-control"> -->
+<!-- 			                                    </td> -->
+<!-- 			                                    <td> -->
+<!-- 			                                         <i onclick="del(this)" id="del" class="fa fa-minus-square"></i> -->
+<!-- 			                                    </td> -->
+<!-- 			                                </tr> -->
+			                             </tbody>
+			                          </table>
+			                          
+			                       </form>
+			                        <form id="form"  class="wizard-big">
+			                             <fieldset>
+			                                <h2>单据信息</h2>
+									        <table class="table table-bordered" id="customer-base-tab">
+					                            <tbody class="ttt">
+					                                <tr>
+					                                    <td>入仓类型</td>
+					                                    <td>
+						                                    <select id="entryType" name ="entryType" class="form-control" >
+															</select>
+														</td>
+					                                    <td>入仓人：</td>
+					                                    <td><input type="text"  id="entryMan" name="entryMan" class="form-control"> </td>
+					                                    
+					                                    <td>入仓时间：</td>
+					                                    <td><input type="text" id="entryTime" name="entryTime" class="laydate-icon form-control layer-date"></td>
+					                                </tr>
+					                            </tbody>
+					                        </table>
+			                   			 </fieldset>
+			                   			 <button type="button" class="btn btn-primary" id="btnSave">确定入仓</button>
+				                     </form>
+                				   </div>
+
+				    </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <script src="../js/plugins/staps/jquery.steps.min.js"></script>
+    	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+    	<script src="../js/plugins/validate/messages_zh.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="gps_purchase.js"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

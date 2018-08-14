@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:16:41 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>鑫小马后台管理系统</title>
+    <meta name="keywords" content="鑫小马后台管理系统">
+    <meta name="description" content="鑫小马后台管理系统">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    
+    <style type="text/css">
+	    .dropdown-submenu {  
+	        position: relative;  
+	    }  
+	    .dropdown-submenu > .dropdown-menu {  
+	        top: 0;  
+	        left: 100%;  
+	        margin-top: -6px;  
+	        margin-left: -1px;  
+	        -webkit-border-radius: 0 6px 6px 6px;  
+	        -moz-border-radius: 0 6px 6px;  
+	        border-radius: 0 6px 6px 6px;  
+	    }  
+	    .dropdown-submenu:hover > .dropdown-menu {  
+	        display: block;  
+	    }  
+	    .dropdown-submenu > a:after {  
+	        display: block;  
+	        content: " ";  
+	        float: right;  
+	        width: 0;  
+	        height: 0;  
+	        border-color: transparent;  
+	        border-style: solid;  
+	        border-width: 5px 0 5px 5px;  
+	        border-left-color: #ccc;  
+	        margin-top: 5px;  
+	        margin-right: -10px;  
+	    }  
+	    .dropdown-submenu:hover > a:after {  
+	        border-left-color: #fff;  
+	    }  
+	    .dropdown-submenu.pull-left {  
+	        float: none;  
+	    }  
+	    .dropdown-submenu.pull-left > .dropdown-menu {  
+	        left: -100%;  
+	        margin-left: 10px;  
+	        -webkit-border-radius: 6px 0 6px 6px;  
+	        -moz-border-radius: 6px 0 6px 6px;  
+	        border-radius: 6px 0 6px 6px;  
+	    }
+	    .navbar-nav>li>a{
+	    	line-height: 30px;
+	    	color: #21b9bb;
+	    }
+	    .navbar-top-links li a {
+		    padding: 17px 10px;
+		}
+		.nav>li>a {
+		    padding: 14px 5px 14px 5px;
+		}
+		.nav>li>a i {
+		    margin-right: 3px;
+		}
+		.nav_back{
+			margin: 0px;
+			background-image: url('img/login2.jpg');
+		    background-repeat: no-repeat;
+   			background-size: cover;
+		}
+    </style>
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+    <div id="wrapper" style="overflow:hidden;">
+        <!--左侧导航开始-->
+        <nav class="navbar navbar-static-top nav_back" role="navigation">
+            <div class="navbar-header" style="width: 15%;">
+                <!-- <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                    <i class="fa fa-reorder"></i>
+                </button> -->
+                <a href="javascript:;" class="navbar-brand" style="color: #1ab394;font-weight: bold;">鑫小马后台管理系统</a>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar" >
+				<ul id="menuNavbar" class="nav navbar-nav"></ul>
+              	<ul class="nav navbar-top-links navbar-right">
+                	<li>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear">
+                           	<span class="block m-t-xs">当前用户：<strong class="font-bold" id="userName"></strong><b class="caret"></b></span>
+                           <!--  <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span> -->
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li>
+                            	<!-- <a class="J_menuItem" href="javascript:void()">修改头像</a> -->
+                            	<a href="javascript:void(0)">修改头像(建设中...)</a>
+                            </li>
+                            <li>
+                            	<a href="javascript:void(0)">个人资料(建设中...)</a>
+                            </li>
+                            <li>
+                            	<a href="javascript:void(0)">联系我们(建设中...)</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="JavaScript:quit()">安全退出</a></li>
+                        </ul>
+                   	</li>
+                   	<li style="vertical-align: top;margin-top: 5px;"><img alt="image" class="img-circle" src="img/profile_small.jpg" width="50px" /></li>
+               	</ul> 
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1" style="margin: 0px">
+            <div class="row content-tabs">
+                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+                </button>
+                <nav class="page-tabs J_menuTabs">
+                    <div class="page-tabs-content">
+                        <a href="javascript:;" class="active J_menuTab" data-id="home.html">首页</a>
+                    </div>
+                </nav>
+                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+                </button>
+                <div class="btn-group roll-nav roll-right">
+                    <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
+
+                    </button>
+                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                        <li class="J_tabShowActive"><a>定位当前选项卡</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
+                        </li>
+                        <li class="J_tabCloseOther"><a>关闭其他选项卡</a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="JavaScript:quit()" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            </div>
+            <div class="row J_mainContent" id="content-main">
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="home.html" frameborder="0" data-id="home.html" seamless></iframe>
+            </div>
+            <div class="footer">
+                <div class="pull-right">&copy; 2018-2019 <a href="#" target="_blank">xinxiaoma's blog</a>
+                </div>
+            </div>
+        </div>
+        <!--右侧部分结束-->
+    </div>
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="common/js/index.js"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="js/plugins/layer/layer.min.js"></script>
+    <script src="js/hplus.min.js?v=4.1.0"></script>
+    <script src="js/contabs.min.js" type="text/javascript" ></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:17:11 GMT -->
+</html>

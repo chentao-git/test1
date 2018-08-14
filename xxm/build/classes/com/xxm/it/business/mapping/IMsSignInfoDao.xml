@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.business.dao.IMsSignInfoDao" >
+	<sql id="query_signInfo_sql">
+		 SELECT
+			t.signInfo_id AS signInfoId,
+			t.proposal_no AS proposalNo,
+			t.apply_no AS applyNo,
+			t.apply_Info_Id AS applyInfoId,
+			t.create_by AS createBy,
+			(select us.name from xxm_user_t us where us.user_id = t.create_by) createByName,
+			t.create_date AS createDate,
+			t.last_update_by AS lastUpdateBy,
+			(select us.name from xxm_user_t us where us.user_id = t.last_update_by) lastUpdateByName,
+			t.last_update_date AS lastUpdateDate,
+			
+			s.signreturnInfo_id AS 'signReturnInfoVO.signreturnInfoId',
+			s.appl_state AS 'signReturnInfoVO.applState',
+			s.loan_amt AS 'signReturnInfoVO.loanAmt',
+			s.int_adj_pct AS 'signReturnInfoVO.intAdjPct',
+			s.result_code AS 'signReturnInfoVO.resultCode',
+			s.result_message AS 'signReturnInfoVO.resultMessage',
+			s.request_Id AS 'signReturnInfoVO.requestId'
+		FROM
+			ms_signInfo t
+		LEFT JOIN ms_signreturninfo s ON  s.signreturnInfo_id=(select max(signreturnInfo_id) from ms_signreturninfo where request_Id=t.signInfo_id)
+		WHERE
+			1 = 1
+	</sql>
+	
+	<sql id="signInfo_select_condition">
+		<if test="signInfoId != null and signInfoId !=''">
+	    	AND t.signInfo_id=#{signInfoId,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="proposalNo != null and proposalNo !=''">
+	    	AND t.proposal_no=#{proposalNo,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="applyNo != null and applyNo !=''">
+	    	AND t.apply_no=#{applyNo,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="applyInfoId != null and applyInfoId !=''">
+	    	AND t.apply_Info_Id=#{applyInfoId,jdbcType=VARCHAR}
+	  	 </if>
+	</sql>
+	
+	<!-- 签约状态查询列表 -->
+	<select id="findSignInfoList" resultType="com.xxm.it.business.vo.MsSignInfoVO" parameterType="com.xxm.it.business.vo.MsSignInfoVO">
+		 <include refid="query_signInfo_sql"></include>
+		 <include refid="signInfo_select_condition"></include>
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 签约状态查询表列总数-->
+	<select id="findSignInfoListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.business.vo.MsSignInfoVO">
+		 SELECT count(signInfo_id) FROM ms_signInfo t 
+		 WHERE 1=1
+		 <include refid="signInfo_select_condition"></include>
+	</select>
+	
+	<!-- 签约状态查询列表 -->
+	<select id="findSignInfo" resultType="com.xxm.it.business.vo.MsSignInfoVO" parameterType="com.xxm.it.business.vo.MsSignInfoVO">
+		 <include refid="query_signInfo_sql"></include>
+		 <include refid="signInfo_select_condition"></include>
+	</select>
+	
+	<!-- 签约状态查询列表 -->
+	<select id="findSignInfos" resultType="com.xxm.it.business.vo.MsSignInfoVO" parameterType="com.xxm.it.business.vo.MsSignInfoVO">
+		 <include refid="query_signInfo_sql"></include>
+		 <include refid="signInfo_select_condition"></include>
+	</select>
+	
+	<!-- 添加签约状态查询信息 -->
+	<insert id="addSignInfo" parameterType="com.xxm.it.business.vo.MsSignInfoVO" useGeneratedKeys="true" keyProperty="signInfoId">
+		 INSERT INTO ms_signInfo (
+			proposal_no,
+			apply_no,
+			apply_Info_Id,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+			(
+				#{proposalNo,jdbcType=VARCHAR},
+				#{applyNo,jdbcType=VARCHAR},
+				#{applyInfoId,jdbcType=VARCHAR},
+				#{createBy,jdbcType=VARCHAR},
+				sysdate(),
+				#{lastUpdateBy,jdbcType=VARCHAR},
+				sysdate()
+			)
+	</insert>
+	
+	<update id="updateSignInfo" parameterType="com.xxm.it.business.vo.MsSignInfoVO">
+		UPDATE ms_signinfo SET 
+			proposal_no = #{proposalNo,jdbcType=VARCHAR},
+			apply_no = #{applyNo,jdbcType=VARCHAR},
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			signInfo_id = #{signInfoId,jdbcType=VARCHAR}
+	</update>
+</mapper>

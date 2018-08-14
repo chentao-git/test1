@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.business.dao.IProduceDao" >
+	<sql id="query_produce_sql">
+		 SELECT
+			t.product_id AS productId,
+			t.product_name AS productName,
+			t.periods AS periods,
+			t.publish_date AS publishDate,
+			t.halt_sales_date AS haltSalesDate,
+			t.suggest_apply_amount AS suggestApplyAmount,
+			t.min_apply_amount AS minApplyAmount,
+			t.max_apply_amount AS maxApplyAmount,
+			t.ahead_interest AS aheadInterest,
+			t.impunity_deadline AS impunityDeadline,
+			t.overdue_interest AS overdueInterest,
+			t.month_spreads AS monthSpreads,
+			t.service_charge AS serviceCharge,
+			t.intermediary_fee AS intermediaryFee,
+			t.security_deposit AS securityDeposit,
+			t.security_deposit_count_Vl AS securityDepositCountVl,
+			t.deduction_count_Vl AS deductionCountVl,
+			t.direct_selling_deduction AS directSellingDeduction,
+			t.agency_deduction AS agencyDeduction,
+			t.repayment_date_type_Vl AS repaymentDateTypeVl,
+			t.repayment_date AS repaymentDate,
+			t.stock_Car_Vl AS stockCarVl,
+			t.need_guarantor_info_Vl AS needGuarantorInfoVl,
+			t.ahead_prepayment_Vl AS aheadPrepaymentVl,
+			t.rate_method_Vl AS rateMethodVl,
+			getBaseDateNameByCode('INTEREST_CALCULATED',t.rate_method_Vl,1) AS rateMethodName,
+			t.rate AS rate,
+			t.repayment_method_Vl AS repaymentMethodVl,
+			getBaseDateNameByCode('PAYMENT_METHOD',t.repayment_method_Vl,1) AS repaymentMethodName,
+			t.produce_status AS produceStatus,
+			t.create_by AS createBy,
+			t.create_date AS createDate,
+			t.last_update_by AS lastUpdateBy,
+			t.last_update_date AS lastUpdateDate
+		FROM xxm_product_t t
+		WHERE 1=1
+	</sql>
+	
+	<sql id="produce_select_condition">
+		 <if test="productName != null and productName !=''">
+	    	AND t.product_name like concat('%',#{productName,jdbcType=VARCHAR},'%')
+	  	 </if>
+	  	 <if test="publishDate != null and publishDate !=''">
+  	    	AND t.publish_date <![CDATA[ >= ]]> #{publishDate,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="haltSalesDate != null and haltSalesDate !=''">
+	  		AND t.halt_sales_date <![CDATA[ <= ]]> #{haltSalesDate,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="repaymentMethodVl != null and repaymentMethodVl !=''">
+	    	AND t.repayment_method_Vl=#{repaymentMethodVl,jdbcType=VARCHAR}
+	  	 </if>
+	</sql>
+	
+	<!-- 查询产品列表 -->
+	<select id="findProduceList" resultType="com.xxm.it.business.vo.ProduceVO" parameterType="com.xxm.it.business.vo.ProduceVO">
+		 <include refid="query_produce_sql"></include>
+		 <include refid="produce_select_condition"></include>
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查询产品列表总数-->
+	<select id="findProduceListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.business.vo.ProduceVO">
+		 SELECT count(product_id) FROM xxm_product_t t WHERE 1=1
+		 <include refid="produce_select_condition"></include>
+	</select>
+	
+	<!-- 添加产品信息 -->
+	<insert id="addProduce" parameterType="com.xxm.it.business.vo.ProduceVO" useGeneratedKeys="true" keyProperty="productId">
+		 INSERT INTO xxm_product_t (
+			product_name,
+			periods,
+			publish_date,
+			halt_sales_date,
+			suggest_apply_amount,
+			min_apply_amount,
+			max_apply_amount,
+			ahead_interest,
+			impunity_deadline,
+			overdue_interest,
+			month_spreads,
+			service_charge,
+			intermediary_fee,
+			security_deposit,
+			security_deposit_count_Vl,
+			deduction_count_Vl,
+			direct_selling_deduction,
+			agency_deduction,
+			repayment_date_type_Vl,
+			repayment_date,
+			stock_Car_Vl,
+			need_guarantor_info_Vl,
+			ahead_prepayment_Vl,
+			rate_method_Vl,
+			rate,
+			repayment_method_Vl,
+			produce_status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+			(
+				#{productName,jdbcType=VARCHAR},
+				#{periods,jdbcType=VARCHAR},
+				#{publishDate,jdbcType=VARCHAR},
+				#{haltSalesDate,jdbcType=VARCHAR},
+				#{suggestApplyAmount,jdbcType=VARCHAR},
+				#{minApplyAmount,jdbcType=VARCHAR},
+				#{maxApplyAmount,jdbcType=VARCHAR},
+				#{aheadInterest,jdbcType=VARCHAR},
+				#{impunityDeadline,jdbcType=VARCHAR},
+				#{overdueInterest,jdbcType=VARCHAR},
+				#{monthSpreads,jdbcType=VARCHAR},
+				#{serviceCharge,jdbcType=VARCHAR},
+				#{intermediaryFee,jdbcType=VARCHAR},
+				#{securityDeposit,jdbcType=VARCHAR},
+				#{securityDepositCountVl,jdbcType=VARCHAR},
+				#{deductionCountVl,jdbcType=VARCHAR},
+				#{directSellingDeduction,jdbcType=VARCHAR},
+				#{agencyDeduction,jdbcType=VARCHAR},
+				#{repaymentDateTypeVl,jdbcType=VARCHAR},
+				#{repaymentDate,jdbcType=VARCHAR},
+				#{stockCarVl,jdbcType=VARCHAR},
+				#{needGuarantorInfoVl,jdbcType=VARCHAR},
+				#{aheadPrepaymentVl,jdbcType=VARCHAR},
+				#{rateMethodVl,jdbcType=VARCHAR},
+				#{rate,jdbcType=VARCHAR},
+				#{repaymentMethodVl,jdbcType=VARCHAR},
+				#{produceStatus,jdbcType=VARCHAR},
+				#{createBy,jdbcType=VARCHAR},
+				sysdate(),
+				#{lastUpdateBy,jdbcType=VARCHAR},
+				sysdate()
+			)
+	</insert>
+	
+	<!-- 查询产品信息-->
+	<select id="findProduce" resultType="com.xxm.it.business.vo.ProduceVO" parameterType="com.xxm.it.business.vo.ProduceVO">
+		 <include refid="query_produce_sql"></include>
+		  AND t.product_id = #{productId,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateProduce" parameterType="com.xxm.it.business.vo.ProduceVO">
+		UPDATE xxm_product_t SET 
+			product_name = #{productName,jdbcType=VARCHAR},
+			periods = #{periods,jdbcType=VARCHAR},
+			publish_date = #{publishDate,jdbcType=VARCHAR},
+			halt_sales_date = #{haltSalesDate,jdbcType=VARCHAR},
+			suggest_apply_amount = #{suggestApplyAmount,jdbcType=VARCHAR},
+			min_apply_amount = #{minApplyAmount,jdbcType=VARCHAR},
+			max_apply_amount = #{maxApplyAmount,jdbcType=VARCHAR},
+			ahead_interest = #{aheadInterest,jdbcType=VARCHAR},
+			impunity_deadline = #{impunityDeadline,jdbcType=VARCHAR},
+			overdue_interest = #{overdueInterest,jdbcType=VARCHAR},
+			month_spreads = #{monthSpreads,jdbcType=VARCHAR},
+			service_charge = #{serviceCharge,jdbcType=VARCHAR},
+			intermediary_fee = #{intermediaryFee,jdbcType=VARCHAR},
+			security_deposit = #{securityDeposit,jdbcType=VARCHAR},
+			security_deposit_count_Vl = #{securityDepositCountVl,jdbcType=VARCHAR},
+			deduction_count_Vl = #{deductionCountVl,jdbcType=VARCHAR},
+			direct_selling_deduction = #{directSellingDeduction,jdbcType=VARCHAR},
+			agency_deduction = #{agencyDeduction,jdbcType=VARCHAR},
+			repayment_date_type_Vl = #{repaymentDateTypeVl,jdbcType=VARCHAR},
+			repayment_date = #{repaymentDate,jdbcType=VARCHAR},
+			stock_Car_Vl = #{stockCarVl,jdbcType=VARCHAR},
+			need_guarantor_info_Vl = #{needGuarantorInfoVl,jdbcType=VARCHAR},
+			ahead_prepayment_Vl = #{aheadPrepaymentVl,jdbcType=VARCHAR},
+			rate_method_Vl = #{rateMethodVl,jdbcType=VARCHAR},
+			rate = #{rate,jdbcType=VARCHAR},
+			repayment_method_Vl = #{repaymentMethodVl,jdbcType=VARCHAR},
+			produce_status = #{produceStatus,jdbcType=VARCHAR},
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			product_id = #{productId,jdbcType=VARCHAR}
+	</update>
+	
+</mapper>

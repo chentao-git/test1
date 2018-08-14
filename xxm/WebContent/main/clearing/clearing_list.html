@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>贷款结清管理</title>
+	<meta name="keywords" content="贷款结清管理">
+	<meta name="description" content="贷款结清管理">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	<link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	<link href="../css/plugins/bootstrap-table/bootstrap-table.min.css"
+		rel="stylesheet">
+	<link href="../css/animate.min.css" rel="stylesheet">
+	<link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="../common/zTree/css/layout.css" type="text/css"> -->
+	<link rel="stylesheet"
+		href="../common/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<link rel="stylesheet" href="../common/loading/load.css"  media="all">
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				<div class="panel-body">
+					<div id="toolbar" class="btn-group">
+						<form id="formSearch">
+							<div style="float: left;">
+								<button type="button" id="btnClearing" style="width:68px;" class="btn btn-info">查 询</button>
+								<button type="reset" id="btnRest" style="width:68px;" class="btn btn-info">重 置</button>
+							</div>
+							<div style="float: left;">&nbsp;</div>
+							<div style="float: left;">
+								<input type="text" placeholder="请输入姓名" class="form-control" id="baseCustomerName">
+							</div>
+								<div style="float: left;">&nbsp;</div>
+							<div style="float: left;">
+								<input type="text" placeholder="请输入贷款编号" class="form-control" id="loanContractNo" >
+							</div>
+							<div style="float: left;">&nbsp;</div>
+							<div style="float: left;">
+								<select id="clearingType" class="form-control">
+									<option value="">请选择结清状态</option>
+									<option value="1">正常结清</option>
+									<option value="2">提前还款</option>
+									<option value="3">不良贷款追回</option>
+									<option value="4">抵押物拍卖</option>
+									<option value="5">贷款保险理赔</option>
+									<option value="6">不良资产出售</option>
+									<option value="7">不良贷款结清</option>
+								</select>
+							</div>
+						 </form>
+					</div>
+					<table id="tbClearing"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../js/jquery.min.js?v=2.1.4"></script>
+	<script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	<script src="../js/content.min.js?v=1.0.0"></script>
+	<script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	<script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	<script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript" src="../common/zTree/js/jquery.ztree.core.js"></script>
+	<script type="text/javascript" src="../common/zTree/js/jquery.ztree.excheck.js"></script>
+	<script type="text/javascript" src="../common/zTree/js/jquery.ztree.exedit.js"></script>
+	<script src="../common/js/CommonUtils.js"></script>
+	<script src="../js/plugins/layer/laydate/laydate.js"></script>
+	<script src="clearing_list.js"></script>
+	<script src="../common/loading/load.js" charset="utf-8"></script>
+</body>
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

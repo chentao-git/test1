@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gps安装信息</title>
+<meta name="keywords" content="gps安装信息">
+<meta name="description" content="gps安装信息">
+<link rel="shortcut icon" href="favicon.ico">
+<link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+<link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+<link href="../css/plugins/bootstrap-table/bootstrap-table.min.css"
+	rel="stylesheet">
+<link href="../css/animate.min.css" rel="stylesheet">
+<link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+<link href="../css/plugins/steps/jquery.steps.css" rel="stylesheet">
+<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+</head>
+<style>
+table td:nth-child(odd) {
+	background-color: #f9f9f9;
+	width: 10%;
+	text-align: right;
+}
+
+table td:nth-child(even) {
+	width: 23%;
+}
+
+table td, th {
+	border: 1px solid #DDD !important
+}
+</style>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				<div class="panel-body">
+
+					<div class="ibox-content">
+						<form id="form" class="wizard-big">
+							<!-- 	                            <h1>贷款与抵押物信息</h1> -->
+							<fieldset>
+								<h2>贷款与抵押物信息</h2>
+								<div style="text-align: right;">
+									<button type="button" style="width: 150px;" id="btnAffirm"
+										class="btn btn-primary">确定安装</button>
+								</div>
+								<div class="row">
+									<table class="table table-bordered" id="baseLeaseInfo-table">
+										<tbody>
+											<tr>
+												<td>贷款单据号：</td>
+<!-- 												<td><input class="form-control" id="loanContractNo" -->
+<!-- 													name="applyVO.loanContractNo" placeholder="请输入贷款单据号"> -->
+<!-- 												</td> -->
+												 <td><input id="search1" type="text" class="form-control" style="float:left;">
+			                                      <span id="search2" style="display:none; margin-left:-20px; margin-top:10px;color:green;" class="glyphicon glyphicon-search" aria-hidden="true"></span>
+			                                    </td>
+												
+												<td>抵押物编号：</td>
+												<td><input id="leaseInfoId" type="text" style="display:none;">
+													<input class="form-control" name="" placeholder="请输入抵押物编号">
+												</td>
+												<td>车牌号:</td>
+												<td><label id="plateNumber"
+													name="baseLeaseInfoVO.plateNumber" class="form-control">无</label></td>
+											</tr>
+											<tr>
+												<td>车架号：</td>
+												<td><label id="frameNumber"
+													name="baseLeaseInfoVO.frameNumber" class="form-control">无</label></td>
+												<td>引擎号：</td>
+												<td><label id="engineModel"
+													name="baseLeaseInfoVO.engineModel" class="form-control">无</label></td>
+												<td>引擎功率：</td>
+												<td><label id="enginePower"
+													name="baseLeaseInfoVO.enginePower" class="form-control">无</label></td>
+											</tr>
+											<tr>
+												<td>颜色:</td>
+												<td><label id="carColor"
+													name="baseLeaseInfoVO.carColor" class="form-control">无</label></td>
+												<td>品牌:</td>
+												<td><label id="brand" name="baseLeaseInfoVO.brand" class="form-control">无</label></td>
+												<td>厂商：</td>
+												<td><label id="manufacturer" name="baseLeaseInfoVO.manufacturer"
+													class="form-control">无</label></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+								<h2>GPS信息</h2>
+								<div class="row">
+									<table class="table table-bordered" id="gps-table">
+										<tbody>
+											<tr>
+												<td>SN：</td>
+												<td><input id="searchInput" type="text" placeholder="请输入SN" name="productSn" class="form-control" style="float:left;">
+			                                      <span id="searchSN" style="display:none; margin-left:-20px; margin-top:10px;color:green;" class="glyphicon glyphicon-search" aria-hidden="true"></span>
+			                                    </td>
+												<td>型号:</td>
+												<td><label id="model" name="model" class="form-control">无</label></td>
+												<td>品牌</td>
+												<td><label id="brand" name="brand" class="form-control">无</label></td>
+											</tr>
+											<tr>
+												<td>SP商：</td>
+												<td><label id="spName"
+													name="providerVO.spName" class="form-control">无</label></td>
+												<td>位置：</td>
+												<td><label id="gpsPlaceName"
+													name="gpsPlaceName" class="form-control">无</label></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<h2>安装信息</h2>
+								<div class="row">
+									<table class="table table-bordered" id="install-table">
+										<tbody>
+											<tr>
+												<td>安装人：</td>
+												<td><input name="installBy" class="form-control"
+													placeholder="请输入安装人"></td>
+												<td>安装时间：</td>
+												<td><input name="installDate" readonly class="form-control layer-date"
+													id="hello1"> <label
+													class="laydate-icon inline demoicon"
+													onclick="laydate({elem: '#hello1'});"></label></td>
+												<td>安装车上位置:</td>
+												<td><input name="installCarSite" class="form-control"
+													placeholder="请输入安装位置"></td>
+											</tr>
+											<tr>
+												<td>安装地点：</td>
+												<td><input name="installSite" class="form-control"
+													placeholder="请输入安装地点"></td>
+												<td>电话：</td>
+												<td><input name="installIphone" class="form-control"
+													placeholder="请输入电话"></td>
+												<td>图片：</td>
+												<td><label id="" name="" class="form-control"></label></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</fieldset>
+						</form>
+
+						<div class="modal inmodal fade" id="gpsInfoModal" tabindex="-1"
+							role="dialog" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content animated">
+
+									<div class="panel-body">
+										<table id="tbInstall">
+										</table>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-white"
+											data-dismiss="modal">关闭</button>
+										<button type="submit" class="btn btn-primary" id="btnSave">确定</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Panel Basic -->
+	</div>
+	<script src="../js/jquery.min.js?v=2.1.4"></script>
+	<script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	<script src="../js/content.min.js?v=1.0.0"></script>
+	<script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	<script
+		src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	<script
+		src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	<!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	<script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	<script src="../js/plugins/staps/jquery.steps.min.js"></script>
+	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	<script src="../js/plugins/validate/messages_zh.min.js"></script>
+	<!-- 下拉框js -->
+	<script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	<script src="../common/js/CommonUtils.js"></script>
+	<script src="../js/plugins/layer/laydate/laydate.js"></script>
+	<script src="install_list.js"></script>
+</body>
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

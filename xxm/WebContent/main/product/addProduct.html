@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	
+   		  <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>添加产品</title>
+	    <meta name="keywords" content="添加产品">
+	    <meta name="description" content="添加产品">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	    <link href="../css/plugins/steps/jquery.steps.css" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link href="../css/plugins/iCheck/custom.css" rel="stylesheet">
+	</head>
+	<style>
+		table td:nth-child(odd){background-color:#f9f9f9;width:10%;text-align:right; }
+		table td:nth-child(even){width:23%; }
+		table td,th{border:1px solid #DDD!important}
+		.btn{float:right;margin-right:10px;}
+		
+	</style>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+		                <div class="ibox-content">
+	                        <form id="form"  class="wizard-big">
+	                             <fieldset>
+	                                <h2>新增产品</h2>
+							        <table class="table table-bordered" id="customer-base-tab">
+			                            <tbody>
+			                                <tr>
+			                                    <td><font color="red">*</font>产品名称：</td>
+			                                    <td><input type="text" name=productName class="form-control required"></td>
+			                                    
+			                                    <td><font color="red">*</font>期数(月)：</td>
+			                                    <td><input type="text" name="periods" class="form-control required"></td>
+			                                    
+			                                    <td>发布日期：</td>
+			                                    <td>
+			                                   <input type="text" name="publishDate" id="publishDate" class="laydate-icon form-control layer-date">
+			                                    </td>
+			                                </tr>
+			                                
+			                                <tr>
+			                                    <td>停售日期：</td>
+			                                    <td>
+			                                    <input type="text" name="haltSalesDate" id="haltSalesDate" class="laydate-icon form-control layer-date">
+			                                    </td>
+			                                    
+			                                    <td><font color="red">*</font>建议申请数额(元)：</td>
+			                                    <td><input name="suggestApplyAmount" type="text" class="form-control required"></td>
+			                                    
+			                                    <td><font color="red">*</font>最低申请数额(元)：</td>
+			                                    <td><input type="text" name="minApplyAmount" class="form-control required"></td>
+			                                </tr>
+			                                
+			                                <tr>
+			                                    <td><font color="red">*</font>最高申请数额(元)：</td>
+			                                    <td><input type="text" name="maxApplyAmount" class="form-control required"></td>
+			                                    
+			                                    <td><font color="red">*</font>提前还贷罚息(%)：</td>
+			                                    <td><input type="text" name="aheadInterest" class="form-control required"></td>
+			                                    
+			                                    <td><font color="red">*</font>免罚期限(天)：</td>
+			                                    <td><input type="text" name="impunityDeadline" class="form-control required"></td>
+			                                </tr>
+			                                <tr>
+			                                	<td><font color="red">*</font>逾期还贷罚息(%)：</td>
+			                                    <td><input type="text" name="overdueInterest" class="form-control required"></td>
+			                                    
+			                                    <td><font color="red">*</font>月利差(%)：</td>
+			                                    <td><input type="text" name="monthSpreads" class="form-control required"></td>
+			                                    
+			                                    <td ><font color="red">*</font>手续费(%)：</td>
+			                                    <td ><input type="text" name="serviceCharge" class="form-control required"></td>
+			                                </tr>
+			                                
+			                                <tr>
+			                                	<td><font color="red">*</font>中介手续费(%)：</td>
+			                                    <td><input type="text" name="intermediaryFee" class="form-control required"></td>
+			                                    <td><font color="red">*</font>担保费(%)：</td>
+			                                    <td><input type="text" name="securityDeposit" class="form-control required"></td>
+			                                    
+			                                    <td >担保费计算方式(%)：</td>
+			                                    <td >
+			                                    	<select name="securityDepositCountVl" id="securityDepositCountVl" class="form-control">
+			                                    	        <option value="">请选择</option>
+			                                    	</select>
+			                                    </td>
+			                                </tr>
+			                                
+			                                <tr>
+			                                 <td >提成计算基准(%)：</td>
+			                                    <td>
+			                                    	<select name="deductionCountVl" id="deductionCountVl" class="form-control">
+			                                    	        <option value="">请选择</option>
+			                                    	</select>
+			                                    </td>
+			                                	<td><font color="red">*</font>直销模式提成(%)：</td>
+			                                    <td><input type="text" name="directSellingDeduction" class="form-control required"></td>
+			                                    <td><font color="red">*</font>代理模式提成(%)：</td>
+			                                    <td><input type="text" name="agencyDeduction" class="form-control required"></td>
+			                                </tr>
+			                                <tr>
+			                                 <td>还款日期类型：</td>
+			                                    <td>
+			                                    	<select name="repaymentDateTypeVl" id="repaymentDateTypeVl" class="form-control">
+			                                    	        <option value="">请选择</option>
+			                                    	</select>
+			                                    </td>
+			                                	<td>存量车：</td>
+			                                    <td>
+			                                      	<select name="stockCarVl" id="stockCarVl" class="form-control">
+			                                    	        <option value="">请选择</option>
+			                                    	</select>
+			                                    </td>
+			                                    <td>担保人信息：</td>
+			                                    <td>	<div class="i-checks" id="needGuarantorInfoVl-div"></div></td>
+			                                </tr>
+			                                <tr>
+			                                 <td>提前还贷：</td>
+			                                    <td >
+			                                    		<div class="i-checks" id="aheadPrepaymentVl-div"></div>
+			                                    </td>
+			                                	<td>利率计算方式：</td>
+			                                    <td><div class="i-checks" id="rateMethodVl-div"></div></td>
+			                                    <td><font color="red">*</font>利率(%)：</td>
+			                                    <td><input type="text" name="rate" class="form-control required"></td>
+			                                </tr>
+			                                 <tr>
+			                                 <td>还款方式：</td>
+			                                    <td >
+			                                    	<div class="i-checks" id="repaymentMethodVl-div"></div>
+			                                    </td>
+			                                </tr>
+			                                
+			                            </tbody>
+			                        </table>
+			                       
+			                     
+                                   	<button type="button" class="btn btn-primary" id="btnSave">保存</button>
+	                            </fieldset>
+	                        </form>
+	                    </div>
+				    </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <script src="../js/plugins/staps/jquery.steps.min.js"></script>
+    	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+    	<script src="../js/plugins/validate/messages_zh.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="addProduct.js"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

@@ -1,0 +1,1163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.piic.dao.ITransferPICCDao">
+	  <sql id="select_condtion">
+		  <if test="applyInfoId != null and applyInfoId !=''">
+		    AND t.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+		  </if>
+	  </sql>
+	  <select id="findPrejudication" parameterType="com.xxm.it.piic.vo.PrejudicationVO" resultType="com.xxm.it.piic.vo.PrejudicationVO">
+		 SELECT
+			t.mkt_prod_type AS mktProdType,
+			t.coopr_prod_type AS cooprProdType,
+			c.base_Customer_Name AS appliName,
+			c.cert_No AS appliIdNo,
+			c.cert_Type as appliIdType,
+			c.base_Customer_Sex AS appliSex,
+			c.birth_date AS appliBirth,
+			c.mobile_No AS appliIdMobile,
+			t.bank_code AS backCode,
+			t.maincom_code AS maincomCode
+	     FROM
+		    xxm_apply_info_t t
+		 LEFT JOIN xxm_customer_t c ON c.customer_Id = t.apply_Customer_Id
+		 
+		 WHERE
+		    1=1
+	     <include refid="select_condtion"></include>
+	  </select>
+	  
+	  <select id="findGeneralInfo" resultType="com.xxm.it.piic.vo.GeneralInfoVO">
+	    SELECT  
+			t.plateform_Code AS plateformCode,
+			t.md5_Value AS md5Value
+		FROM ms_generalinfo_t t
+	  </select>
+	  
+	  <select id="findLoan" resultType="com.xxm.it.piic.vo.LoanVO">
+	     SELECT 
+	     	t.apply_Info_Id AS applyInfoId,
+			r.proposal_no AS proposalNo,
+			DATE_FORMAT(m.apply_loan_times,'%Y-%m-%d') AS applyLoanTimes,
+			c.base_Customer_Name AS applicant,
+			i.bankcode AS BankCode,
+			a.loan_no AS loanNo,
+			s.apply_no AS applyNo,
+			m.eac_no AS eacNo,
+			c.cert_Type AS idType,
+			c.cert_No AS idNo,
+			c.base_Customer_Name AS custName,
+			m.atrs_due_day AS atrsDueDay,
+			m.tac_no AS tacNo,
+			l.frame_Number AS vefaNo,
+			l.engine_Number AS engiNo,
+			l.car_Color AS carColor,
+			l.brand_name AS brandName,
+			l.model_name AS modelName,
+			DATE_FORMAT(l.enroll_date,'%Y-%m-%d') AS enrollDate,
+			l.rb_evaluate AS rbEvaluate,
+			l.driving_mileage AS otherNature,
+			
+			l.exhaust_scale AS exhaustScale,
+			l.plate_Number AS LicenseNo,
+			l.leasehold_Use AS useNature,
+			l.invoice_value AS dealAmount,
+			m.cover_no AS coverNo,
+			DATE_FORMAT(l.gtre_dt,'%Y%m%d') AS mortRegDate,
+			m.pay_jnl_no AS payJnlNo,
+			m.pay_date AS payDate,
+			m.pay_amount AS payAmount,
+			m.payee_name AS payeeName,
+			m.payee_acct AS payeeAcct,
+			m.down_payment AS downPayment,
+			m.lease_ctct_no AS leaseCtctNo,
+			DATE_FORMAT(m.lease_star_time,'%Y-%m-%d') AS leaseStarTime,
+			DATE_FORMAT(m.lease_end_time,'%Y-%m-%d') AS leaseEndTime,
+			m.lease_ctct_am AS leaseCtctAm,
+			m.filekey_name AS filekeyName
+		FROM
+			ms_loaninfo m
+			LEFT JOIN xxm_apply_info_t t ON t.apply_Info_Id = m.apply_Info_Id
+			LEFT JOIN xxm_customer_t c ON c.customer_Id = t.apply_Customer_Id
+			LEFT JOIN xxm_lease_info_t l ON l.apply_Info_Id = t.apply_Info_Id
+			LEFT JOIN ms_policyinfo_return r ON  r.policyInfo_return_id=(select max(policyInfo_return_id) from ms_policyinfo_return where apply_Info_Id=t.apply_Info_Id)
+			LEFT JOIN xxm_supplement_base_t s ON s.apply_Info_Id = t.apply_Info_Id
+			LEFT JOIN ms_insured i ON i.apply_Info_Id = t.apply_Info_Id
+			LEFT JOIN ms_auditinfo a ON a.auditInfo_id = (select max(auditinfo_id) from ms_auditinfo where proposal_no= r.proposal_no)
+		WHERE 1 = 1
+		AND m.loanInfo_id = #{loanInfoId,jdbcType=VARCHAR}
+	  </select>
+	  <select id="findAuditReturnInfo" resultType="com.xxm.it.piic.vo.AuditReturnInfo">
+	    SELECT
+			r.prejudic_no AS prejudicNo,
+			r.proposal_no AS proposalNo,
+			r.result_code AS resultCode,
+			r.result_message AS resultMessage
+		FROM
+			ms_audit_returninfo r
+		WHERE r.audit_returnInfo_id=#{id,jdbcType=VARCHAR}
+	  </select>
+	  <insert id="addAuditInfo" parameterType="com.xxm.it.piic.vo.Auditinfo" useGeneratedKeys="true" keyProperty="auditInfoId">
+	    INSERT INTO ms_auditinfo (
+			audit_tpye,
+			prejudic_no,
+			proposal_no,
+			audit_result,
+			audit_times,
+			<if test="errorMessage != null and errorMessage!= ''">
+			error_message,
+			</if>
+			loan_no,
+			apply_no,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+			(
+			#{auditTpye,jdbcType=VARCHAR},
+			#{prejudicNo,jdbcType=VARCHAR},
+			#{proposalNo,jdbcType=VARCHAR},
+			#{underwriteResult,jdbcType=VARCHAR},
+			#{underwriteTimes,jdbcType=VARCHAR},
+			<if test="errorMessage != null and errorMessage!= ''">
+			#{errorMessage,jdbcType=VARCHAR},
+			</if>
+			#{loanNo,jdbcType=VARCHAR},
+			#{applyNo,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+		)
+	  </insert>
+	  <insert id="addLoanInfoInform" parameterType="com.xxm.it.piic.vo.LoanInfoInformVO" useGeneratedKeys="true" keyProperty="loanInfoInformId">
+	    INSERT INTO ms_loaninfo_inform (
+			proposal_no,
+			loan_result,
+			loan_no,
+			int_rate,
+			od_int_rate,
+			atrs_due_day,
+			first_due_dt,
+			first_pay_amt,
+			last_due_dt,
+			pay_ret_code,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{proposalNo,jdbcType=VARCHAR},
+			#{loanResult,jdbcType=VARCHAR},
+			#{loanNo,jdbcType=VARCHAR},
+			#{intRate,jdbcType=VARCHAR},
+			#{odIntRate,jdbcType=VARCHAR},
+			#{atrsDueDay,jdbcType=VARCHAR},
+			#{firstDueDt,jdbcType=VARCHAR},
+			#{firstPayAmt,jdbcType=VARCHAR},
+			#{lastDueDt,jdbcType=VARCHAR},
+			#{payRetCode,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+		)
+	  </insert>
+	  <select id="findLoanInfoReturnInform" resultType="com.xxm.it.piic.vo.LoanInfoReturnInformVO">
+	    SELECT
+			r.rroposalno AS proposalno,
+			r.result_code AS resultCode,
+			r.result_message AS resultMessage
+		FROM
+			ms_loan_returninfo_inform r
+		WHERE
+			r.loan_returnInfo_inform_id = #{id,jdbcType=VARCHAR}
+	  </select>
+	  <insert id="addPushPolicyInfo" parameterType="com.xxm.it.piic.vo.PushPolicyInfoVO" useGeneratedKeys="true" keyProperty="pushPolicyInfosId">
+	    INSERT INTO ms_push_policyinfos (
+			serial_no,
+			policy_no,
+			proposal_no,
+			policy_url,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{serialNo,jdbcType=VARCHAR},
+			#{policyNo,jdbcType=VARCHAR},
+			#{proposalNo,jdbcType=VARCHAR},
+			#{policyUrl,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+		)
+	  </insert>
+	  <select id="findPolicyReturnInfo" resultType="com.xxm.it.piic.vo.PolicyReturnInfoVO">
+	  	SELECT
+			r.proposalno AS proposalno,
+			r.result_code AS resultCode,
+			r.result_message AS resultMessage
+		FROM
+			ms_policy_returninfo r
+		WHERE
+			r.policy_returnInfo_id = #{id,jdbcType=VARCHAR}
+	  </select>
+	  <select id="findGeneralInfoNum" resultType="java.lang.Integer" parameterType="com.xxm.it.piic.vo.GeneralInfoVO">
+    	SELECT  
+		     COUNT(*)
+		FROM ms_generalinfo_t t
+		WHERE t.plateform_Code = #{plateformCode,jdbcType=VARCHAR}
+	  </select>
+	  <insert id="addRejudicationReturn" parameterType="com.xxm.it.piic.vo.RejudicationReturnVO" useGeneratedKeys="true" keyProperty="prejudicationReturnId">
+    	INSERT INTO ms_rejudication_return (
+			prejudic_no,
+			result_code,
+			request_Id,
+			result_message,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{prejudicNo,jdbcType=VARCHAR},
+			#{resultCode,jdbcType=VARCHAR},
+			#{requestId,jdbcType=VARCHAR},
+			#{resultMessage,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+			
+		)
+	  </insert>
+	  <insert id="addResponseInfo" parameterType="com.xxm.it.piic.vo.ResponseInfoVO">
+	    INSERT INTO ms_response(
+			apply_info_Id,
+			response_type_Id,
+			response_type
+		)
+		VALUES
+		(
+			#{applyInfoId,jdbcType=VARCHAR},
+			#{responseTypeId,jdbcType=VARCHAR},
+			#{responseType,jdbcType=VARCHAR}
+		)
+	  </insert>
+	  <update id="uadateApplyInfo" parameterType="com.xxm.it.business.vo.ApplyVO">
+	     UPDATE xxm_apply_info_t 
+		 SET
+		   apply_info_status = #{applyInfoStatus, jdbcType=VARCHAR}	
+		 WHERE
+	          apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+	  </update>
+	  <!--  银行预审后修改申请书编号 -->
+<!-- 	  <update id="updateApplyNo" parameterType="com.xxm.it.piic.vo.Auditinfo"> -->
+<!-- 	  	UPDATE xxm_supplement_base_t -->
+<!-- 		SET apply_no = #{applyNo, jdbcType=VARCHAR}	 -->
+<!-- 		WHERE -->
+<!-- 			apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR} -->
+<!-- 	  </update> -->
+	  <!-- 投保信息 （根据申请id去查询投保信息） -->
+	  <select id="findInsurePolicyList" parameterType="com.xxm.it.business.vo.ApplyVO" resultType="com.xxm.it.piic.vo.InsurePolicyInfo">
+	    SELECT
+			s.apply_Info_Id AS serialNo,
+			s.risk_code AS riskCode,
+			DATE_FORMAT(s.start_date,'%Y-%m-%d') AS startDate,
+			DATE_FORMAT(s.end_date,'%Y-%m-%d') AS endDate,
+			s.start_hour AS startHour,
+			s.end_hour AS endHour,
+			s.sum_amount AS sumAmount,
+			s.sum_premium AS sumPremium,
+			s.argu_solution AS arguSolution,
+			s.iscoin_type_flag AS sscoinTypeFlag,
+			t.insured_plan_id AS insuredPlanId,
+			t.citem_car_id AS citemCarId,
+			t.insured_creditInvest AS insuredCreditInvest,
+			t.citem_credit_id AS citemCreditId,
+			t.applicant_id AS applicantId,
+			m.filekey_name AS fileKeyList,
+			r.prejudic_no AS prejudicNo
+		FROM
+			xxm_apply_info_t t
+		LEFT JOIN xxm_supplement_base_t s ON s.apply_Info_Id = t.apply_Info_Id
+		LEFT JOIN ms_mortgageinfo m ON m.apply_Info_Id = t.apply_Info_Id
+		LEFT JOIN ms_rejudication_return r ON r.request_Id = t.apply_Info_Id
+		WHERE 
+			t.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+	  </select>
+	  
+	  <select id="findInsureCoin" parameterType="com.xxm.it.business.vo.ApplyVO" resultType="com.xxm.it.piic.vo.InsureCoin">
+	    SELECT 
+			c.maincomcode AS maincomcode,
+			c.depcomcode AS depcomcode,
+			c.mainhandlercode AS mainhandlercode,
+			c.mainhandlercode AS dephandlercode
+		FROM ms_coin c
+		WHERE c.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+	  </select>
+	  
+	  <select id="findInsuredPlan" parameterType="com.xxm.it.business.vo.ApplyVO" resultType="com.xxm.it.piic.vo.InsuredPlan">
+	  	SELECT
+			i.insured_plan_id AS insuredPlanId,
+			i.ration_type AS rationType
+		FROM
+			ms_insuredplan i
+		WHERE
+			i.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+	  </select>
+	  
+	  <select id="findInsuredScheme" parameterType="com.xxm.it.piic.vo.InsuredPlan" resultType="com.xxm.it.piic.vo.InsuredScheme">
+	  	SELECT
+			s.schemeCode AS schemeCode,
+			s.schemeAmount AS schemeAmount,
+			s.schemePremium AS schemePremium
+		FROM
+			ms_scheme s
+		WHERE
+			s.insured_plan_id = #{insuredPlanId,jdbcType=VARCHAR}
+	  </select>
+      <select id="findInsuredEngage" parameterType="com.xxm.it.piic.vo.InsuredPlan" resultType="com.xxm.it.piic.vo.InsuredEngage">
+      	SELECT
+			e.engageCode AS engageCode,
+			e.engageName AS engageName,
+			e.engagedesc AS engagedesc
+		FROM
+			ms_engage e
+		WHERE
+			e.insured_plan_id = #{insuredPlanId,jdbcType=VARCHAR}
+      </select>	  
+      <select id="findInsurePolicyInfo" parameterType="com.xxm.it.business.vo.ApplyVO" resultType="com.xxm.it.piic.vo.InsurePolicyInfo">
+        SELECT 
+			t.run_area_name AS "baseLeaseInfo.runAreaName",
+			t.start_site_name AS "baseLeaseInfo.startSiteName",
+			t.plate_Number AS "baseLeaseInfo.plateNumber",
+			t.license_type_product_config AS "baseLeaseInfo.licenseTypeProductConfig",
+			t.license_color_code_product_config AS "baseLeaseInfo.licenseColorCodeProductConfig",
+			t.car_kind_code AS "baseLeaseInfo.carKindCode",
+			t.engine_Number AS "baseLeaseInfo.engineNo",
+			t.frame_Number AS "baseLeaseInfo.frameNumber",
+			DATE_FORMAT(t.enroll_date,'%Y-%m-%d') AS "baseLeaseInfo.enrollDate",
+			t.brand_name AS "baseLeaseInfo.brandName",
+			t.car_Color AS "baseLeaseInfo.carColor",
+			t.seat_count AS "baseLeaseInfo.seatCount",
+			t.ton_count AS "baseLeaseInfo.tonCount",
+			t.purchase_price AS "baseLeaseInfo.purchasePrice",
+			t.invoice_no AS "baseLeaseInfo.invoiceNo",
+			t.loan_no1 AS "baseLeaseInfo.loanNo1",
+			t.leasehold_Use AS "baseLeaseInfo.leaseholdUse",
+			t.plan_amount AS "baseLeaseInfo.planAmount",
+			t.unit_amount AS "baseLeaseInfo.unitAmount",
+			t.loan_way AS "baseLeaseInfo.loanWay",
+			t.step_hull AS "baseLeaseInfo.stepHull",
+			t.car_type AS "baseLeaseInfo.carType",
+			t.main_bd AS "baseLeaseInfo.mainBd",
+			t.brand AS "baseLeaseInfo.brand",
+			t.carlne AS "baseLeaseInfo.carlne",
+			t.car_tp AS "baseLeaseInfo.carTp",
+			t.regs_no AS "baseLeaseInfo.regsNo",
+			t.model_name AS "baseLeaseInfo.modelName",
+			DATE_FORMAT(t.gtre_dt,'%Y%m%d') AS "baseLeaseInfo.gtreDt",
+			t.seal_am AS "baseLeaseInfo.sealAm",
+			t.tripartite_ev AS "baseLeaseInfo.tripartiteEv",
+			t.rb_evaluate AS "baseLeaseInfo.rbEvaluate",
+			t.tran_am AS "baseLeaseInfo.tranAm",
+			t.car_age AS "baseLeaseInfo.carAge",
+			t.powerctetype AS "baseLeaseInfo.powerctetype",
+			t.buycarcustname AS "baseLeaseInfo.buycarcustname",
+			t.chnelbusno AS "baseLeaseInfo.chnelbusno",
+			t.chnelbusname AS "baseLeaseInfo.chnelbusname",
+			t.chnelbusadr AS "baseLeaseInfo.chnelbusadr",
+			t.sellername AS "baseLeaseInfo.sellername",
+			t.selleraddress AS "baseLeaseInfo.selleraddress",
+			t.payeename AS "baseLeaseInfo.payeename",
+			t.isotherbank AS "baseLeaseInfo.isotherbank",
+			t.payeetype AS "baseLeaseInfo.payeetype",
+			t.payeeacct AS "baseLeaseInfo.payeeacct",
+			t.payeebank AS "baseLeaseInfo.payeebank",
+			t.payeebankno AS "baseLeaseInfo.payeebankno",
+			t.carowner AS "baseLeaseInfo.carowner",
+			t.leasecmpname AS "baseLeaseInfo.leasecmpname",
+			t.leasecmpadr AS "baseLeaseInfo.leasecmpadr",
+			t.gpsput AS "baseLeaseInfo.gpsput",
+			t.sealsn AS "baseLeaseInfo.sealsn",
+			t.imeino AS "baseLeaseInfo.imeino",
+			t.gpsstt AS "baseLeaseInfo.gpsstt",
+			t.storena AS "baseLeaseInfo.storena",
+			t.ifwhiteflag AS "baseLeaseInfo.ifwhiteflag"
+		
+		FROM xxm_lease_info_t t
+		LEFT JOIN ms_mortgageinfo m ON m.apply_Info_Id = t.apply_Info_Id
+		WHERE t.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+      </select>
+      <select id="findCustomerInsurePolicyInfo" parameterType="com.xxm.it.business.vo.ApplyVO" resultType="com.xxm.it.piic.vo.InsurePolicyInfo">
+      	SELECT
+			b.appli_age AS "baseCustomer.appliAge",
+			b.appli_health AS "baseCustomer.appliHealth",
+			b.marriage_Status AS "baseCustomer.marriageStatus",
+			b.education_Type AS "baseCustomer.educationType",
+			b.appli_residence AS "baseCustomer.appliResidence",
+			b.appli_work AS "baseCustomer.appliWork",
+			b.service_Year AS "baseCustomer.serviceYear",
+			b.positions AS "baseCustomer.position",
+			b.income_source AS "baseCustomer.incomeSource",
+			b.piscale AS "baseCustomer.piscale",
+			b.month_economy AS "baseCustomer.monthEconomy",
+			b.house_stat AS "baseCustomer.houseStat",
+			b.house_source AS "baseCustomer.houseSource",
+			b.house_type AS "baseCustomer.houseType",
+			b.family_sts AS "baseCustomer.familySts",
+			b.family_year AS "baseCustomer.familyYear",
+			b.live_Addr AS "baseCustomer.liveAddr",
+			b.repay_rec AS "baseCustomer.repayRec",
+			b.pub_rec AS "baseCustomer.pubRec",
+			b.oth_rec AS "baseCustomer.othRec",
+			b.remark AS "baseCustomer.remark",
+			b.sum_score AS "baseCustomer.sumScore",
+			b.credit_man_code AS "baseCustomer.creditManCode",
+			b.credit_flag AS "baseCustomer.creditFlag",
+			b.company_Addr AS "baseCustomer.companyAddr",
+			b.company_zip AS "baseCustomer.companyZip",
+			b.company_tel_code AS "baseCustomer.companyTelCode",
+			b.company_tel AS "baseCustomer.companyTel",
+			b.apply_purpose AS "baseCustomer.applyPurpose",
+			b.monthly_wages AS "baseCustomer.monthlyWages",
+			b.moth_ep AS "baseCustomer.mothEp",
+			b.unit_type AS "baseCustomer.unitType",
+			b.employment AS "baseCustomer.employment",
+			b.department AS "baseCustomer.department",
+			b.position AS "baseCustomer.positions",
+			b.year_income AS "baseCustomer.yearIncome"
+		FROM
+			xxm_apply_info_t t
+			LEFT JOIN xxm_customer_t b ON b.customer_Id = t.apply_Customer_Id
+		WHERE
+			t.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+      </select>
+      <select id="findCitemInsurePolicyInfo" parameterType="com.xxm.it.business.vo.ApplyVO" resultType="com.xxm.it.piic.vo.InsurePolicyInfo">
+      	SELECT
+		    getBaseDateNameByCode('AUTO_DEALER',t.auto_Dealer_Vl,1) AS "supplementBase.autoDealerName",
+			a.org_Code AS "supplementBase.orgCode",
+			a.company_Affiliated_Name AS "supplementBase.companyAffiliatedName",
+			s.no_first_flag AS "supplementBase.noFirstFlag",
+			s.taxi_com_quantity AS "supplementBase.taxiComQuantity",
+			s.enterp_quantity AS "supplementBase.enterpQuantity",
+			m.guarantee_type AS "supplementBase.guaranteeType",
+			m.guarantee_name AS "supplementBase.guaranteeName",
+			DATE_FORMAT(m.deliver_date,'%Y-%m-%d') AS "supplementBase.deliverDate",
+			s.mortgage_no AS "supplementBase.mortgageNo",
+<!-- 			s.loan_contract_no AS "supplementBase.loanContractNo", -->
+			s.payment_Method_VL AS "supplementBase.paymentMethodVL",
+			DATE_FORMAT(s.loan_start_date,'%Y-%m-%d') AS "supplementBase.loanStartDate",
+			DATE_FORMAT(s.loan_end_date,'%Y-%m-%d') AS "supplementBase.loanEndDate",
+			s.firstpay_rAate AS "supplementBase.firstpayRAate",
+			s.first_paid AS "supplementBase.firstPaid",
+			s.first_rate AS "supplementBase.firstRate",
+			s.own_liab_ratio AS "supplementBase.ownLiabRatio",
+			s.other_liab_ratio AS "supplementBase.otherLiabRatio",
+			s.recognizance AS "supplementBase.recognizance",
+			s.loan_amount AS "supplementBase.loanAmount",
+			s.loan_rate AS "supplementBase.loanRate",
+			s.interest AS "supplementBase.interest",
+			s.per_repaid_amount AS "supplementBase.perRepaidAmount",
+			s.repy_fq AS "supplementBase.repyFq",
+			l.use_nature AS "supplementBase.useNature",
+			l.usesTp AS "supplementBase.usesTp",	
+			s.is_loan_account AS "supplementBase.isLoanAccount",
+			s.loan_acount AS "supplementBase.loanAcount",
+			s.loan_acount_no AS "supplementBase.loanAcountNo",
+			s.loan_acount_bank AS "supplementBase.loanAcountBank",
+			s.loan_acount_bankNo AS "supplementBase.loanAcountBankNo",
+			s.apply_currency AS "supplementBase.applyCurrency",
+			s.apply_amt AS "supplementBase.applyAmt",
+			s.appl_nosInst AS "supplementBase.applNosInst",
+			DATE_FORMAT(s.apply_date,'%Y%m%d') AS "supplementBase.applyDate",
+			
+			s.atrs_due_day AS "supplementBase.atrsDueDay",
+			s.tate_mode AS "supplementBase.tateMode",
+			s.next_repc_option AS "supplementBase.nextRepcOption",
+			s.fix_rateInd AS "supplementBase.fixRateInd",
+		 	s.int_adj_pct AS "supplementBase.intAdjPct",
+			s.cust_rate AS "supplementBase.custRate",
+			s.loan_Purpost AS "supplementBase.loanPurpost",
+			s.apply_no AS "supplementBase.applyNo",
+			s.mkt_prod_type AS "supplementBase.mktProdType",
+		 	s.contct AS "supplementBase.contct",
+			s.tel_num AS "supplementBase.telNum",
+			s.dler_ph AS "supplementBase.dlerPh",
+			s.link_type AS "supplementBase.linkType",
+			s.link_name AS "supplementBase.linkName",
+			s.link_phone AS "supplementBase.linkPhone"
+		FROM
+			xxm_apply_info_t t
+		LEFT JOIN xxm_company_affiliated_t a ON a.company_Affiliated_ID = t.company_Affiliated_Id
+		LEFT JOIN xxm_supplement_base_t s ON s.apply_Info_Id = t.apply_Info_Id
+		LEFT JOIN xxm_lease_info_t l ON l.apply_Info_Id = t.apply_Info_Id
+		LEFT JOIN ms_mortgageinfo m ON m.apply_Info_Id = t.apply_Info_Id
+		WHERE
+			t.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+      </select>
+      <select id="findApplicantInsurePolicyInfo" parameterType="com.xxm.it.business.vo.ApplyVO" resultType="com.xxm.it.piic.vo.ApplicantVO">
+      	SELECT
+			b.base_Customer_Name AS baseCustomerName,
+			b.cert_Type AS certType,
+			b.cert_No AS certNo,
+			b.base_Customer_Sex AS baseCustomerSex,
+			DATE_FORMAT(b.birth_date,'%Y-%m-%d') AS birthDate,
+			b.mobile_No AS mobileNo,
+			b.appliId_email AS appliIdEmail,
+			b.live_Addr AS liveAddrs,
+			b.appli_post AS appliPost,
+			b.family_telcode AS familyTelcode,
+			b.fixed_line AS fixedLine,
+			b.payment_acctno AS paymentAcctno,
+			DATE_FORMAT(b.idvalid_start,'%Y%m%d') AS idvalidStart,
+			DATE_FORMAT(b.idvalid_end,'%Y%m%d') AS idvalidEnd,
+			b.iss_ctry AS issCtry
+		FROM
+			xxm_apply_info_t t
+		LEFT JOIN xxm_customer_t b ON b.customer_Id = t.apply_Customer_Id
+		WHERE
+			t.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+      </select>
+      <select id="findInsureTheInsuredInfoList" parameterType="com.xxm.it.business.vo.ApplyVO" resultType="com.xxm.it.piic.vo.InsureTheInsuredInfo">
+      	SELECT
+      		i.insured_id AS insuredId,
+			i.insured_id AS insuredSeqNo,
+			i.insured_name AS insuredName,
+			i.insuredId_type AS insuredIdType,
+			i.insuredId_no AS insuredIdNo,
+			i.bankcode AS bankcode
+		FROM
+			ms_insured i
+		WHERE
+			i.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+      </select>
+      <select id="findInsureBeneficiaryList" parameterType="com.xxm.it.piic.vo.InsureTheInsuredInfo" resultType="com.xxm.it.piic.vo.InsureBeneficiary">
+      	SELECT
+			b.beneficiary_seq_no AS beneficiarySeqNo,
+		 	b.beneficiary AS beneficiary
+		FROM
+			ms_beneficiary b
+		WHERE
+			b.insured_id = #{insuredId,jdbcType=VARCHAR}
+      </select>
+      <select id="findSignInfo" parameterType="com.xxm.it.piic.vo.SignInfoVO" resultType="com.xxm.it.piic.vo.SignInfoVO">
+      	SELECT
+      		s.signInfo_id as signInfoId,
+			s.proposal_no as proposalNo,
+			s.apply_no as applyNo,
+			s.create_by as createBy,
+			s.create_date as createDate,
+			s.last_update_by as lastUpdateBy,
+			s.last_update_date as lastUpdateDate,
+			s.apply_Info_Id as applyInfoId
+		FROM
+			ms_signinfo s
+		left join xxm_apply_info_t t on t.apply_Info_Id=s.apply_Info_Id 
+		WHERE 1=1
+			<if test="signInfoId != null and signInfoId !=''">
+				AND	s.signInfo_id = #{signInfoId,jdbcType=VARCHAR}
+			</if>
+			<if test="applyInfoId != null and applyInfoId !=''">
+				AND	s.apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}
+			</if>
+      </select>
+      
+      <select id="findSignInfos" parameterType="com.xxm.it.piic.vo.SignInfoVO" resultType="com.xxm.it.piic.vo.SignInfoVO">
+	      	SELECT
+				s.signInfo_id AS signInfoId,
+				s.apply_no AS applyNo,
+				s.proposal_no AS proposalNo
+			FROM
+				ms_signinfo s
+			left join xxm_apply_info_t t on t.apply_Info_Id=s.apply_Info_Id 
+			WHERE
+				1 = 1
+			<if test="applyInfoStatus != null and applyInfoStatus !=''">
+		    	AND t.apply_info_status=#{applyInfoStatus,jdbcType=VARCHAR}
+		  	</if>
+      </select>
+<!--       <select id="findMortgageinfo" parameterType="com.xxm.it.piic.vo.SignInfoVO" resultType="com.xxm.it.piic.vo.SignInfoVO"> -->
+      <insert id="addSignReturnInfo" parameterType="com.xxm.it.piic.vo.SignReturnInfoVO" >
+      	INSERT INTO ms_signreturninfo (
+			appl_state,
+    	    loan_amt,
+			int_adj_pct,
+			result_code,
+			request_Id,
+			result_message,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{applState,jdbcType=VARCHAR},
+			#{loanAmt,jdbcType=VARCHAR},
+			#{intAdjPct,jdbcType=VARCHAR},
+			#{resultCode,jdbcType=VARCHAR},
+			#{requestId,jdbcType=VARCHAR},
+			#{resultMessage,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+			
+		)
+      </insert>
+      
+	  <!-- 预审响应信息（list） -->
+      <select id="findRejudicationReturn" parameterType="com.xxm.it.piic.vo.RejudicationReturnVO" resultType="com.xxm.it.piic.vo.RejudicationReturnVO">
+      		SELECT
+				t.prejudication_return_id AS prejudicationReturnId,
+				t.prejudic_no AS prejudicNo,
+				t.result_code AS resultCode,
+				t.result_message AS resultMessage,
+				t.create_by AS createBy,
+				t.create_date AS createDate,
+				t.last_update_by AS lastUpdateBy,
+				t.last_update_date AS lastUpdateDate,
+				t.request_Id AS requestId
+			FROM
+				ms_rejudication_return t
+			WHERE
+				1 = 1
+			AND t.request_Id=#{requestId,jdbcType=VARCHAR}
+			order by t.create_date desc
+		</select>
+      <select id="findMortgageinfo" parameterType="com.xxm.it.piic.vo.MortgageinfoVO" resultType="com.xxm.it.piic.vo.MortgageinfoVO">
+      	SELECT 
+    	 	t.apply_Info_Id AS applyInfoId,
+			r.proposal_no AS proposalNo,
+			a.loan_no AS loanNo,
+			s.apply_no AS applyNo,
+			m.policy_no AS policyNo,
+			m.appli_name AS appliName,
+			m.insured_name AS insuredName,
+			m.unit_amount AS unitAmount,
+			m.loan_no3 AS loanNo3,
+			m.guarantee_type AS guaranteeType,
+			m.guarantee_name AS guaranteeName,
+			DATE_FORMAT(m.deliver_date,'%Y-%m-%d') AS deliverDate,
+			m.paid_times AS paidTimes,
+			m.repaid_type AS repaidType,
+			m.loan_bank_code AS loanBankCode,
+			m.loan_bank_name AS loanBankName,
+			m.loan_nature AS loanNature,
+			m.other_mortgage AS otherMortgage,
+			m.other_nature AS oherNature,
+			m.use_nature_code AS useNatureCode,
+			m.pre_char1 AS preChar1,
+			m.land_agent AS landAgent,
+			m.pre_char2 AS preChar2,
+			m.pre_char3 AS preChar3,
+			m.pre_char4 AS preChar4,
+			m.loan_year AS loanYear,
+			m.nonlocal_flag AS nonlocalFlag,
+			m.license_no2 AS licenseNo2,
+			m.step_hull AS stepHull,
+			m.alias_name AS aliasName,
+			m.model_codeAlias AS modelCodeAlias,
+			m.car_dealer_name AS carDealerName,
+			l.exhaust_scale AS exhaustScale,
+			l.frame_Number AS frameNumber,
+			l.engine_Number AS engineNumber,
+			l.car_Color AS carColor,
+			l.brand_name AS brandName,
+			l.model_name AS modelName,
+			DATE_FORMAT(l.enroll_date,'%Y-%m-%d') AS enrollDate,
+			l.rb_evaluate AS rbEvaluate,
+			l.plate_Number AS plateNumber,
+			m.monopoly_name AS monopolyName,
+			DATE_FORMAT(m.make_date,'%Y-%m-%d') AS makeDate,
+			DATE_FORMAT(m.suspend_startDate,'%Y-%m-%d') AS suspendStartDate,
+			m.warrantor_name AS warrantorName,
+			m.loan_usage AS loanUsage,
+			m.loan_no5 AS loanNo5,
+			m.veh_cert_no AS vehCertNo,
+			m.photo_no AS photoNo,
+			m.community_property AS communityProperty,
+			DATE_FORMAT(m.make_start_date,'%Y-%m-%d') AS makeStartDate,
+			DATE_FORMAT(m.make_end_date,'%Y-%m-%d') AS makeEndDate,
+			DATE_FORMAT(m.mort_reg_date,'%Y-%m-%d') AS mortRegDate,
+			m.filekey_name AS filekeyName
+		FROM ms_mortgageinfo m
+		
+		LEFT JOIN xxm_apply_info_t t ON t.apply_Info_Id = m.apply_Info_Id
+		LEFT JOIN xxm_lease_info_t l ON l.apply_Info_Id = t.apply_Info_Id
+		LEFT JOIN ms_policyinfo_return r ON  r.policyInfo_return_id=(select max(policyInfo_return_id) from ms_policyinfo_return where apply_Info_Id=t.apply_Info_Id)
+		LEFT JOIN ms_auditinfo a ON a.auditInfo_id = (select max(auditinfo_id) from ms_auditinfo where proposal_no= r.proposal_no)
+		LEFT JOIN xxm_supplement_base_t s ON s.apply_Info_Id = t.apply_Info_Id
+		LEFT JOIN ms_push_policyinfos p ON p.proposal_no = r.proposal_no
+		WHERE m.mortgageInfo_id = #{mortgageInfoId,jdbcType=VARCHAR}
+      </select>
+      
+      <!-- 投保响应信息（list） -->
+      <select id="findPolicyInfoReturn" parameterType="com.xxm.it.piic.vo.PolicyinfoReturnVO" resultType="com.xxm.it.piic.vo.PolicyinfoReturnVO">
+      		SELECT
+				t.policyInfo_return_id AS policyInfoReturnId,
+				t.serial_no AS serialNo,
+				t.proposal_no AS proposalNo,
+				t.save_result AS saveResult,
+				t.save_message AS saveMessage,
+				t.save_times AS saveTimes,
+				t.apply_Info_Id AS applyInfoId,
+				t.create_by AS createBy,
+				t.create_date AS createDate,
+				t.last_update_by AS lastUpdateBy,
+				t.last_update_date AS lastUpdateDate
+			FROM
+				ms_policyInfo_return t
+			WHERE
+				1 = 1
+			AND t.apply_Info_Id=#{applyInfoId,jdbcType=VARCHAR}
+			order by t.create_date desc
+      </select>
+      
+      <!-- 请求放款响应信息（list） -->
+      <select id="findLoanReturnInfo" parameterType="com.xxm.it.piic.vo.LoanReturnInfoVO" resultType="com.xxm.it.piic.vo.LoanReturnInfoVO">
+      		SELECT
+				t.loan_returnInfo_id AS loanReturnInfoId,
+				t.proposalno AS proposalno,
+				t.result_code AS resultCode,
+				t.result_message AS resultMessage,
+				t.create_by AS createBy,
+				t.create_date AS createDate,
+				t.last_update_by AS lastUpdateBy,
+				t.last_update_date AS lastUpdateDate,
+				t.request_Id AS requestId
+			FROM
+				ms_loan_returninfo t
+			WHERE
+				1 = 1
+			AND t.request_Id=#{requestId,jdbcType=VARCHAR}
+			order by t.create_date desc
+      </select>
+      
+      <!-- 签约响应信息（list） -->
+      <select id="findSignreturnInfo" parameterType="com.xxm.it.piic.vo.SignReturnInfoVO" resultType="com.xxm.it.piic.vo.SignReturnInfoVO">
+      		SELECT
+				t.signreturnInfo_id AS signreturnInfoId,
+				t.appl_state AS applState,
+				t.loan_amt AS loanAmt,
+				t.int_adj_pct AS intAdjPct,
+				t.create_by AS createBy,
+				t.create_date AS createDate,
+				t.last_update_by AS lastUpdateBy,
+				t.last_update_date AS lastUpdateDate,
+				t.result_code AS resultCode,
+				t.result_message AS resultMessage,
+				t.request_Id AS requestId
+			FROM
+				ms_signreturninfo t
+			WHERE
+				1 = 1
+			AND t.request_Id=#{requestId,jdbcType=VARCHAR}
+			order by t.create_date desc
+      </select>
+      
+      <!-- 车辆抵押响应信息（list） -->
+      <select id="findMortgageReturninfo" parameterType="com.xxm.it.piic.vo.MortgageReturnInfoVO" resultType="com.xxm.it.piic.vo.MortgageReturnInfoVO">
+      		SELECT
+				t.mortgage_returnInfo_id AS mortgageReturnInfoId,
+				t.proposalno AS proposalno,
+				t.result_code AS resultCode,
+				t.result_message AS resultMessage,
+				t.create_by AS createBy,
+				t.create_date AS createDate,
+				t.last_update_by AS lastUpdateBy,
+				t.last_update_date AS lastUpdateDate,
+				t.request_Id AS requestId
+			FROM
+				ms_mortgage_returninfo t
+			WHERE
+				1 = 1
+			AND t.request_Id=#{requestId,jdbcType=VARCHAR}
+			order by t.create_date desc
+      </select>
+      <insert id="addLoanReturnInfo" parameterType="com.xxm.it.piic.vo.LoanReturnInfoVO" useGeneratedKeys="true" keyProperty="loanReturnInfoId">
+      	INSERT INTO ms_loan_returninfo (
+	  		proposalno,
+			result_code,
+			request_Id,
+			result_message,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{proposalno,jdbcType=VARCHAR},
+			#{resultCode,jdbcType=VARCHAR},
+			#{requestId,jdbcType=VARCHAR},
+			#{resultMessage,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+		)
+      </insert>
+<!--       <insert id="addMortgageReturnInfoVO" parameterType="com.xxm.it.piic.vo.MortgageReturnInfoVO"> -->
+<!--       	INSERT INTO ms_mortgage_returninfo ( -->
+<!-- 	  		proposalno, -->
+<!-- 			result_code, -->
+<!-- 			request_Id, -->
+<!-- 			result_message, -->
+<!-- 			create_by, -->
+<!-- 			create_date, -->
+<!-- 			last_update_by, -->
+<!-- 			last_update_date -->
+<!-- 		) -->
+<!-- 		VALUES -->
+<!-- 		( -->
+<!-- 			#{proposalno,jdbcType=VARCHAR}, -->
+<!-- 			#{resultCode,jdbcType=VARCHAR}, -->
+<!-- 			#{requestId,jdbcType=VARCHAR}, -->
+<!-- 			#{resultMessage,jdbcType=VARCHAR}, -->
+<!-- 			#{createBy,jdbcType=VARCHAR}, -->
+<!-- 			CURRENT_TIMESTAMP(), -->
+<!-- 			#{lastUpdateBy,jdbcType=VARCHAR}, -->
+<!-- 			CURRENT_TIMESTAMP() -->
+<!-- 		) -->
+<!--       </insert> -->
+<!--       添加投保响应信息 -->
+<!--       <insert id="addPolicyinfoReturn" parameterType="com.xxm.it.piic.vo.PolicyinfoReturnVO" useGeneratedKeys="true" keyProperty="policyInfoReturnId" > -->
+<!--       	INSERT INTO ms_policyinfo_return ( -->
+<!-- 			serial_no, -->
+<!-- 			proposal_no, -->
+<!-- 			save_result, -->
+<!-- 			save_message, -->
+<!-- 			save_times, -->
+<!-- 			apply_Info_Id, -->
+<!-- 			create_by, -->
+<!-- 			create_date, -->
+<!-- 			last_update_by, -->
+<!-- 			last_update_date -->
+<!-- 		) -->
+<!-- 		VALUES -->
+<!-- 			( -->
+<!-- 				#{serialNo,jdbcType=VARCHAR}, -->
+<!-- 				#{proposalNo,jdbcType=VARCHAR}, -->
+<!-- 				#{saveResult,jdbcType=VARCHAR}, -->
+<!-- 				#{saveMessage,jdbcType=VARCHAR}, -->
+<!-- 				#{saveTimes,jdbcType=VARCHAR}, -->
+<!-- 				#{applyInfoId,jdbcType=VARCHAR}, -->
+<!-- 				#{createBy,jdbcType=VARCHAR}, -->
+<!-- 				CURRENT_TIMESTAMP (), -->
+<!-- 				#{lastUpdateBy,jdbcType=VARCHAR}, -->
+<!-- 				CURRENT_TIMESTAMP () -->
+<!-- 			) -->
+<!--       </insert> -->
+      <!--  添加投保被保人响应信息-->
+      <insert id="addInsuredReturn" parameterType="com.xxm.it.piic.vo.InsuredReturn">
+      	INSERT INTO ms_insured_return (
+			insured_seqNo,
+			check_result,
+			check_message,
+			policyInfo_return_id,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+			(
+				#{insuredSeqNo,jdbcType=VARCHAR},
+				#{checkResult,jdbcType=VARCHAR},
+				#{checkMessage,jdbcType=VARCHAR},
+				#{policyInfoReturnId,jdbcType=VARCHAR},
+				#{createBy,jdbcType=VARCHAR},
+				CURRENT_TIMESTAMP (),
+				#{lastUpdateBy,jdbcType=VARCHAR},
+				CURRENT_TIMESTAMP ()
+			)
+      </insert>
+<!--       <insert id="addLoanReturnInfo" parameterType="com.xxm.it.piic.vo.LoanReturnInfoVO" useGeneratedKeys="true" keyProperty="loanReturnInfoId"> -->
+<!--       	INSERT INTO ms_loan_returninfo ( -->
+<!-- 	  		proposalno, -->
+<!-- 			result_code, -->
+<!-- 			request_Id, -->
+<!-- 			result_message, -->
+<!-- 			create_by, -->
+<!-- 			create_date, -->
+<!-- 			last_update_by, -->
+<!-- 			last_update_date -->
+<!-- 		) -->
+<!-- 		VALUES -->
+<!-- 		( -->
+<!-- 			#{proposalno,jdbcType=VARCHAR}, -->
+<!-- 			#{resultCode,jdbcType=VARCHAR}, -->
+<!-- 			#{requestId,jdbcType=VARCHAR}, -->
+<!-- 			#{resultMessage,jdbcType=VARCHAR}, -->
+<!-- 			#{createBy,jdbcType=VARCHAR}, -->
+<!-- 			CURRENT_TIMESTAMP(), -->
+<!-- 			#{lastUpdateBy,jdbcType=VARCHAR}, -->
+<!-- 			CURRENT_TIMESTAMP() -->
+<!-- 		) -->
+<!--       </insert> -->
+      <insert id="addMortgageReturnInfoVO" parameterType="com.xxm.it.piic.vo.MortgageReturnInfoVO">
+      	INSERT INTO ms_mortgage_returninfo (
+	  		proposalno,
+			result_code,
+			request_Id,
+			result_message,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{proposalno,jdbcType=VARCHAR},
+			#{resultCode,jdbcType=VARCHAR},
+			#{requestId,jdbcType=VARCHAR},
+			#{resultMessage,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+		)
+      </insert>
+      <!-- 添加投保响应信息 -->
+      <insert id="addPolicyinfoReturn" parameterType="com.xxm.it.piic.vo.PolicyinfoReturnVO" useGeneratedKeys="true" keyProperty="policyInfoReturnId" >
+      	INSERT INTO ms_policyinfo_return (
+			serial_no,
+			proposal_no,
+			save_result,
+			save_message,
+			save_times,
+			apply_Info_Id,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+			(
+				#{serialNo,jdbcType=VARCHAR},
+				#{proposalNo,jdbcType=VARCHAR},
+				#{saveResult,jdbcType=VARCHAR},
+				#{saveMessage,jdbcType=VARCHAR},
+				#{saveTimes,jdbcType=VARCHAR},
+				#{applyInfoId,jdbcType=VARCHAR},
+				#{createBy,jdbcType=VARCHAR},
+				CURRENT_TIMESTAMP (),
+				#{lastUpdateBy,jdbcType=VARCHAR},
+				CURRENT_TIMESTAMP ()
+			)
+      </insert>
+<!--        添加投保被保人响应信息 -->
+<!--       <insert id="addInsuredReturn" parameterType="com.xxm.it.piic.vo.InsuredReturn"> -->
+<!--       	INSERT INTO ms_insured_return ( -->
+<!-- 			insured_seqNo, -->
+<!-- 			check_result, -->
+<!-- 			check_message, -->
+<!-- 			policyInfo_return_id, -->
+<!-- 			create_by, -->
+<!-- 			create_date, -->
+<!-- 			last_update_by, -->
+<!-- 			last_update_date -->
+<!-- 		) -->
+<!-- 		VALUES -->
+<!-- 			( -->
+<!-- 				#{insuredSeqNo,jdbcType=VARCHAR}, -->
+<!-- 				#{checkResult,jdbcType=VARCHAR}, -->
+<!-- 				#{checkMessage,jdbcType=VARCHAR}, -->
+<!-- 				#{policyInfoReturnId,jdbcType=VARCHAR}, -->
+<!-- 				#{createBy,jdbcType=VARCHAR}, -->
+<!-- 				CURRENT_TIMESTAMP (), -->
+<!-- 				#{lastUpdateBy,jdbcType=VARCHAR}, -->
+<!-- 				CURRENT_TIMESTAMP () -->
+<!-- 			) -->
+<!--       </insert> -->
+
+	  <!-- 审核结果字段 -->
+      <sql id="select_audit_notice_filed">
+      	 select t.auditInfo_Id as auditInfoId,
+      	        t.audit_tpye as auditTpye,
+				t.prejudic_no as prejudicNo,
+				t.proposal_no as proposalNo,
+				t.audit_result as underwriteResult,
+				t.audit_times as underwriteTimes,
+				t.error_message as errorMessage,
+				t.loan_no as loanNo,
+				t.apply_no as applyNo,
+				t.status as status
+		   from ms_auditinfo t
+		   where 1=1
+      </sql>
+      
+      <!-- 审核结果查询条件 -->
+      <sql id="select_audit_notice_condtion">
+      	 <if test="null != auditInfoId and auditInfoId != '' ">
+      	 	and t.auditInfo_Id = #{auditInfoId,jdbcType=VARCHAR}
+      	 </if>
+      	 <if test="null != prejudicNo and prejudicNo != '' ">
+      	 	and t.prejudic_no like concat('%',#{prejudicNo,jdbcType=VARCHAR},'%')
+      	 </if>
+      	 <if test="null != proposalNo and proposalNo != '' ">
+      	 	and t.proposal_no like concat('%',#{proposalNo,jdbcType=VARCHAR},'%')
+      	 </if>
+      </sql>
+      
+      <!-- 查询审核结果通知集合数据 -->
+      <select id="findAuditNoticeList" parameterType="com.xxm.it.piic.vo.Auditinfo" resultType="com.xxm.it.piic.vo.Auditinfo">
+		  <include refid="select_audit_notice_filed"></include>
+		  <include refid="select_audit_notice_condtion"></include>
+		  order by t.create_date desc
+		  limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	  </select>
+	  
+	  <!-- 查询审核结果通知集合总数 -->
+	  <select id="findAuditNoticeListCount" parameterType="com.xxm.it.piic.vo.Auditinfo" resultType="java.lang.Integer">
+		 select count(1) from ms_auditinfo t where 1=1
+		 <include refid="select_audit_notice_condtion"></include>
+	  </select>
+	  
+	  <!-- 查询审核结果通知集合总数 -->
+	  <select id="findAuditNoticeInfo" parameterType="com.xxm.it.piic.vo.Auditinfo" resultType="com.xxm.it.piic.vo.Auditinfo">
+		 <include refid="select_audit_notice_filed"></include>
+		 <include refid="select_audit_notice_condtion"></include>
+	  </select>
+	  
+	  <!-- 查询审核结果通知集合 -->
+	  <select id="findAuditNoticeInfos" parameterType="com.xxm.it.piic.vo.Auditinfo" resultType="com.xxm.it.piic.vo.Auditinfo">
+		 <include refid="select_audit_notice_filed"></include>
+		 <include refid="select_audit_notice_condtion"></include>
+	  </select>
+      
+      <!-- 放款结果字段 -->
+      <sql id="select_loan_notice_filed">
+      	 select t.loanInfo_inform_id as loanInfoInformId,
+      	        t.proposal_no as proposalNo,
+				t.loan_result as loanResult,
+				t.loan_no as loanNo,
+				t.int_rate as intRate,
+				t.od_int_rate as odIntRate,
+				t.atrs_due_day as atrsDueDay,
+				t.first_due_dt as firstDueDt,
+				t.first_pay_amt as firstPayAmt,
+				t.last_due_dt as lastDueDt,
+				t.pay_ret_code as payRetCode,
+				t.STATUS as status
+			from ms_loaninfo_inform t
+		where 1=1
+      </sql>
+      
+      <!-- 放款结果查询条件 -->
+      <sql id="select_loan_notice_condtion">
+      	 <if test="null != loanInfoInformId and loanInfoInformId !=''">
+      	 	and t.loanInfo_inform_id = #{loanInfoInformId,jdbcType=VARCHAR}
+      	 </if>
+      	 <if test="null != proposalNo and proposalNo !=''">
+      	 	and t.proposal_no like concat('%',#{proposalNo,jdbcType=VARCHAR},'%')
+      	 </if>
+      	 <if test="null != loanNo and loanNo != ''">
+      	 	and t.loan_no like concat('%',#{loanNo,jdbcType=VARCHAR},'%')
+      	 </if>
+      </sql>
+      
+      <!-- 查询放款结果通知集合数据 -->
+      <select id="findLoanNoticeList" parameterType="com.xxm.it.piic.vo.LoanInfoInformVO" resultType="com.xxm.it.piic.vo.LoanInfoInformVO">
+		  <include refid="select_loan_notice_filed"></include>
+		  <include refid="select_loan_notice_condtion"></include>
+		  order by t.create_date desc
+		  limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	  </select>
+	  
+	  <!-- 查询放款结果通知集合总数 -->
+	  <select id="findLoanNoticeListCount" parameterType="com.xxm.it.piic.vo.LoanInfoInformVO" resultType="java.lang.Integer">
+		 select count(1) from ms_loaninfo_inform t where 1=1
+		 <include refid="select_loan_notice_condtion"></include>
+	  </select>
+	  
+	  <!-- 查询放款结果通知集合总数 -->
+	  <select id="findLoanNoticeInfo" parameterType="com.xxm.it.piic.vo.LoanInfoInformVO" resultType="com.xxm.it.piic.vo.LoanInfoInformVO">
+		 <include refid="select_loan_notice_filed"></include>
+		 <include refid="select_loan_notice_condtion"></include>
+	  </select>
+      
+      <!-- 推送保单字段 -->
+      <sql id="select_push_policy_filed">
+      	 select t.push_policyInfos_id as pushPolicyInfosId,
+      	        t.serial_no as serialNo,
+				t.policy_no as policyNo,
+				t.proposal_no as proposalNo,
+				t.policy_url as policyUrl,
+				t.STATUS as status
+			from ms_push_policyinfos t
+		  where 1=1
+      </sql>
+      
+      <!-- 推送保单查询条件 -->
+      <sql id="select_push_policy_condtion">
+      	 <if test="null != pushPolicyInfosId and pushPolicyInfosId != ''">
+      	 	and t.push_policyInfos_id = #{pushPolicyInfosId,jdbcType=VARCHAR}
+      	 </if>
+      	 <if test="null != serialNo and serialNo != ''">
+      	 	and t.serial_no like concat('%',#{serialNo,jdbcType=VARCHAR},'%')
+      	 </if>
+      	 <if test="null != policyNo and policyNo !=''">
+      	 	and t.policy_no like  concat('%',#{policyNo,jdbcType=VARCHAR},'%')
+      	 </if>
+      	 <if test="null != proposalNo and proposalNo != ''">
+      	 	and t.proposal_no like concat('%',#{proposalNo,jdbcType=VARCHAR},'%')
+      	 </if>
+      </sql>
+      
+      <!-- 查询推送保单集合数据 -->
+      <select id="findPushPolicyList" parameterType="com.xxm.it.piic.vo.PushPolicyInfoVO" resultType="com.xxm.it.piic.vo.PushPolicyInfoVO">
+		  <include refid="select_push_policy_filed"></include>
+		  <include refid="select_push_policy_condtion"></include>
+		  order by t.create_date desc
+		  limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	  </select>
+	  
+	  <!-- 查询推送保单集合总数 -->
+	  <select id="findPushPolicyListCount" parameterType="com.xxm.it.piic.vo.PushPolicyInfoVO" resultType="java.lang.Integer">
+		 select count(1) from ms_push_policyinfos t where 1=1
+		 <include refid="select_push_policy_condtion"></include>
+	  </select>
+	  
+	  <!-- 查询推送保单详情 -->
+	  <select id="findPushPolicyInfo" parameterType="com.xxm.it.piic.vo.PushPolicyInfoVO" resultType="com.xxm.it.piic.vo.PushPolicyInfoVO">
+		 <include refid="select_push_policy_filed"></include>
+		 <include refid="select_push_policy_condtion"></include>
+	  </select>
+	  <!-- 审核结果通知(预审根据请求过来的预审单号去拿到申请id) -->
+	  <select id="findBankPretrial" parameterType="com.xxm.it.piic.vo.Auditinfo" resultType="com.xxm.it.piic.vo.PrejudicationVO">
+	  	SELECT
+			m.request_Id AS applyInfoId
+		FROM
+			ms_rejudication_return m
+		WHERE
+			m.prejudic_no = #{prejudicNo,jdbcType=VARCHAR}
+	  </select>
+	  <!-- 审核结果通知(初审终审根据请求过来的投保单号去拿到申请id) -->
+	   <select id="findApplyInfoId" parameterType="com.xxm.it.piic.vo.Auditinfo" resultType="com.xxm.it.piic.vo.PolicyinfoReturnVO">
+	  	SELECT
+			m.apply_Info_Id AS applyInfoId
+		FROM
+			ms_policyinfo_return m
+		WHERE
+			m.proposal_no = #{proposalNo,jdbcType=VARCHAR}
+	  </select>
+</mapper>

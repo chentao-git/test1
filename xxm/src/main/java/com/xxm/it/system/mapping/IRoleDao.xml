@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.system.dao.IRoleDao" >
+	<sql id="query_role_sql">
+		 SELECT
+				t.role_id as roleId,
+				t.role_name as roleName,
+				t.valid_date as validDate,
+				t.status as status,
+				t.remark as remark,
+				t.type as type,
+				getBaseDateNameByCode('ROLE_TYPE',t.type,1) AS "typeName",
+				t.create_by as createBy,
+				t.create_date as createDate,
+				t.last_update_by as lastUpdateBy,
+				t.last_update_date as lastUpdateDate,
+				t.create_by AS createBy,
+				t.create_date AS createDate,
+				t.last_update_by AS lastUpdateBy,
+				t.last_update_date AS lastUpdateDate,
+				(select us.name from xxm_user_t us where us.user_id = t.create_by) createByName,
+			  (select us.name from xxm_user_t us where us.user_id = t.last_update_by) lastUpdateByName
+		FROM
+				xxm_role_t t
+		WHERE 1=1
+	</sql>
+	
+	<sql id="role_select_condition">
+		 <if test="roleId != null and roleId !=''">
+	    	AND t.role_id=#{roleId,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="roleName != null and roleName !=''">
+	    	AND t.role_name=#{roleName,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="startValidDate != null and startValidDate !=''">
+	    	AND t.valid_date <![CDATA[ >= ]]> #{startValidDate,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="endValidDate != null and endValidDate !=''">
+	    	AND t.valid_date <![CDATA[ <= ]]> #{endValidDate,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="status != null and status !=''">
+		  	AND t.status= #{status, jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="type != null and type !=''">
+		  	AND t.type= #{type, jdbcType=VARCHAR}
+	  	 </if>
+	</sql>
+	
+	<!-- 查询角色列表信息-->
+	<select id="findRoleList" resultType="com.xxm.it.system.vo.RoleVO" parameterType="com.xxm.it.system.vo.RoleVO">
+		 <include refid="query_role_sql"></include>
+		 <include refid="role_select_condition"></include>
+		 AND status='0'
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查询角色信息-->
+	<select id="findRoleListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.system.vo.RoleVO">
+		 SELECT count(role_id) FROM xxm_role_t t WHERE 1=1 AND status='0'
+		 <include refid="role_select_condition"></include>
+	</select>
+	
+	
+	<!-- 添加角色 -->
+	<insert id="addRole" parameterType="com.xxm.it.system.vo.RoleVO">
+		 INSERT INTO xxm_role_t (
+			role_name,
+			valid_date,
+			status,
+			remark,
+			type,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{roleName,jdbcType=VARCHAR},
+			#{validDate,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{remark,jdbcType=VARCHAR},
+			#{type,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+		)
+	</insert>
+	
+	<!-- 查询角色信息-->
+	<select id="findRole" resultType="com.xxm.it.system.vo.RoleVO" parameterType="com.xxm.it.system.vo.RoleVO">
+		 <include refid="query_role_sql"></include>
+	  	 <if test="roleId != null and roleId !=''">
+	    	AND t.role_id=#{roleId,jdbcType=VARCHAR}
+	  	</if>
+	</select>
+	
+	<!-- 查询角色信息(List)-->
+	<select id="findRoles" resultType="com.xxm.it.system.vo.RoleVO" parameterType="com.xxm.it.system.vo.RoleVO">
+		 <include refid="query_role_sql"></include>
+		 <include refid="role_select_condition"></include>
+	</select>
+	
+	<!-- 修改角色信息 -->
+	<update id="updateRole">
+		UPDATE xxm_role_t SET 
+			role_name =#{roleName,jdbcType=VARCHAR},
+			valid_date =#{validDate,jdbcType=VARCHAR},
+			remark =#{remark,jdbcType=VARCHAR},
+			type = #{type,jdbcType=VARCHAR},
+			last_update_by =#{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = current_timestamp()
+		WHERE
+			role_id =#{roleId,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 删除角色信息 -->
+	<delete id="deleteRole" parameterType="com.xxm.it.system.vo.RoleVO">
+		UPDATE xxm_role_t SET 
+			status= #{status, jdbcType=VARCHAR}
+		WHERE role_id in 
+		<foreach collection="roleIds" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	
+	<!-- 查询角色权限信息 -->
+	<select id="findRolePermissionsList" parameterType="com.xxm.it.system.vo.RolePermissionsVO" resultType="com.xxm.it.system.vo.RolePermissionsVO">
+		select role_Id as roleId,
+			   menu_Id as menuId
+		from xxm_role_permissions_t t
+		where t.role_Id = #{roleId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 增加角色权限信息 -->
+	<insert id="addRolePermissions" parameterType="com.xxm.it.system.vo.RolePermissionsVO">
+		INSERT INTO xxm_role_permissions_t (
+			role_Id,
+			menu_Id,
+			create_by,	
+			create_date,	
+			last_update_by,	
+			last_update_date
+		)
+		VALUES
+		(
+			#{roleId,jdbcType=VARCHAR},
+			#{menuId,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			sysdate(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			sysdate()
+		)
+	</insert>
+	
+	
+	<!-- 删除角色权限信息 -->
+	<insert id="deleteRolePermissions">
+		delete from xxm_role_permissions_t 
+		where role_Id = #{roleId,jdbcType=VARCHAR}
+	</insert>
+	
+	
+</mapper>

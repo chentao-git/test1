@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>合同打印</title>
+	    <meta name="keywords" content="合同打印">
+	    <meta name="description" content="合同打印">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+<!--    		<link href="../css/plugins/dropzone/basic.css" rel="stylesheet"> -->
+<!--    		 <link href="../css/plugins/dropzone/dropzone.css" rel="stylesheet"> -->
+   	<style type="text/css">
+   		.dz{
+   			width:15%;height:20%;border:1px solid black;
+   			margin-left: 30px;
+   			position: relative;
+		   float: left;
+		   margin-top: 30px;
+   		}
+   		.dz-filename {
+		    width: 90%;
+		    height: 80px;
+		    background-color: #e7eaec;
+		    display: block;
+		    margin: 0 auto;
+		    margin-top: 5px;
+   		}
+   		.dz-filename span{
+   			padding: 0px;
+		    height: 50px;
+		    text-align: center;
+		    display: table-cell;
+		    vertical-align: middle;
+   		}
+  		.dz-size	{
+   		    padding: 0px;
+		    text-align: center;
+		   	}
+   		.table th,td{
+   			    text-align: center;
+   		}
+   	</style>
+	</head>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+                        <div class="panel-group" id="accordion">
+                        
+				        <div id="toolbar" class="btn-group">
+				            <form id="formSearch">
+				        		<div style="float: left;">
+						            <button id="btnDelete" type="button" class="btn btn-primary">
+						                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+						            </button>
+						        	<button type="button" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+							        <button type="reset" id="btnRest" class="btn btn-primary"> 重 置</button>
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<input type="text" placeholder="贷款编号" class="form-control" id="loanContractNo">
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<input type="text" placeholder="姓名" class="form-control" id="baseCustomerName">
+						        </div>
+ 				            </form>
+				        </div>
+				        <table id="tbDataSupplement"></table>
+				    </div>
+			      </div>
+			      
+			         <!-- 弹出框 -->
+				    <div class="modal inmodal fade" id="affiliatedModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    	 <div class="modal-dialog modal-lg">
+                         	<div class="modal-content animated" >
+                         	<input type="hidden" id="modalType" value="" />
+                            	 <div id="fileupload" class="ibox float-e-margins">
+				                    <div class="ibox-title">
+				                        <h5>文件上传</h5>
+				                        <div class="ibox-tools">
+				                            <a class="collapse-link" id="collapse-link">
+				                                <i class="fa fa-chevron-up"></i>
+				                            </a>
+				                           
+				                            <a class="to-colse">
+				                                <i class="fa fa-times"></i>
+				                            </a>
+				                        </div>
+				                    </div>
+				                    <div class="iboxContent">
+				                        <form id="fileFrom" style="height:550px" class="tfrom" >
+				                        </form>
+				                        <form id="fileFroms" style="display:none" class="tfrom" >
+				                        </form>
+				                        <div>
+											<div class="m">
+												<small>上传最多15个文档！！！</small>
+												<button type="button" id="sub" class="btn btn-primary pull-right" style="margin-right:  10px;">提交</button>
+											</div>
+										</div>
+				                    </div>
+				                </div>
+                               	
+                               	<div style="display:none" id="tbData" class="col-sm-10">
+					                <div class="ibox float-e-margins">
+					                    <div class="ibox-title">
+					                        <h5>合同打印</h5>
+					                        <div class="ibox-tools">
+					                            <a class="collapse-link">
+					                                <i class="fa fa-chevron-up"></i>
+					                            </a>
+					                            <a class="to-colse">
+					                                <i class="fa fa-times"></i>
+					                            </a>
+					                        </div>
+					                    </div>
+					                    <div class="ibox-content">
+					                        <table id ="seeFile" class="table table-hover">
+					                            <thead>
+					                                <tr>
+					                                	<th>合同名称</th>
+					                                    <th>打印</th>
+					                                </tr>
+					                            </thead>
+					                            <tbody>
+<!-- 					                                <tr> -->
+<!-- 					                                    <td>3</td> -->
+<!-- 					                                    <td><span class="line">1,6,3,9,5,9,5,3,9,6,4</span> -->
+<!-- 					                                    </td> -->
+<!-- 					                                    <td>王麻子</td> -->
+<!-- 					                                    <td class="text-navy"> <i class="fa fa-level-up"></i> 26%</td> -->
+<!-- 					                                </tr> -->
+					                            </tbody>
+					                        </table>
+					                    </div>
+					                </div>
+					            </div>
+                               
+                             </div>
+                         </div>
+                     </div>
+			      
+			      
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="project_contract_print.js"></script>
+<!-- 	    <script src="../js/plugins/dropzone/dropzone.js"></script> -->
+	   
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

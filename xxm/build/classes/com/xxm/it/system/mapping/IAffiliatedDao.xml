@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.system.dao.IAffiliatedDao">
+	<sql id="query_company_info"> 
+         SELECT t.company_Affiliated_ID AS companyAffiliatedId, 
+ 		        t.operation_Company_VL as operationCompanyVl, 
+ 				t.category_VL as categoryVL, 
+ 				t.business_Parnter_No as businessParnterNo, 
+ 				t.company_Affiliated_Name as companyAffiliatedName, 
+ 				t.business_Parnter_Type as businessParnterType, 
+ 				t.org_Code as orgCode, 
+ 				t.business_License_No as businessLicenseNo, 
+ 				t.fax as fax, 
+ 				t.post_Code as postCode, 
+ 				t.contact_Person as contactPerson, 
+ 				t.contact_Phone as contactPhone, 
+ 				t.contact_Address as contactAddress, 
+ 				t.cert_No as certNo, 
+ 				t.create_by as createBy, 
+ 				t.create_date as createDate, 
+ 				t.last_update_by as lastUpdateBy, 
+ 				t.last_update_date as lastUpdateDate 
+         FROM xxm_company_affiliated_t t 
+         WHERE 1=1
+    </sql> 
+    <sql id="select_condition">
+	    <if test="companyAffiliatedId != null and companyAffiliatedId != ''">
+     		AND t.company_Affiliated_ID = #{companyAffiliatedId,jdbcType=VARCHAR}
+	    </if>
+	    <if test="companyAffiliatedName != null and companyAffiliatedName != ''">
+	    	AND t.company_Affiliated_Name like concat('%',#{companyAffiliatedName,jdbcType=VARCHAR},'%')
+	    </if>
+	    <if test="businessParnterNo != null and businessParnterNo != ''">
+	    	AND t.business_Parnter_No like concat('%',#{businessParnterNo,jdbcType=VARCHAR},'%')
+	    </if>
+    </sql>
+     
+     
+     <!-- 查询挂靠公司列表-->
+	  <select id="findCist" parameterType="com.xxm.it.system.vo.AffiliatedVO" resultType="com.xxm.it.system.vo.AffiliatedVO">
+	    <include refid="query_company_info"></include>
+	    <include refid="select_condition"></include>
+	    AND status='0'
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	  </select>
+	  <!-- 查询挂靠商总数 -->
+	  <select id="findListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.system.vo.AffiliatedVO">
+	   SELECT count(company_Affiliated_ID) FROM xxm_company_affiliated_t t WHERE 1=1 AND status='0'
+	   <include refid="select_condition"></include>
+	  </select>
+	  <!-- 根据id去查询详情信息 -->
+	  <select id="findAffiliated" parameterType="com.xxm.it.system.vo.AffiliatedVO" resultType="com.xxm.it.system.vo.AffiliatedVO">
+	    <include refid="query_company_info"></include>
+	    <include refid="select_condition"></include>
+	  </select>
+	  <!-- 根据id 操作公司id 分类id 去拿 操作公司名称 以及分类名称 -->
+	  <select id="findInfo" parameterType="com.xxm.it.system.vo.AffiliatedVO" resultType="com.xxm.it.system.vo.AffiliatedVO">
+	     SELECT  distinct
+	     <if test="operationCompanyVl != null and operationCompanyVl != ''">
+	        getBaseDateNameByCode('OPERATING_COMPANY',#{operationCompanyVl,jdbcType=VARCHAR},1) AS operationCompanyName,
+	     </if>
+         <if test="categoryVL != null and categoryVL != ''">
+            getBaseDateNameByCode('TAXONOMY',#{categoryVL,jdbcType=VARCHAR},1) AS categoryName
+         </if>
+         FROM xxm_company_affiliated_t t 
+	  </select>
+	  <!-- 根据操作公司，分类去拿对应的名字 -->
+	  <select id="findByoperationCompany" parameterType="com.xxm.it.system.vo.AffiliatedVO" resultType="com.xxm.it.system.vo.AffiliatedVO">
+	  SELECT  distinct
+	     <if test="operationCompanyVl != null and operationCompanyVl != ''">
+         getBaseDateNameByCode('OPERATING_COMPANY',#{operationCompanyVl,jdbcType=VARCHAR},1) AS operationCompanyName
+         </if>
+         <if test="categoryVL != null and categoryVL != ''">
+         getBaseDateNameByCode('TAXONOMY',#{categoryVL,jdbcType=VARCHAR},1) AS categoryName
+         </if>
+         FROM xxm_company_affiliated_t t 
+	  </select>
+	  
+    <!-- 添加挂靠公司 -->
+	<insert id="addAffiliated" parameterType="com.xxm.it.system.vo.AffiliatedVO">
+		 INSERT INTO xxm_company_affiliated_t (
+ 		        operation_Company_VL, 
+ 				category_VL, 
+ 				business_Parnter_No, 
+ 				company_Affiliated_Name, 
+ 				business_Parnter_Type, 
+ 				org_Code, 
+ 				business_License_No, 
+ 				fax, 
+ 				post_Code, 
+ 				contact_Person, 
+ 				contact_Phone, 
+ 				contact_Address, 
+ 			    cert_No, 
+ 				create_by, 
+ 				create_date,
+ 				status
+		)
+		VALUES
+		(
+			#{operationCompanyVl,jdbcType=VARCHAR},
+			#{categoryVL,jdbcType=VARCHAR},
+			#{businessParnterNo,jdbcType=VARCHAR},
+			#{companyAffiliatedName,jdbcType=VARCHAR},
+			#{businessParnterType,jdbcType=VARCHAR},
+			#{orgCode,jdbcType=VARCHAR},
+			#{businessLicenseNo,jdbcType=VARCHAR},
+			#{fax,jdbcType=VARCHAR},
+			#{postCode,jdbcType=VARCHAR},
+			#{contactPerson,jdbcType=VARCHAR},
+			#{contactPhone,jdbcType=VARCHAR},
+			#{contactAddress,jdbcType=VARCHAR},
+			#{certNo,jdbcType=VARCHAR},
+			<if test="createBy != null and createBy != ''">
+			#{createBy,jdbcType=VARCHAR},
+			</if>
+			CURRENT_TIMESTAMP(),
+			#{status,jdbcType=VARCHAR}
+		)
+	</insert>
+	<!-- 修改挂靠公司信息 -->
+	<update id="updateAffiliated" >
+	  UPDATE xxm_company_affiliated_t 
+	  SET
+	        operation_Company_VL = #{operationCompanyVl,jdbcType=VARCHAR},
+			category_VL = #{categoryVL,jdbcType=VARCHAR},
+			business_Parnter_No = #{businessParnterNo,jdbcType=VARCHAR},
+			company_Affiliated_Name = #{companyAffiliatedName,jdbcType=VARCHAR},
+			business_Parnter_Type = #{businessParnterType,jdbcType=VARCHAR},
+			org_Code = #{orgCode,jdbcType=VARCHAR},
+			business_License_No = #{businessLicenseNo,jdbcType=VARCHAR},
+			fax = #{fax,jdbcType=VARCHAR},
+			post_Code = #{postCode,jdbcType=VARCHAR},
+			contact_Person = #{contactPerson,jdbcType=VARCHAR},
+			contact_Phone = #{contactPhone,jdbcType=VARCHAR},
+			contact_Address = #{contactAddress,jdbcType=VARCHAR},
+			cert_No = #{certNo,jdbcType=VARCHAR},
+			<if test="lastUpdateBy != null and lastUpdateBy != ''">
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			</if>
+			last_update_date = sysdate()
+		WHERE
+			company_Affiliated_ID = #{companyAffiliatedId, jdbcType=VARCHAR}
+	</update>
+	<delete id="deleteAffiliated" parameterType="com.xxm.it.system.vo.AffiliatedVO">
+	   UPDATE xxm_company_affiliated_t SET 
+			status= #{status, jdbcType=VARCHAR}
+		WHERE company_Affiliated_ID in 
+		<foreach collection="affiliatedIds" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	
+	 <!-- 查询挂靠公司列表-->
+	  <select id="findAffiliateds" parameterType="com.xxm.it.system.vo.AffiliatedVO" resultType="com.xxm.it.system.vo.AffiliatedVO">
+	    <include refid="query_company_info"></include>
+	    <include refid="select_condition"></include>
+	    AND status='0'
+	  </select>
+</mapper>

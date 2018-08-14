@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.business.dao.ITrailerDao">
+	<!-- 查询语句 -->
+	<sql id="query_trailer_sql">
+		SELECT
+			t.trailer_id AS trailerId,
+			t.proposer AS proposer,
+			t.apply_date AS applyDate,
+			t.apply_remarks AS applyRemarks,
+			t.audit_by AS auditBy,
+			t.audit_date AS auditDate,
+			t.audit_remarcks auditRemarcks,
+			t.vehicle_items AS vehicleItems,
+			t.storage_date AS storageDate,
+			t.storage_place AS storagePlace,
+			t.acceptance AS acceptance,
+			t.is_report AS isReport,
+			t.is_relationed AS isRelationed,
+			t.storage_remarks AS storageRemarks,
+			t.trailer_status AS trailerStatus,
+			t.apply_Info_Id AS applyInfoId,
+			t.create_by AS createBy,
+			t.create_date AS createDate,
+			t.last_update_by AS lastUpdateBy,
+			t.last_update_date AS lastUpdateDate,
+			t.processing_remarcks AS processingRemarcks,
+			t.processing_results AS processingResults,
+			a.loan_Contract_No AS 'applyVO.loanContractNo',
+			a.production_Vl AS 'applyVO.productionVl',
+			c.base_Customer_Name AS 'customerVO.baseCustomerName',
+			c.cert_Type AS 'customerVO.certType',
+			c.cert_No AS 'customerVO.certNo',
+			c.mobile_No AS 'customerVO.mobileNo',
+			l.plate_Number AS 'leaseInfoVO.plateNumber',
+			l.frame_Number AS 'leaseInfoVO.frameNumber',
+			l.engine_Number AS 'leaseInfoVO.engineNumber'
+		FROM
+			xxm_trailer t
+		left join xxm_apply_info_t a on a.apply_Info_Id=t.apply_Info_Id
+		left join xxm_customer_t c on c.customer_Id=a.apply_Customer_Id
+		left join xxm_lease_info_t l on l.apply_Info_Id=a.apply_Info_Id
+		WHERE
+			1 = 1
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="trailer_query_condition">
+		<if test="trailerId != null and trailerId !=''">
+			AND	t.trailer_id=#{trailerId,jdbcType=VARCHAR}
+		</if>
+		<if test="trailerStatus != null and trailerStatus !=''">
+			AND t.trailer_status =#{trailerStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="customerVO.baseCustomerName != null and customerVO.baseCustomerName !=''">
+			AND c.base_Customer_Name =#{customerVO.baseCustomerName,jdbcType=VARCHAR}
+		</if>
+		<if test="applyVO.loanContractNo != null and applyVO.loanContractNo !=''">
+			AND a.loan_Contract_No =#{applyVO.loanContractNo,jdbcType=VARCHAR}
+		</if>
+		<if test="startDate != null and startDate !=''">
+			<![CDATA[
+				AND DATE_FORMAT(t.apply_date,'%Y-%m-%d') >= #{startDate,jdbcType=VARCHAR}
+			]]>
+		</if>
+		<if test="endDate != null and endDate !=''">
+			<![CDATA[ 
+				AND DATE_FORMAT(t.apply_date,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR}
+			]]>
+		</if>
+	</sql>
+	
+	<!-- 查询列表信息 -->
+	<select id="findTrailerList" resultType="com.xxm.it.business.vo.TrailerVO" parameterType ="com.xxm.it.business.vo.TrailerVO">
+		 <include refid="query_trailer_sql"></include>
+	  	 <include refid="trailer_query_condition"></include>
+			order by t.create_date desc
+			limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查询列表总数 -->
+	<select id="findTrailerListCount" resultType="java.lang.Integer" parameterType ="com.xxm.it.business.vo.TrailerVO">
+ 		SELECT 
+ 		 	count(t.trailer_id)
+		FROM
+			xxm_trailer t
+		left join xxm_apply_info_t a on a.apply_Info_Id=t.apply_Info_Id
+		left join xxm_customer_t c on c.customer_Id=a.apply_Customer_Id
+		left join xxm_lease_info_t l on l.apply_Info_Id=a.apply_Info_Id
+		WHERE
+			1 = 1
+	  	 <include refid="trailer_query_condition"></include>
+	</select>
+	
+	<!-- 根据贷款编号查询信息 -->
+	<select id="loanContractNoQuery" parameterType="com.xxm.it.business.vo.TrailerVO" resultType="com.xxm.it.business.vo.TrailerVO">
+		SELECT
+			t.apply_Info_Id AS applyInfoId,
+			t.loan_Contract_No AS 'applyVO.loanContractNo',
+			t1.plate_Number AS 'leaseInfoVO.plateNumber',
+			t2.base_Customer_Name AS 'customerVO.baseCustomerName',
+			t2.cert_No AS 'customerVO.certNo',
+			t2.mobile_No AS 'customerVO.mobileNo'
+		FROM
+			xxm_apply_info_t t,
+			xxm_lease_info_t t1,
+			xxm_customer_t t2
+		WHERE
+			t.apply_Info_Id = t1.apply_Info_Id and
+			t.apply_Customer_Id = t2.customer_Id and 
+			t.loan_Contract_No = #{applyVO.loanContractNo,jdbcType=VARCHAR} GROUP BY t.loan_Contract_No;
+		
+	</select>
+	
+	<!-- 添加数据 -->
+	<insert id="addTrailer" parameterType="com.xxm.it.business.vo.TrailerVO" useGeneratedKeys="true" keyProperty="trailerId">
+		INSERT INTO xxm_trailer(
+			proposer,
+			apply_date,
+			apply_remarks,
+			vehicle_items,
+			storage_date,
+			storage_place,
+			acceptance,
+			is_report,
+			is_relationed,
+			storage_remarks,
+			trailer_status,
+			apply_Info_Id,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)VALUES(
+			#{proposer,jdbcType=VARCHAR},
+			#{applyDate,jdbcType=VARCHAR},
+			#{applyRemarks,jdbcType=VARCHAR},
+			#{vehicleItems,jdbcType=VARCHAR},
+			#{storageDate,jdbcType=VARCHAR},
+			#{storagePlace,jdbcType=VARCHAR},
+			#{acceptance,jdbcType=VARCHAR},
+			#{isReport,jdbcType=VARCHAR},
+			#{isRelationed,jdbcType=VARCHAR},
+			#{storageRemarks,jdbcType=VARCHAR},
+			#{trailerStatus,jdbcType=VARCHAR},
+			#{applyInfoId,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			sysdate(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			sysdate()
+		)
+	</insert>
+	
+	<!-- 查询数据 -->
+	<select id="findTrailer" resultType="com.xxm.it.business.vo.TrailerVO" parameterType ="com.xxm.it.business.vo.TrailerVO">
+		 <include refid="query_trailer_sql"></include>
+	  	 <include refid="trailer_query_condition"></include>
+	</select>
+	
+	<!-- 修改数据 -->
+	<update id="updateTrailer" parameterType ="com.xxm.it.business.vo.TrailerVO">
+		UPDATE xxm_trailer SET 
+<!-- 			proposer = #{proposer,jdbcType=VARCHAR}, -->
+<!-- 			apply_date = #{applyDate,jdbcType=VARCHAR}, -->
+<!-- 			apply_remarks = #{applyRemarks,jdbcType=VARCHAR}, -->
+			<if test="vehicleItems != null and vehicleItems !=''">
+				vehicle_items = #{vehicleItems,jdbcType=VARCHAR},
+			</if>
+			<if test="storageDate != null and storageDate !=''">
+				storage_date = #{storageDate,jdbcType=VARCHAR},
+			</if>
+			<if test="storagePlace != null and storagePlace !=''">
+				storage_place = #{storagePlace,jdbcType=VARCHAR},
+			</if>
+			<if test="acceptance != null and acceptance !=''">
+				acceptance = #{acceptance,jdbcType=VARCHAR},
+			</if>
+			<if test="isReport != null and isReport !=''">
+				is_report = #{isReport,jdbcType=VARCHAR},
+			</if>
+			<if test="isRelationed != null and isRelationed !=''">
+				is_relationed = #{isRelationed,jdbcType=VARCHAR},
+			</if>
+			<if test="storageRemarks != null and storageRemarks !=''">
+				storage_remarks = #{storageRemarks,jdbcType=VARCHAR},
+			</if>
+			<if test="trailerStatus != null and trailerStatus !=''">
+				trailer_status = #{trailerStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="auditBy != null and auditBy !=''">
+				audit_by = #{auditBy,jdbcType=VARCHAR},
+			</if>
+			<if test="auditDate != null and auditDate !=''">
+				audit_date = #{auditDate,jdbcType=VARCHAR},
+			</if>
+			<if test="auditRemarcks != null and auditRemarcks !=''">
+				audit_remarcks = #{auditRemarcks,jdbcType=VARCHAR},
+			</if>
+			<if test="processingRemarcks != null and processingRemarcks !=''">
+				processing_remarcks = #{processingRemarcks,jdbcType=VARCHAR},
+			</if>
+			<if test="processingResults != null and processingResults !=''">
+				processing_results = #{processingResults,jdbcType=VARCHAR},
+			</if>
+<!-- 			apply_Info_Id = #{applyInfoId,jdbcType=VARCHAR}, -->
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date =sysdate()
+		WHERE 
+			trailer_id = #{trailerId,jdbcType=VARCHAR}
+	</update>
+	
+	
+	<!-- 详情查询 -->
+	<select id="detailsQueryInfo" resultType="com.xxm.it.business.vo.TrailerVO" parameterType="com.xxm.it.business.vo.TrailerVO">
+		 SELECT
+			t.trailer_id AS trailerId,
+			t.proposer AS proposer,
+			t.apply_date AS applyDate,
+			t.apply_remarks AS applyRemarks,
+			t.audit_by AS auditBy,
+			t.audit_date AS auditDate,
+			t.audit_remarcks auditRemarcks,
+			t.vehicle_items AS vehicleItems,
+			t.storage_date AS storageDate,
+			t.storage_place AS storagePlace,
+			t.acceptance AS acceptance,
+			t.is_report AS isReport,
+			t.is_relationed AS isRelationed,
+			t.storage_remarks AS storageRemarks,
+			t.trailer_status AS trailerStatus,
+			t.apply_Info_Id AS applyInfoId,
+			t.processing_remarcks AS processingRemarcks,
+			t.processing_results AS processingResults,
+			a.loan_Contract_No AS 'applyVO.loanContractNo',
+			l.plate_Number AS 'leaseInfoVO.plateNumber',
+			l.frame_Number AS 'leaseInfoVO.frameNumber',
+			l.engine_Number AS 'leaseInfoVO.engineNumber',
+			k.uploadName AS 'trailerFileVO.uploadName',
+			k.uploadDate AS 'trailerFileVO.uploadDate'
+		FROM
+			xxm_trailer t
+		left join xxm_apply_info_t a on a.apply_Info_Id=t.apply_Info_Id
+		left join xxm_lease_info_t l on l.apply_Info_Id=a.apply_Info_Id
+		LEFT JOIN xxm_trailer_file_t k on k.trailer_id = t.trailer_id
+		WHERE t.trailer_id = #{trailerId,jdbcType=VARCHAR} GROUP BY k.trailer_id;
+		
+	</select>
+	<!-- 委托信息保存 -->
+	<insert id="saveFile" parameterType="com.xxm.it.business.vo.TrailerVO">
+		insert into xxm_trailer_file_t(
+			trailer_id,
+			file_Id,
+			fileName,
+			fileURL,
+			uploadName,
+			uploadDate,
+			create_by,
+			create_date
+		)values(
+			#{trailerId,jdbcType=VARCHAR},
+			#{fileId,jdbcType=VARCHAR},
+			#{fileName,jdbcType=VARCHAR},
+			#{fileURL,jdbcType=VARCHAR},
+			#{uploadName,jdbcType=VARCHAR},
+			#{uploadDate,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			sysdate()
+		);
+	</insert>
+	<!-- 增加上传图片的信息 -->
+	<select id="queryTrailerImageInfo" resultType="com.xxm.it.business.vo.TrailerFileVo" parameterType="com.xxm.it.business.vo.TrailerFileVo">
+		SELECT
+			t.file_Id AS fileId,
+			t.fileName AS fileName,
+			t1.attr_sys_name AS fileURL
+		FROM
+			xxm_trailer_file_t t,
+			xxm_attachment_t t1
+		WHERE
+			t.file_Id = t1.attr_id and 
+			t.trailer_id = #{trailerId,jdbcType=VARCHAR}
+	</select>
+	<!-- 车辆入库信息查询 -->
+	<select id="detailsQuery" parameterType="com.xxm.it.business.vo.TrailerVO" resultType="com.xxm.it.business.vo.TrailerVO">
+		<include refid="query_trailer_sql"></include>
+		 and t.trailer_id = #{trailerId,jdbcType=VARCHAR}
+	</select>
+</mapper>

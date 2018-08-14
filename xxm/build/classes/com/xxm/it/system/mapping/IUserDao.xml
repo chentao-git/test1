@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.system.dao.IUserDao" >
+	<sql id="query_user_sql">
+		 SELECT t.user_id as userId,
+				t.name as name,
+				t.account as account,
+				t.password as password,
+				t.phone as phone,
+				t.sex as sex,
+				t.age as age,
+				t.paper_type as paperType,
+				t.paper_No as paperNo,
+				t.employee_No as employeeNo,
+				t.type as type,
+				getBaseDateNameByCode('USER_TYPE',t.type,1) AS "typeName",
+				t.status as status,
+				t.create_by as createBy,
+				t.create_date as createDate,
+				t.last_update_by as lastUpdateBy,
+				t.last_update_date as lastUpdateDate,
+				(SELECT GROUP_CONCAT(r.role_name,'#',DATEDIFF(r.valid_date,NOW()))
+					FROM xxm_user_role_t ur
+				  LEFT JOIN xxm_role_t r on (ur.role_id = r.role_id)
+				 WHERE ur.user_id = t.user_id) roleNameDesc,
+				(select us.name from xxm_user_t us where us.user_id = t.create_by) createByName,
+			  	(select us.name from xxm_user_t us where us.user_id = t.last_update_by) lastUpdateByName
+		FROM  xxm_user_t t
+		WHERE 1=1
+	</sql>
+	
+	<sql id="user_select_condition">
+		 <if test="status != null and status !=''">
+	    	AND t.status=#{status,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="userId != null and userId !=''">
+	    	AND t.user_id=#{userId,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="name != null and name !=''">
+	    	AND t.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+	  	 </if>
+	  	 <if test="type != null and type !=''">
+	    	AND t.type =#{type,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="account != null and account !=''">
+	    	AND t.account =#{account,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="password != null and password !=''">
+	    	AND t.password=#{password,jdbcType=VARCHAR}
+	  	 </if>
+	</sql>
+	
+	<!-- 查询用户列表信息-->
+	<select id="findUserList" resultType="com.xxm.it.system.vo.UserVO" parameterType="com.xxm.it.system.vo.UserVO">
+		 <include refid="query_user_sql"></include>
+		 <include refid="user_select_condition"></include>
+		 AND status='0'
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查询用户列表总数-->
+	<select id="findUserListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.system.vo.UserVO">
+		 SELECT count(user_id) FROM xxm_user_t t WHERE 1=1 AND status='0'
+		 <include refid="user_select_condition"></include>
+	</select>
+	
+	
+	<!-- 添加用户 -->
+	<insert id="addUser" parameterType="com.xxm.it.system.vo.UserVO" useGeneratedKeys="true" keyProperty="userId">
+		 INSERT INTO xxm_user_t (
+			NAME,
+			account,
+			PASSWORD,
+			phone,
+			sex,
+			age,
+			paper_type,
+			paper_No,
+			employee_No,
+			type,
+			STATUS,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+			(
+				#{name,jdbcType=VARCHAR},
+				#{account,jdbcType=VARCHAR},
+				#{password,jdbcType=VARCHAR},
+				#{phone,jdbcType=VARCHAR},
+				#{sex,jdbcType=VARCHAR},
+				#{age,jdbcType=VARCHAR},
+				#{paperType,jdbcType=VARCHAR},
+				#{paperNo,jdbcType=VARCHAR},
+				#{employeeNo,jdbcType=VARCHAR},
+				#{type,jdbcType=VARCHAR},
+				#{status,jdbcType=VARCHAR},
+				#{createBy,jdbcType=VARCHAR},
+				sysdate(),
+				#{lastUpdateBy,jdbcType=VARCHAR},
+				sysdate()
+			)
+	</insert>
+	
+	<!-- 添加用户 -->
+	<insert id="addUsers" parameterType="com.xxm.it.system.vo.UserVO" useGeneratedKeys="true" keyProperty="userId">
+		INSERT INTO act_id_user (
+		 	ID_,
+		 	REV_
+		)
+		VALUES
+		(
+			#{userId,jdbcType=VARCHAR},
+			'1'
+		)
+	</insert>
+	
+	<!-- 查询用户信息-->
+	<select id="findUser" resultType="com.xxm.it.system.vo.UserVO" parameterType="com.xxm.it.system.vo.UserVO">
+		 <include refid="query_user_sql"></include>
+	  	 <include refid="user_select_condition"></include>
+	</select>
+	
+	<!-- 查询用户信息(List)-->
+	<select id="findUsers" resultType="com.xxm.it.system.vo.UserVO" parameterType="com.xxm.it.system.vo.UserVO">
+		 <include refid="query_user_sql"></include>
+		 <include refid="user_select_condition"></include>
+	</select>
+	
+	<!-- 修改用户信息 -->
+	<update id="updateUser">
+		UPDATE xxm_user_t SET 
+			name =#{name,jdbcType=VARCHAR},
+			account =#{account,jdbcType=VARCHAR},
+			password =#{password,jdbcType=VARCHAR},
+			phone =#{phone,jdbcType=VARCHAR},
+			sex =#{sex,jdbcType=VARCHAR},
+			age =#{age,jdbcType=VARCHAR},
+			paper_type =#{paperType,jdbcType=VARCHAR},
+			paper_No =#{paperNo,jdbcType=VARCHAR},
+			employee_No = #{employeeNo,jdbcType=VARCHAR},
+			type = #{type,jdbcType=VARCHAR},
+			last_update_by =#{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			user_id = #{userId, jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 删除用户信息 -->
+	<delete id="deleteUser" parameterType="com.xxm.it.system.vo.UserVO">
+		UPDATE xxm_user_t SET 
+			status= #{status, jdbcType=VARCHAR}
+		WHERE user_id in 
+		<foreach collection="userIds" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	
+	
+	<!-- 查询用户角色信息 -->
+	<select id="findUserRoleList" parameterType="com.xxm.it.system.vo.UserRoleVO" resultType="com.xxm.it.system.vo.UserRoleVO">
+		select role_Id as roleId,
+			   user_Id as userId
+		from xxm_user_role_t t
+		where t.user_Id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 增加用户角色信息 -->
+	<insert id="addUserRole" parameterType="com.xxm.it.system.vo.UserRoleVO">
+		INSERT INTO xxm_user_role_t (
+			role_Id,
+			user_Id,
+			create_by,	
+			create_date,	
+			last_update_by,	
+			last_update_date
+		)
+		VALUES
+		(
+			#{roleId,jdbcType=VARCHAR},
+			#{userId,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			sysdate(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			sysdate()
+		)
+	</insert>
+	
+	
+	<!-- 删除用户角色信息 -->
+	<insert id="deleteUserRole">
+		delete from xxm_user_role_t 
+		where user_Id = #{userId,jdbcType=VARCHAR}
+	</insert>
+	
+	
+	<!-- 查询用户所有菜单权限信息 -->
+	<select id="findUserPermissionsList" parameterType="com.xxm.it.system.vo.UserVO" resultType="com.xxm.it.system.vo.MenuVO">
+		SELECT DISTINCT
+			t.user_id AS userId,
+			t2.menu_Id AS menuId,
+			t3.menu_name AS menuName,
+			t3.menu_path AS menuPath,
+			t3.menu_type AS menuType,
+			t3.parent_menu_id AS parentMenuId,
+			t3.sort_by AS sortBy,
+			t3.extend_Field1 as extendField1,
+			t3.extend_Field2 as extendField2,
+			t3.extend_Field3 as extendField3,
+			t3.extend_Field4 as extendField4
+		FROM xxm_user_t t
+		INNER JOIN xxm_user_role_t t1 ON (t.user_id = t1.user_id)
+		INNER JOIN xxm_role_permissions_t t2 ON (t1.role_id = t2.role_Id)
+		INNER JOIN xxm_menu_t t3 ON (t2.menu_Id = t3.menu_id)
+		WHERE t.user_id = #{userId,jdbcType=VARCHAR}
+		  and exists (
+				select 1 from xxm_role_t r 
+			  where r.role_id = t1.role_id
+			    and r.valid_date >= sysdate())
+		  and t3.disabled_flag = 0
+		ORDER BY t3.sort_by
+	</select>
+	
+</mapper>

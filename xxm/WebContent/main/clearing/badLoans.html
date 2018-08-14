@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>不良贷款结清</title>
+<meta name="keywords" content="不良贷款结清">
+<meta name="description" content="不良贷款结清">
+<link rel="shortcut icon" href="favicon.ico">
+<link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+<link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+<link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+<link href="../css/animate.min.css" rel="stylesheet">
+<link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+<!-- <link rel="stylesheet" href="../common/zTree/css/layout.css" type="text/css"> -->
+<link rel="stylesheet" href="../common/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<link rel="stylesheet" href="../common/loading/load.css"  media="all">
+</head>
+<style>
+	.tab-custom td:nth-child(odd){background-color:#f9f9f9;width:10%;text-align:right; }
+	.tab-custom td:nth-child(even){width:23%; }
+	.tab-custom td,th{border:1px solid #DDD!important}
+</style>
+<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">          
+		                <div class="ibox-content">
+	                        <form id="clientForm"  class="wizard-big">
+	                            <fieldset>
+	                                <h2>贷款信息</h2>
+	                                <div class="row">
+	                                    <table class="table table-bordered tab-custom" id="client-table">
+				                            <tbody>
+				                                <tr>
+				                                    <td>贷款编号：</td>
+				                                    <td>
+					                                    <div class="more_setting_input input-group">
+															<input type="text" name="loanContractNo" id="loanContractNo" class="form-control ng-pristine ng-untouched ng-valid ng-empty" placeholder="请输入贷款编号"> 
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button" id="btnSearch" style="width:50px;height:34px;">
+																	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+																</button>
+															</span>
+														</div>
+													</td>
+				                                  	<td>客户名称：</td>
+				                                    <td><label name="baseCustomerName" id="baseCustomerName" class="form-control"></label></td>
+				                                    <td>客户手机：</td>
+				                                    <td><label name="mobileNo" id="mobileNo" class="form-control"></label></td>
+				                                </tr>
+				                                <tr>
+					                                <td>证件类型：</td>
+					                                <td><label name="certType" id="certType" class="form-control"></label></td>
+				                                    <td>证件编号：</td>
+				                                    <td><label name="certNo" id="certNo" class="form-control"></label></td>
+				                                	<td>贷款金额：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                </tr>
+				                                <tr>
+				                                	<td>期数：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                     <td>已还本金：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                    <td>已还期数：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                </tr>
+				                                <tr>
+				                                    <td>已还利息：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                    <td>已交罚息：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                    <td>已逾期期数：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                </tr>
+				                                 <tr>
+				                                 	<td>已逾期总金额：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                    <td>剩余本金：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                    <td>应交利息：</td>
+				                                    <td><label class="form-control"></label></td>
+				                                </tr>
+				                                <tr>
+				                                 	<td>应交罚息：</td>
+				                                    <td><label class="form-control"></label></td>
+				                            	</tr>
+				                            </tbody>
+				                        </table>
+	                                </div>
+	                            </fieldset>
+	                            </form>
+	                            <form id="normalPayForm"  class="wizard-big">
+	                            <fieldset>
+	                                <h2>结清信息</h2>
+	                                <div class="row">
+	                                    <table class="table table-bordered tab-custom" id="normalPayInfo-table">
+				                            <tbody>
+				                                <tr>
+				                                    <td>结清原因：</td>
+				                                    <td>
+					                                    <select name="clearingType" id="clearingType" class="form-control ng-pristine ng-untouched ng-valid ng-not-empty">
+												            <option value="1">正常结清</option>
+												            <option value="2">提前还款</option>
+												            <option value="3">不良贷款追回</option>
+												            <option value="4">抵押物拍卖</option>
+												            <option value="5">贷款保险理赔</option>
+												            <option value="6">不良资产出售</option>
+												            <option selected = "selected" value="7">不良贷款结清</option>
+												         </select>
+													</td>
+				                                    <td>结清时间：</td>
+				                                    <td>
+				                                    	<input type="text" name="clearingDate" class="laydate-icon form-control layer-date" id="clearingDate" placeholder="请输入结清时间">
+				                                    </td>                                    
+				                                    <td>经手人：</td>
+				                                    <td><input name="clearingPerson" type="text" class="form-control required"></td>
+				                                </tr>
+				                                <tr>
+				                                	<td>登记人：</td>
+				                                    <td><input type="text" name="registrant" class="form-control required"></td>
+				                                    <td>备注：</td>
+				                                    <td colspan="3"><input type="text" name="remark" class="form-control required"></td>
+				                                </tr>
+				                            </tbody>
+				                        </table>
+	                                </div>
+	                            </fieldset>
+	                            <div><input name="applyInfoId" id="applyInfoId" type="hidden" class="form-control"></div>
+	                            <div style="float: right" class="modal_btn_style">					
+									<button type="button" style="width: 80px;" id="btnClearing" class="btn btn-primary">结清</button>
+									<button type="button" style="width: 80px;" id="btnCancel" class="btn btn-primary">取消</button>
+								</div>
+	                        </form>
+	                    </div>
+				    </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <script src="../js/plugins/staps/jquery.steps.min.js"></script>
+    	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+    	<script src="../js/plugins/validate/messages_zh.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="badLoans.js"></script>
+	    <script src="../common/loading/load.js" charset="utf-8"></script>
+	</body>
+</html>

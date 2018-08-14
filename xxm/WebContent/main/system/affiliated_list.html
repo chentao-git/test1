@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>挂靠公司管理</title>
+	    <meta name="keywords" content="挂靠公司管理">
+	    <meta name="description" content="挂靠公司管理">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link rel="stylesheet" href="../common/loading/load.css"  media="all">
+	</head>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+                        <div class="panel-group" id="accordion">
+                             <div class="panel panel-default">
+                                 <div id="collapseOne" class="panel-collapse collapse in">
+                                 
+                                 	<div id="toolbar" class="btn-group">
+							        	<form id="formSearch">
+							        		<div style="float: left;">
+							        			<button id="btnAdd" type="button" class="btn btn-primary">
+													<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+												</button>
+												<button id="btnDelete" type="button" class="btn btn-primary">
+													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+												</button>
+									        	<button type="button" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+										        <button  type="reset" id="btnRest" class="btn btn-primary"> 重 置</button>
+									        </div>
+									        <div style="float: left;">&nbsp;</div>
+									        <div style="float: left;">
+									       		 <input type="text" placeholder="请输入挂靠公司名称" class="form-control" id="name">
+									        </div>
+									        <div style="float: left;">&nbsp;</div>
+									        <div style="float: left;">
+									        	  <input type="text" placeholder="请输入商业伙伴编号" class="form-control" id="account">
+									        </div>
+			 				            </form>
+						        	 </div>
+                                     
+                                 </div>
+                             </div>
+                        </div>
+				        <table id="tbAffiliated"></table>
+				    </div>
+				    
+				    <!-- 弹出框 -->
+				    <div class="modal inmodal fade" id="affiliatedModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    	 <div class="modal-dialog modal-lg">
+                         	<div class="modal-content animated">
+                            	<div class="modal-header">
+                                 	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                                 	<h4 class="modal-title">添加挂靠公司</h4>
+                                </div>
+                               	<div class="modal-body">
+                               		<div id="edit">
+	                                   	 <form class="form-horizontal m-t" id="affiliatedForm">
+	                                   	 	<input type="hidden" id="modalType" value="" />
+	                                   	 	<input type="hidden" id="affiliatedId" value="" />
+				                            <div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-2 control-label">挂靠商名称：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="companyAffiliatedName" name="companyAffiliatedName" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                                 <div>
+					                                <label class="col-sm-2 control-label">操作公司：</label>
+					                                <div class="col-sm-4">
+					                                    <select id="operationCompanyVl" class="form-control" name="operationCompanyVl">
+					                                        <option value="0">请选择</option>
+					                                    </select>
+					                                </div>
+				                                </div> 
+				                            </div>
+				                             <div class="form-group">
+				                            	<div>
+					                            	<label class="col-sm-2 control-label">分类：</label>
+					                                <div class="col-sm-4">
+					                                    <select id="categoryVL" class="form-control" name="categoryVL">
+					                                        <option value="0">请选择</option>
+					                                    </select>
+					                                </div>
+					                            </div>
+				                                <div>
+					                            	<label class="col-sm-2 control-label">商业伙伴编号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="businessParnterNo" name=businessParnterNo class="form-control" type="text" >
+					                                </div>
+					                            </div>
+				                            </div>
+				                            <div class="form-group">
+				                                <div>
+					                                <label class="col-sm-2 control-label">商业伙伴类型：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="businessParnterType" name="businessParnterType" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">组织结构代码：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="orgCode" name="orgCode" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                                <div>
+					                                <label class="col-sm-2 control-label">营业执照号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="businessLicenseNo" name="businessLicenseNo" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">传真：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="fax" name="fax" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                                <div>
+					                                <label class="col-sm-2 control-label">邮编：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="postCode" name="postCode" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">联系人：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="contactPerson" name="contactPerson" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div id="" class="form-group">
+				                                <div>
+					                                <label class="col-sm-2 control-label">联系电话：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="contactPhone" name="contactPhone" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                                <div>
+				                            	<label class="col-sm-2 control-label ">联系地址：</label>
+					                            <div class="col-sm-4">
+					                               <input id="contactAddress" name="contactAddress" class="form-control" type="text">
+					                            </div>
+				                              </div>
+				                            </div>
+				                            <div class="form-group">
+				                             <div>
+				                            	<label class="col-sm-2 control-label ">证件号码：</label>
+					                            <div class="col-sm-4">
+					                               <input id="certNo" name="certNo" class="form-control" type="text">
+					                            </div>
+				                              </div>
+				                            </div>
+				                        </form>
+			                        </div>
+			                        
+			                        <!-- 修改信息 -->
+	                               	<div id="detail" class="form-horizontal m-t">
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">挂靠商名称：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="companyAffiliatedName" name="companyAffiliatedName" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">操作公司：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="operationCompanyVl" name="operationCompanyVl" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                            	<label class="col-sm-2 control-label">分类：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="categoryVL" name="categoryVL" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">商业伙伴编号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="businessParnterNo" name="businessParnterNo" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">商业伙伴类型：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="businessParnterType" name="businessParnterType" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">组织结构代码：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="orgCode" name="orgCode" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">营业执照号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="businessLicenseNo" name="businessLicenseNo" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">传真：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="fax" name="fax" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">邮编：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="postCode" name="postCode" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">联系人：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="contactPerson" name="contactPerson" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">联系电话：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="contactPhone" name="contactPhone" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">联系地址：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="contactAddress" name="contactAddress" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">证件号码：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="certNo" name="certNo" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                           
+			                            
+			                            
+			                            
+	                               	</div>
+                               	</div>
+                               	<div class="modal-footer">
+                                   	<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                   	<button type="submit" class="btn btn-primary" id="btnSave">保存</button>
+                               	</div>
+                             </div>
+                         </div>
+                     </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="affiliated_list.js"></script>
+	    <script src="../common/loading/load.js" charset="utf-8"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

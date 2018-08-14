@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用户分组管理</title>
+<meta name="keywords" content="用户分组管理">
+<meta name="description" content="用户分组管理">
+<link rel="shortcut icon" href="favicon.ico">
+<link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+<link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+<link href="../css/plugins/bootstrap-table/bootstrap-table.min.css"
+	rel="stylesheet">
+<link href="../css/animate.min.css" rel="stylesheet">
+<link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+<!-- <link rel="stylesheet" href="../common/zTree/css/layout.css" type="text/css"> -->
+<link rel="stylesheet"
+	href="../common/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<link rel="stylesheet" href="../common/loading/load.css"  media="all">
+
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				<div class="panel-body">
+					<!--
+					<div class="panel-group" id="accordion">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="tabs_panels.html#collapseOne">查询条件</a>
+								</h5>
+							</div>
+							<div id="collapseOne" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<form id="formSearch" class="form-horizontal">
+										<div class="form-group" style="margin-top: 15px">
+											<label class="control-label col-sm-1"
+												for="txt_search_departmentname">姓名：</label>
+											<div class="col-sm-5">
+												<input type="text" placeholder="请输入姓名" class="form-control" id="actIdGroupREV">
+											</div>
+										</div>
+
+										<div style="text-align: center;">
+											<button type="button" style="width: 80px;" id="btnQuery"
+												class="btn btn-primary">查 询</button>
+											<button type="reset" style="width: 80px;" id="btnRest"
+												class="btn btn-primary">重 置</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					-->
+					<div id="toolbar" class="btn-group">
+						<form id="formSearch">
+			        		<div style="float: left;">
+			        			<button id="btnAdd" type="button" class="btn btn-primary">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+								</button>
+								<button id="btnDelete" type="button" class="btn btn-primary">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+								</button>
+					        	<button type="button" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+						        <button type="reset" id="btnRest" class="btn btn-primary"> 重 置</button>
+					        </div>
+					        <div style="float: left;">&nbsp;</div>
+					        <div style="float: left;">
+					        	<input type="text" placeholder="请输入分组名称" class="form-control" id="actIdGroupNAME">
+					        </div>
+					        <div style="float: left;">&nbsp;</div>
+					        <div style="float: left;">
+					        	<input type="text" placeholder="请输入分组类型" class="form-control" id="actIdGroupTYPE">
+					        </div>
+				    	</form>
+					</div>
+					<table id="tbActIdGroup"></table>
+				</div>
+				<!-- 弹出框 -->
+				<div class="modal inmodal fade" id="actIdGroupModal" tabindex="-1"
+					role="dialog" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content animated">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">
+									<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+								</button>
+								<h4 class="modal-title">添加权限组</h4>
+							</div>
+							<div class="modal-body">
+								<div id="edit">
+									<form class="form-horizontal m-t" id="actIdGroupForm">
+										<input type="hidden" id="modalType" value="" /> <input
+											type="hidden" id="actIdGroupID" value="" />
+										<div class="form-group">
+											<div>
+												<label class="col-sm-3 control-label">ID：</label>
+												<div class="col-sm-8">
+													<input id="actIdGroupID" name="actIdGroupID" class="form-control" type="text">
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div>
+												<label class="col-sm-3 control-label">权限组名称：</label>
+												<div class="col-sm-8">
+													<input id="actIdGroupNAME" name="actIdGroupNAME" class="form-control" type="text">
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div>
+												<label class="col-sm-3 control-label">类型：</label>
+												<div class="col-sm-8">
+													<input id="actIdGroupTYPE" name="actIdGroupTYPE" class="form-control" type="text">
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<!--  -->
+								<div id="detail" class="form-horizontal m-t">
+									<div class="form-group">
+										<label class="col-sm-3 control-label">姓名：</label>
+										<div class="col-sm-8">
+											<label id="actIdGroupREV" name="actIdGroupREV" class="form-control"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">部门：</label>
+										<div class="col-sm-8">
+											<label id="actIdGroupNAME" name="actIdGroupNAME"
+												class="form-control"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">类型：</label>
+										<div class="col-sm-8">
+											<label id="actIdGroupTYPE" name="actIdGroupTYPE" class="form-control"></label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+								<button type="submit" class="btn btn-primary" id="btnSave">保存</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- End Panel Basic -->
+	</div>
+	
+	<div class="modal inmodal fade" id="permissionModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content animated">
+				<div class="panel-body ">
+					<input id="actIdGroupID" name ="actIdGroupID" type="hidden" value="" />
+					<div class="modal-header">
+					<h4 class="modal-title">保存权限组</h4>
+					</div>
+					 <form id="formSearch" class="form-horizontal">
+					<table>
+						<tr style="text-align: center;">
+							<td style="vertical-align: top;">
+								<div id="toolbar2" class="btn-group">
+									<button id="btnSelect" type="button" class="btn btn-info">
+										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询
+									</button>
+									<button id="btnDelete" type="reset" class="btn btn-info" style="margin-left: 10px;">
+										<span class="glyphicon glyphicon-refresh" aria-hidden="true" ></span>重置
+									</button>
+									<div class="col-sm-7">
+										<input type="text" placeholder="请输入用户姓名" class="form-control" id="name">
+									</div>
+								</div>
+								<table id="tbPermission" ></table>
+							</td>
+							<td style="vertical-align: middle;">
+								<button type="button" class="btn btn-primary"  id="btnMove" style="margin-bottom: 10px; margin-left: 2%">添加</button>
+								<button type="button" class="btn btn-primary" id="btnRemove">删除</button>
+							</td>
+							<td style="vertical-align: top;"><table id="tbPacket" style="widows:372px; height: 357px;"></table></td>
+						</tr>
+					</table>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+					<button type="submit" class="btn btn-primary" id="btnSave1">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="../js/jquery.min.js?v=2.1.4"></script>
+	<script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	<script src="../js/content.min.js?v=1.0.0"></script>
+	<script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	<script
+		src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	<script
+		src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	<!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	<script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript"
+		src="../common/zTree/js/jquery.ztree.core.js"></script>
+	<script type="text/javascript"
+		src="../common/zTree/js/jquery.ztree.excheck.js"></script>
+	<script type="text/javascript"
+		src="../common/zTree/js/jquery.ztree.exedit.js"></script>
+	<script src="../common/js/CommonUtils.js"></script>
+	<script src="../js/plugins/layer/laydate/laydate.js"></script>
+	<script src="actIdGroup_list.js"></script>
+	<script src="../common/loading/load.js" charset="utf-8"></script>
+</body>
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

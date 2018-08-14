@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.business.dao.IMsMortgageInfoDao" >
+	<sql id="query_mortgageInfo_sql">
+		 SELECT
+			t.mortgageInfo_id AS mortgageInfoId,
+			t.proposal_no AS proposalNo,
+			t.loan_no AS loanNo,
+			t.apply_no AS applyNo,
+			t.policy_no AS policyNo,
+			t.appli_name AS appliName,
+			t.insured_name AS insuredName,
+			t.unit_amount AS unitAmount,
+			t.loan_no3 AS loanNo3,
+			t.guarantee_type AS guaranteeType,
+			getBaseDateNameByCode('GUARANTEE_TYPE',t.guarantee_type,1) AS "guaranteeTypeName",
+			t.guarantee_name AS guaranteeName,
+			t.deliver_date AS deliverDate,
+			t.paid_times AS paidTimes,
+			t.repaid_type AS repaidType,
+			getBaseDateNameByCode('REPAID_TYPE',t.repaid_type,1) AS "repaidTypeName",
+			t.loan_bank_code AS loanBankCode,
+			getBaseDateNameByCode('LOAN_BANK_CODE',t.loan_bank_code,1) AS "loanBankCodeName",
+			t.loan_bank_name AS loanBankName,
+			t.loan_nature AS loanNature,
+			getBaseDateNameByCode('LOAN_NATURE',t.loan_nature,1) AS "loanNatureName",
+			t.other_mortgage AS otherMortgage,
+			t.other_nature AS otherNature,
+			t.use_nature_code AS useNatureCode,
+			getBaseDateNameByCode('USE_NATURE_CODE',t.use_nature_code,1) AS "useNatureCodeName",
+			t.pre_char1 AS preChar1,
+			getBaseDateNameByCode('PRE_CHAR1',t.pre_char1,1) AS "preChar1Name",
+			t.land_agent AS landAgent,
+			t.pre_char2 AS preChar2,
+			t.pre_char3 AS preChar3,
+			t.pre_char4 AS preChar4,
+			t.loan_year AS loanYear,
+			getBaseDateNameByCode('LOAN_YEAR',t.loan_year,1) AS "loanYearName",
+			t.nonlocal_flag AS nonlocalFlag,
+			getBaseDateNameByCode('NONLOCAL_FLAG',t.nonlocal_flag,1) AS "nonlocalFlagName",
+			t.license_no2 AS licenseNo2,
+			t.step_hull AS stepHull,
+			getBaseDateNameByCode('STEP_HULL',t.step_hull,1) AS "stepHullName",
+			t.alias_name AS aliasName,
+			t.model_codeAlias AS modelCodeAlias,
+			t.car_dealer_name AS carDealerName,
+			t.monopoly_name AS monopolyName,
+			t.make_date AS makeDate,
+			t.suspend_startDate AS suspendStartDate,
+			t.warrantor_name AS warrantorName,
+			t.loan_usage AS loanUsage,
+			getBaseDateNameByCode('LOAN_USAGE',t.loan_usage,1) AS "loanUsageName",
+			t.loan_no5 AS loanNo5,
+			t.veh_cert_no AS vehCertNo,
+			t.photo_no AS photoNo,
+			t.community_property AS communityProperty,
+			getBaseDateNameByCode('COMMUNITY_PROPERTY',t.community_property,1) AS "communityPropertyName",
+			t.make_start_date AS makeStartDate,
+			t.make_end_date AS makeEndDate,
+			t.mort_reg_date AS mortRegDate,
+			t.filekey_name AS filekeyName,
+			t.mortgageInfo_status AS mortgageInfoStatus,
+			t.lease_info_id AS leaseInfoId,
+			t.apply_Info_Id AS applyInfoId,
+			t.create_by AS createBy,
+			(select us.name from xxm_user_t us where us.user_id = t.create_by) createByName,
+			t.create_date AS createDate,
+			t.last_update_by AS lastUpdateBy,
+			(select us.name from xxm_user_t us where us.user_id = t.last_update_by) lastUpdateByName,
+			t.last_update_date AS lastUpdateDate
+		FROM
+			ms_mortgageInfo t
+		WHERE
+			1 = 1
+	</sql>
+	
+	<sql id="mortgageInfo_select_condition">
+		<if test="mortgageInfoId != null and mortgageInfoId !=''">
+	    	AND t.mortgageInfo_id=#{mortgageInfoId,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="proposalNo != null and proposalNo !=''">
+	    	AND t.proposal_no=#{proposalNo,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="applyInfoId != null and applyInfoId !=''">
+	    	AND t.apply_Info_Id=#{applyInfoId,jdbcType=VARCHAR}
+	  	 </if>
+	</sql>
+	
+	<!-- 车辆抵押登记信息传输列表 -->
+	<select id="findMortgageInfoList" resultType="com.xxm.it.business.vo.MsMortgageInfoVO" parameterType="com.xxm.it.business.vo.MsMortgageInfoVO">
+		 <include refid="query_mortgageInfo_sql"></include>
+		 <include refid="mortgageInfo_select_condition"></include>
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 车辆抵押登记信息传输总数-->
+	<select id="findMortgageInfoListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.business.vo.MsMortgageInfoVO">
+		 SELECT count(mortgageInfo_id) FROM ms_mortgageInfo t 
+		 WHERE 1=1
+		 <include refid="mortgageInfo_select_condition"></include>
+	</select>
+	
+	<!-- 查询车辆抵押登记信息传输 -->
+	<select id="findMortgageInfo" resultType="com.xxm.it.business.vo.MsMortgageInfoVO" parameterType="com.xxm.it.business.vo.MsMortgageInfoVO">
+		 <include refid="query_mortgageInfo_sql"></include>
+		 <include refid="mortgageInfo_select_condition"></include>
+	</select>
+	
+	<!-- 添加车辆抵押登记信息传输 -->
+	<insert id="addMortgageInfo" parameterType="com.xxm.it.business.vo.MsMortgageInfoVO" useGeneratedKeys="true" keyProperty="mortgageInfoId">
+		 INSERT INTO ms_mortgageInfo (
+			proposal_no,
+			loan_no,
+			apply_no,
+			policy_no,
+			appli_name,
+			insured_name,
+			unit_amount,
+			loan_no3,
+			guarantee_type,
+			guarantee_name,
+			deliver_date,
+			paid_times,
+			repaid_type,
+			loan_bank_code,
+			loan_bank_name,
+			loan_nature,
+			other_mortgage,
+			other_nature,
+			use_nature_code,
+			pre_char1,
+			land_agent,
+			pre_char2,
+			pre_char3,
+			pre_char4,
+			loan_year,
+			nonlocal_flag,
+			license_no2,
+			step_hull,
+			alias_name,
+			model_codeAlias,
+			car_dealer_name,
+			monopoly_name,
+			make_date,
+			suspend_startDate,
+			warrantor_name,
+			loan_usage,
+			loan_no5,
+			veh_cert_no,
+			photo_no,
+			community_property,
+			make_start_date,
+			make_end_date,
+			mort_reg_date,
+			filekey_name,
+			mortgageInfo_status,
+			lease_info_id,
+			apply_Info_Id,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+			(
+				#{proposalNo,jdbcType=VARCHAR},
+				#{loanNo,jdbcType=VARCHAR},
+				#{applyNo,jdbcType=VARCHAR},
+				#{policyNo,jdbcType=VARCHAR},
+				#{appliName,jdbcType=VARCHAR},
+				#{insuredName,jdbcType=VARCHAR},
+				#{unitAmount,jdbcType=VARCHAR},
+				#{loanNo3,jdbcType=VARCHAR},
+				#{guaranteeType,jdbcType=VARCHAR},
+				#{guaranteeName,jdbcType=VARCHAR},
+				#{deliverDate,jdbcType=VARCHAR},
+				#{paidTimes,jdbcType=VARCHAR},
+				#{repaidType,jdbcType=VARCHAR},
+				#{loanBankCode,jdbcType=VARCHAR},
+				#{loanBankName,jdbcType=VARCHAR},
+				#{loanNature,jdbcType=VARCHAR},
+				#{otherMortgage,jdbcType=VARCHAR},
+				#{otherNature,jdbcType=VARCHAR},
+				#{useNatureCode,jdbcType=VARCHAR},
+				#{preChar1,jdbcType=VARCHAR},
+				#{landAgent,jdbcType=VARCHAR},
+				#{preChar2,jdbcType=VARCHAR},
+				#{preChar3,jdbcType=VARCHAR},
+				#{preChar4,jdbcType=VARCHAR},
+				#{loanYear,jdbcType=VARCHAR},
+				#{nonlocalFlag,jdbcType=VARCHAR},
+				#{licenseNo2,jdbcType=VARCHAR},
+				#{stepHull,jdbcType=VARCHAR},
+				#{aliasName,jdbcType=VARCHAR},
+				#{modelCodeAlias,jdbcType=VARCHAR},
+				#{carDealerName,jdbcType=VARCHAR},
+				#{monopolyName,jdbcType=VARCHAR},
+				#{makeDate,jdbcType=VARCHAR},
+				#{suspendStartDate,jdbcType=VARCHAR},
+				#{warrantorName,jdbcType=VARCHAR},
+				#{loanUsage,jdbcType=VARCHAR},
+				#{loanNo5,jdbcType=VARCHAR},
+				#{vehCertNo,jdbcType=VARCHAR},
+				#{photoNo,jdbcType=VARCHAR},
+				#{communityProperty,jdbcType=VARCHAR},
+				#{makeStartDate,jdbcType=VARCHAR},
+				#{makeEndDate,jdbcType=VARCHAR},
+				#{mortRegDate,jdbcType=VARCHAR},
+				#{filekeyName,jdbcType=VARCHAR},
+				#{mortgageInfoStatus,jdbcType=VARCHAR},
+				#{leaseInfoId,jdbcType=VARCHAR},
+				#{applyInfoId,jdbcType=VARCHAR},
+				#{createBy,jdbcType=VARCHAR},
+				sysdate(),
+				#{lastUpdateBy,jdbcType=VARCHAR},
+				sysdate()
+			)
+	</insert>
+	
+	<!-- 修改车辆抵押登记信息传输 -->
+	<update id="updateMortgageInfo" parameterType="com.xxm.it.business.vo.MsMortgageInfoVO">
+		UPDATE ms_mortgageInfo SET 
+			proposal_no = #{proposalNo,jdbcType=VARCHAR},
+			loan_no = #{loanNo,jdbcType=VARCHAR},
+			apply_no = #{applyNo,jdbcType=VARCHAR},
+			policy_no = #{policyNo,jdbcType=VARCHAR},
+			appli_name = #{appliName,jdbcType=VARCHAR},
+			insured_name = #{insuredName,jdbcType=VARCHAR},
+			unit_amount = #{unitAmount,jdbcType=VARCHAR},
+			loan_no3 = #{loanNo3,jdbcType=VARCHAR},
+			guarantee_type = #{guaranteeType,jdbcType=VARCHAR},
+			guarantee_name = #{guaranteeName,jdbcType=VARCHAR},
+			deliver_date = #{deliverDate,jdbcType=VARCHAR},
+			paid_times = #{paidTimes,jdbcType=VARCHAR},
+			repaid_type = #{repaidType,jdbcType=VARCHAR},
+			loan_bank_code = #{loanBankCode,jdbcType=VARCHAR},
+			loan_bank_name = #{loanBankName,jdbcType=VARCHAR},
+			loan_nature = #{loanNature,jdbcType=VARCHAR},
+			other_mortgage = #{otherMortgage,jdbcType=VARCHAR},
+			other_nature = #{otherNature,jdbcType=VARCHAR},
+			use_nature_code = #{useNatureCode,jdbcType=VARCHAR},
+			pre_char1 = #{preChar1,jdbcType=VARCHAR},
+			land_agent = #{landAgent,jdbcType=VARCHAR},
+			pre_char2 = #{preChar2,jdbcType=VARCHAR},
+			pre_char3 = #{preChar3,jdbcType=VARCHAR},
+			pre_char4 = #{preChar4,jdbcType=VARCHAR},
+			loan_year = #{loanYear,jdbcType=VARCHAR},
+			nonlocal_flag = #{nonlocalFlag,jdbcType=VARCHAR},
+			license_no2 = #{licenseNo2,jdbcType=VARCHAR},
+			step_hull = #{stepHull,jdbcType=VARCHAR},
+			alias_name = #{aliasName,jdbcType=VARCHAR},
+			model_codeAlias = #{modelCodeAlias,jdbcType=VARCHAR},
+			car_dealer_name = #{carDealerName,jdbcType=VARCHAR},
+			monopoly_name = #{monopolyName,jdbcType=VARCHAR},
+			make_date = #{makeDate,jdbcType=VARCHAR},
+			suspend_startDate = #{suspendStartDate,jdbcType=VARCHAR},
+			warrantor_name = #{warrantorName,jdbcType=VARCHAR},
+			loan_usage = #{loanUsage,jdbcType=VARCHAR},
+			loan_no5 = #{loanNo5,jdbcType=VARCHAR},
+			veh_cert_no = #{vehCertNo,jdbcType=VARCHAR},
+			photo_no = #{photoNo,jdbcType=VARCHAR},
+			community_property = #{communityProperty,jdbcType=VARCHAR},
+			make_start_date = #{makeStartDate,jdbcType=VARCHAR},
+			make_end_date = #{makeEndDate,jdbcType=VARCHAR},
+			mort_reg_date = #{mortRegDate,jdbcType=VARCHAR},
+			filekey_name = #{filekeyName,jdbcType=VARCHAR},
+			mortgageInfo_status = #{mortgageInfoStatus,jdbcType=VARCHAR},
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			mortgageInfo_id = #{mortgageInfoId,jdbcType=VARCHAR}
+	</update>
+</mapper>

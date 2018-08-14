@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.business.dao.IClearingDao">
+	<sql id="query_clearing_sql">
+		SELECT
+			t.clearing_id as clearingId,
+			t.apply_Info_Id as applyInfoId,
+			t.clearing_type as clearingType,
+			t.clearing_date as clearingDateate,
+			t.clearing_person as clearingPerson,
+			t.registrant as registrant,
+			t.remark as remark,
+			t.create_by as createBy,
+			t.create_date as createDate,
+			t.last_update_by as lastUpdateBy,
+			t.last_update_date as lastUpdateDate,
+			t.extend_Field1 as extendField1,
+			a.salesman as salesman,
+			a.apply_Info_Id AS applyInfoId,
+			(SELECT COUNT(collection_Id) FROM xxm_collection_t o WHERE o.apply_Info_Id = a.apply_Info_Id) AS collectionCount,
+			a.loan_Contract_No as loanContractNo,
+			a.production_Vl as productionVl,
+			getBaseDateNameByCode('PRODUCE_TYPE',a.production_Vl,1) AS productionName,
+			a.create_date as createDate,
+			a.apply_info_status as applyInfoStatus,
+			c.base_Customer_Name as baseCustomerName,
+			c.cert_Type as certType,
+			c.cert_No as certNo,
+			c.mobile_No as mobileNo,
+			c.fixed_line as fixedLine
+		FROM
+			xxm_clearing_t t
+			LEFT JOIN xxm_apply_info_t a ON t.apply_Info_Id = a.apply_Info_Id
+			LEFT JOIN xxm_customer_t c ON a.apply_Customer_Id=c.customer_Id
+		WHERE 1=1
+	</sql>
+	<sql id="clearing_select_condition">
+		<if test="clearingType != null and clearingType !=''">
+			AND t.clearing_type = #{clearingType,jdbcType=VARCHAR}
+		</if>
+		<if test="loanContractNo != null and loanContractNo !=''">
+			AND a.loan_Contract_No = #{loanContractNo,jdbcType=VARCHAR}
+		</if>
+		<if test="baseCustomerName != null and baseCustomerName !=''">
+			AND c.base_Customer_Name=#{baseCustomerName,jdbcType=VARCHAR}
+		</if>
+	</sql>
+	<!-- 查询结清列表信息 -->
+	<select id="findClearingList" resultType="com.xxm.it.business.vo.ClearingVO"
+		parameterType="com.xxm.it.business.vo.ClearingVO">
+		<include refid="query_clearing_sql"></include>
+		<include refid="clearing_select_condition"></include>
+		order by t.create_date desc
+		limit
+		#{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 查询结清列表总数 -->
+	<select id="findClearingListCount" resultType="java.lang.Integer"
+		parameterType="com.xxm.it.business.vo.ClearingVO">
+		SELECT COUNT(1)
+		FROM
+		xxm_clearing_t t
+			LEFT JOIN xxm_apply_info_t a ON t.apply_Info_Id = a.apply_Info_Id
+			LEFT JOIN xxm_customer_t c ON a.apply_Customer_Id=c.customer_Id
+		WHERE 1=1
+		<include refid="clearing_select_condition"></include>
+	</select>
+	<!-- 添加结清数据 -->
+	<insert id="addClearing" parameterType="com.xxm.it.business.vo.ClearingVO">
+	   INSERT INTO xxm_clearing_t (
+			apply_Info_Id,
+			clearing_type,
+			clearing_date,
+			clearing_person,
+			registrant,
+			remark,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{applyInfoId,jdbcType=VARCHAR},
+			#{clearingType,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP (),
+			#{clearingPerson,jdbcType=VARCHAR},
+			#{registrant,jdbcType=VARCHAR},
+			#{remark,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP (),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP ()
+		)
+	</insert>
+</mapper>

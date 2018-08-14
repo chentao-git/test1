@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.system.dao.IAttachmentDao">
+	<sql id="query_attr_sql">
+		SELECT
+			t.attr_id as attachmentID,
+			t.attr_name as attachmentName,
+			t.attr_sys_name as attachmentSysName,
+			t.attr_type as attachmentType,
+			t.attr_item as attachmentItem,
+			t.attr_item_id as attachmentItemID,
+			t.attr_path as attachmentPath,
+			t.extend_Field1 as extendField1,
+			t.extend_Field2 as extendField2,
+			t.extend_Field3 as extendField3,
+			t.extend_Field4 as extendField4,
+			t.create_by as createBy,
+			(select us.name from xxm_user_t us where us.user_id = t.create_by) createByName,
+			t.create_date as createDate,
+			t.last_update_by as lastUpdateBy,
+			(select us.name from xxm_user_t us where us.user_id = t.last_update_by) lastUpdateByName,
+			t.last_update_date as lastUpdateDate
+		FROM
+			xxm_attachment_t t
+		WHERE 1=1
+	</sql>
+	<sql id="attr_select_condition">
+		<if test="attachmentItem != null and attachmentItem !=''">
+	    	AND t.attr_item=#{attachmentItem,jdbcType=VARCHAR}
+	  	 </if>
+		<if test="createDate != null and createDate !=''">
+	    	AND t.create_date <![CDATA[ >= ]]> #{createDate,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="lastUpdateDate != null and lastUpdateDate !=''">
+	    	AND t.last_update_date <![CDATA[ <= ]]> #{lastUpdateDate,jdbcType=VARCHAR}
+	  	 </if>
+	  	 <if test="attachmentName != null and attachmentName !=''">
+			AND t.attr_name like
+			concat('%',#{attachmentName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="attachmentItemID != null and attachmentItemID !=''">
+			AND t.attr_item_id =#{attachmentItemID,jdbcType=VARCHAR}
+		</if>
+		<if test="attachmentID != null and attachmentID !=''">
+			AND t.attr_id =#{attachmentID,jdbcType=VARCHAR}
+		</if>
+		<if test="attachmentStatus != null and attachmentStatus !=''">
+			AND t.attr_status =#{attachmentStatus,jdbcType=VARCHAR}
+		</if>
+		
+		<if test="extendField1 != null and extendField1 !=''">
+			AND t.extend_Field1 =#{extendField1,jdbcType=VARCHAR}
+		</if>
+		<if test="extendField2 != null and extendField2 !=''">
+			AND t.extend_Field2 =#{extendField2,jdbcType=VARCHAR}
+		</if>
+	</sql>
+	<!-- 查询附件列表信息 -->
+	<select id="findAttachmentList" resultType="com.xxm.it.system.vo.AttachmentTextVO"
+		parameterType="com.xxm.it.system.vo.AttachmentTextVO">
+		<include refid="query_attr_sql"></include>
+		<include refid="attr_select_condition"></include>
+		order by create_date desc
+		limit
+		#{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}<!-- 分页 -->
+	</select>
+
+	<!-- 查询附件列表总数 -->
+	<select id="findAttachmentListCount" resultType="java.lang.Integer"
+		parameterType="com.xxm.it.system.vo.AttachmentTextVO">
+		SELECT count(attr_name) FROM xxm_attachment_t t WHERE 1=1
+		<include refid="attr_select_condition"></include>
+	</select>
+	<!-- 添加附件 -->
+	<insert id="addAttachment" parameterType="com.xxm.it.system.vo.AttachmentTextVO"
+		useGeneratedKeys="true" keyProperty="attachmentID">
+		INSERT INTO xxm_attachment_t(
+			attr_name,
+			attr_sys_name,
+			attr_type,
+			attr_item,
+			attr_item_id,
+			attr_path,
+			extend_Field1,
+			extend_Field2,
+			attr_status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date)
+		VALUES(
+			#{attachmentName,jdbcType=VARCHAR},
+			#{attachmentSysName,jdbcType=VARCHAR},
+			#{attachmentType,jdbcType=VARCHAR},
+			#{attachmentItem,jdbcType=VARCHAR},
+			#{attachmentItemID,jdbcType=VARCHAR},
+			#{attachmentPath,jdbcType=VARCHAR},
+			#{extendField1,jdbcType=VARCHAR},
+			#{extendField2,jdbcType=VARCHAR},
+			#{attachmentStatus,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP(),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP()
+			)
+	</insert>
+	<!-- 查询附件信息 -->
+	<select id="findAttachment" resultType="com.xxm.it.system.vo.AttachmentTextVO"
+		parameterType="com.xxm.it.system.vo.AttachmentTextVO">
+		<include refid="query_attr_sql"></include>
+		<include refid="attr_select_condition"></include>
+	</select>
+
+	<!-- 查询附件信息(List) -->
+	<select id="findAttachments" resultType="com.xxm.it.system.vo.AttachmentTextVO"
+		parameterType="com.xxm.it.system.vo.AttachmentTextVO">
+		<include refid="query_attr_sql"></include>
+		<include refid="attr_select_condition"></include>
+	</select>
+
+
+	<!-- 修改附件信息 -->
+	<update id="updateAttachment">
+		UPDATE xxm_attachment_t SET
+			<if test="attachmentName != null and attachmentName !=''">
+				attr_name =#{attachmentName,jdbcType=VARCHAR},
+			</if>
+			<if test="attachmentSysName != null and attachmentSysName !=''">
+				attr_sys_name =#{attachmentSysName,jdbcType=VARCHAR},
+			</if>
+			<if test="attachmentItem != null and attachmentItem !=''">
+				attr_item =#{attachmentItem,jdbcType=VARCHAR},
+			</if>
+			<if test="attachmentItemID != null and attachmentItemID !=''">
+				attr_item_id =#{attachmentItemID,jdbcType=VARCHAR},
+			</if>
+			<if test="attachmentPath != null and attachmentPath !=''">
+				attr_path =#{attachmentPath,jdbcType=VARCHAR},	
+			</if>
+			<if test="attachmentType != null and attachmentType !=''">
+				attr_type = #{attachmentType,jdbcType=VARCHAR},
+			</if>
+			<if test="extendField1 != null and extendField1 !=''">
+				extend_Field1 = #{extendField1,jdbcType=VARCHAR},
+			</if>
+			<if test="extendField2 != null and extendField2 !=''">
+				extend_Field2 = #{extendField2,jdbcType=VARCHAR},
+			</if>
+			<if test="attachmentStatus != null and attachmentStatus !=''">
+				attr_status = #{attachmentStatus,jdbcType=VARCHAR},
+			</if>
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			attr_id = #{attachmentID, jdbcType=VARCHAR}
+	</update>
+
+	<!-- 删除附件信息 -->
+	<delete id="deleteAttachment" parameterType="com.xxm.it.system.vo.AttachmentTextVO">
+		UPDATE xxm_attachment_t SET
+			attr_status = #{attachmentStatus,jdbcType=VARCHAR},
+			last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			attr_id = #{attachmentID, jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 删除附件信息 -->
+	<delete id="deleteAttachments" parameterType="com.xxm.it.system.vo.AttachmentTextVO">
+		DELETE FROM xxm_attachment_t
+		WHERE attr_id in
+		<foreach collection="attachmentIds" item="item" index="index"
+			separator="," open="(" close=")">
+			#{item}
+		</foreach><!-- 不明处 -->
+	</delete>
+</mapper>

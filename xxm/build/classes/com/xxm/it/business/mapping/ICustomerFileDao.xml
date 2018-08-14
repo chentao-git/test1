@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.business.dao.ICustomerFileDao">
+<sql id="query_baseCustomer_sql">
+		 SELECT
+			t.base_Customer_Id AS baseCustomerId,
+			t.base_Customer_Name AS baseCustomerName,
+			t.base_Customer_Sex AS baseCustomerSex,
+			t.cert_Type AS certType,
+			t.cert_No AS certNo,
+			t.issued_Date AS issuedDate,
+			t.expiration_Date AS expirationDate,
+			t.tax_Type AS taxType,
+			t.marriage_Status AS marriageStatus,
+			t.spouse_Name AS spouseName,
+			t.spouse_Id_Type AS spouseIdType,
+			t.spouse_Id_No AS spouseIdNo,
+			t.spouse_Mobile AS spouseMobile,
+			t.education_Type AS educationType,
+			t.live_Addr AS liveAddr,
+			t.live_City AS liveCity,
+			t.company_Name AS companyName,
+			t.position AS position,
+			t.service_Year AS serviceYear,
+			t.income AS income,
+			t.company_Addr AS companyAddr,
+			t.unit_Kind AS unitKind,
+			t.mobile_No AS mobileNo,
+			t.acc_No AS accNo,
+			t.bank_Flag AS bankFlag,
+			t.open_Bank_Name AS openBankName,
+			t.open_Bank_No AS openBankNo,
+			t.cert_Image_File AS certImageFile,
+			t.create_by AS createBy,
+			 (select name from xxm_user_t u where u.user_id=t.create_by) AS createByName,
+			t.lock_man AS lockMan,
+			  (select name from xxm_user_t u where u.user_id=t.lock_man) AS lockManName,
+			t.create_date AS createDate,
+			t.last_update_by AS lastUpdateBy,
+			(select name from xxm_user_t u where u.user_id=t.last_update_by) AS lastUpdateByName,
+			t.last_update_date AS lastUpdateDate,
+			t.status AS status,
+			t.customer_level AS customerLevel
+		FROM
+		xxm_base_customer_t t
+		WHERE 1=1
+	</sql>
+	<!-- 客户信息查询 -->
+	<sql id="select_contion">
+	  <if test="baseCustomerName != null and baseCustomerName != ''">
+	    AND t.base_Customer_Name like concat('%',#{baseCustomerName,jdbcType=VARCHAR},'%')
+	  </if>
+	</sql>
+	<!-- 查询客户档案记录进度表 -->
+	<sql id="select_customer_schedule">
+	    SELECT
+			t.schedule_Id AS scheduleId,
+			t.follow_Up_Category AS followUpCategory,
+			t.follow_Up_Time AS followUpTime,
+			getBaseDateNameByCode('FOLLOW_UP_CATEGORY',t.follow_Up_Category,1) AS followUpCategoryName,
+			t.content_Registration AS contentRegistration,
+			t.base_Customer_Id AS baseCustomerId,
+		    (SELECT b.base_Customer_Name FROM xxm_base_customer_t b WHERE b.base_Customer_Id=t.base_Customer_Id) AS baseCustomerName,
+			t.status AS status,
+			t.last_update_by AS lastUpdateBy,
+		    (SELECT u.name FROM xxm_user_t u WHERE u.user_id=t.last_update_by) AS lastUpdateByName,
+			t.last_update_date AS lastUpdateDate
+		FROM
+			xxm_schedule_t t
+		WHERE
+			1 = 1
+	</sql>
+	<!-- 进度表查询 -->
+	<sql id="select_customer_schedule_contion">
+	  <if test="scheduleId != null and scheduleId !=''">
+	     AND t.schedule_Id=#{scheduleId,jdbcType=VARCHAR}
+	  </if>
+	  <if test="followUpCategory != null and followUpCategory!=''">
+	     AND t.follow_Up_Category=#{followUpCategory,jdbcType=VARCHAR}
+	  </if>
+	  <if test="contentRegistration != null and contentRegistration!= ''">
+	     AND t.content_Registration like concat('%',#{contentRegistration,jdbcType=VARCHAR},'%')
+	  </if>
+	</sql>
+	<!-- 查询商机列表 -->
+	<sql id="select_business_opportunity">
+	 SELECT
+		t.business_Opportunity_ID AS businessOpportunityId,
+		t.base_Customer_Id AS baseCustomerId,
+	    (SELECT b.base_Customer_Name FROM xxm_base_customer_t b WHERE b.base_Customer_Id=t.base_Customer_Id) AS baseCustomerName,
+		t.focus_On_ProductVL AS focusOnProductVL,
+		getBaseDateNameByCode('FOCUS_ON_PRODUCTS',t.focus_On_ProductVL,1) AS focusOnProductName,
+		t.loan_Amount AS loanAmount,
+		t.interest_Rate AS interestRate,
+		t.expected_Transaction_Time AS expectedTransactionTime,
+		t.actual_Transaction_Time AS actualTransactionTime,
+		t.remark AS remark,
+		t.status AS status,
+		t.last_update_by AS lastUpdateBy,
+	    (SELECT u.name FROM xxm_user_t u WHERE u.user_id=t.last_update_by) AS lastUpdateByName,
+		t.last_update_date AS lastUpdateDate
+	FROM
+		xxm_business_opportunity_t t
+	WHERE 1=1
+	</sql>
+	<sql id="select_business_opportunity_condtion">
+	<if test="businessOpportunityId != null and businessOpportunityId !=''">
+	     AND t.business_Opportunity_ID=#{businessOpportunityId,jdbcType=VARCHAR}
+	  </if>
+	  <if test="focusOnProductVL != null and focusOnProductVL != ''">
+	     AND t.focus_On_ProductVL=#{focusOnProductVL,jdbcType=VARCHAR}
+	  </if>
+	  <if test="remark != null and remark != ''">
+	    AND t.remark like concat('%',#{remark,jdbcType=VARCHAR},'%')
+	  </if>
+	</sql>
+	
+	<!-- 查询服务信息列表 -->
+	<sql id="select_service_record">
+	  SELECT
+		t.service_Record_ID AS serviceRecordId,
+		t.base_Customer_Id AS baseCustomerId,
+	    (SELECT b.base_Customer_Name FROM xxm_base_customer_t b WHERE b.base_Customer_Id=t.base_Customer_Id) AS baseCustomerName,
+		t.processing_ProgressVl AS processingProgressVL,
+	    getBaseDateNameByCode('PROCESSING_PROGRESS',t.processing_ProgressVl,1) AS processingProgressName,
+		t.service_Time AS serviceTime,
+		t.content_Registration AS contentRegistration,
+		t.processing_Results AS processingResults,
+		t.status AS status,
+		t.last_update_by AS lastUpdateBy,
+	    (SELECT u.name FROM xxm_user_t u WHERE u.user_id=t.last_update_by) AS lastUpdateByName,
+		t.last_update_date AS lastUpdateDate
+	  FROM
+		xxm_service_record_t t
+	  WHERE 1=1
+	</sql>
+	<sql id="select_service_record_condtion">
+	  <if test="serviceRecordId != null and serviceRecordId != ''">
+	    AND t.service_Record_ID=#{serviceRecordId,jdbcType=VARCHAR}
+	  </if>
+	  <if test="processingProgressVL != null and processingProgressVL != ''">
+	    AND t.processing_ProgressVl=#{processingProgressVL,jdbcType=VARCHAR}
+	  </if>
+	  <if test="contentRegistration != null and contentRegistration !=''">
+	    AND t.content_Registration like concat('%',#{contentRegistration,jdbcType=VARCHAR},'%')
+	  </if>
+	</sql>
+	
+	
+	
+	
+	<!-- 查询客户信息列表 -->
+	<select id="findCustomerList" parameterType="com.xxm.it.business.vo.BaseCustomerVO" resultType="com.xxm.it.business.vo.BaseCustomerVO">
+      <include refid="query_baseCustomer_sql"></include>	
+      <include refid="select_contion"></include>
+        AND t.status=#{status,jdbcType=VARCHAR}
+		order by t.create_date desc
+		limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	<!-- 查询客户信息总数 -->
+	<select id="findCustomerCount" resultType="java.lang.Integer" parameterType="com.xxm.it.business.vo.BaseCustomerVO">
+	    SELECT count(base_Customer_Id) FROM xxm_base_customer_t t WHERE 1=1 
+	    <include refid="select_contion"></include>
+	    AND t.status=#{status,jdbcType=VARCHAR}
+	</select>
+	
+	
+	
+	<!-- 查询进度表信息列表 -->
+	<select id="findCustomerScheduleList" parameterType="com.xxm.it.business.vo.CustomerScheduleVO" resultType="com.xxm.it.business.vo.CustomerScheduleVO">
+	  <include refid="select_customer_schedule"></include>
+	  <include refid="select_customer_schedule_contion"></include>
+	  AND t.status=#{status,jdbcType=VARCHAR}
+	  AND t.base_Customer_Id=#{baseCustomerId,jdbcType=VARCHAR}
+	  order by t.create_date desc
+	  limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	<!-- 查询进度表信息总数 -->
+	<select id="findCustomerScheduleCount" resultType="java.lang.Integer" parameterType="com.xxm.it.business.vo.CustomerScheduleVO">
+	   SELECT count(schedule_Id) FROM xxm_schedule_t t WHERE 1=1 
+	   <include refid="select_customer_schedule_contion"></include>
+	   AND t.base_Customer_Id=#{baseCustomerId,jdbcType=VARCHAR}
+	   AND t.status=#{status,jdbcType=VARCHAR}
+	</select>
+	<!-- 跟进id去查询当前这个进度表信息-->
+	<select id="findCustomerSchedule" parameterType="com.xxm.it.business.vo.CustomerScheduleVO" resultType="com.xxm.it.business.vo.CustomerScheduleVO">
+	  <include refid="select_customer_schedule"></include>
+	  <include refid="select_customer_schedule_contion"></include>
+	</select>
+	<!-- 添加跟进记录 -->
+	<insert id="addCustomerSchedule" parameterType="com.xxm.it.business.vo.CustomerScheduleVO">
+	   INSERT INTO xxm_schedule_t (
+			follow_Up_Category,
+			follow_Up_Time,
+			content_Registration,
+			base_Customer_Id,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{followUpCategory,jdbcType=VARCHAR},
+			#{followUpTime,jdbcType=VARCHAR},
+			#{contentRegistration,jdbcType=VARCHAR},
+			#{baseCustomerId,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP (),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP ()
+		)
+	</insert>
+	<!-- 更新跟进记录 -->
+	<update id="updateCustomerSchedule">
+	 UPDATE xxm_schedule_t 
+	  SET
+		follow_Up_Category = #{followUpCategory,jdbcType=VARCHAR},
+		content_Registration = #{contentRegistration,jdbcType=VARCHAR},
+		follow_Up_Time = #{followUpTime,jdbcType=VARCHAR},
+		last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+		last_update_date = sysdate()
+	 WHERE
+	    schedule_Id = #{scheduleId,jdbcType=VARCHAR}
+	</update>
+	<delete id="deleteCustomerSchedule" parameterType="com.xxm.it.business.vo.CustomerScheduleVO">
+	    UPDATE xxm_schedule_t SET 
+			status= #{status, jdbcType=VARCHAR}
+		WHERE schedule_Id in 
+		<foreach collection="scheduleIds" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	
+	
+	<!-- 商机列表信息 -->
+	<select id="findBusinessOpportunityList" parameterType="com.xxm.it.business.vo.BusinessOpportunityVO" resultType="com.xxm.it.business.vo.BusinessOpportunityVO">
+	  <include refid="select_business_opportunity"></include>
+	  <include refid="select_business_opportunity_condtion"></include>
+	  AND t.status=#{status,jdbcType=VARCHAR}
+	  AND t.base_Customer_Id=#{baseCustomerId,jdbcType=VARCHAR}
+	  order by t.create_date desc
+	  limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	<!--商机列表总数  -->
+	<select id="findBusinessOpportunityCount" parameterType="com.xxm.it.business.vo.BusinessOpportunityVO" resultType="java.lang.Integer">
+	   SELECT count(business_Opportunity_ID) FROM xxm_business_opportunity_t t WHERE 1=1 
+	   <include refid="select_business_opportunity_condtion"></include>
+	   AND t.base_Customer_Id=#{baseCustomerId,jdbcType=VARCHAR}
+	   AND t.status=#{status,jdbcType=VARCHAR}
+	</select>
+	<!-- 根据id去查询商机详情信息 -->
+	<select id="findBusinessOpportunity" parameterType="com.xxm.it.business.vo.BusinessOpportunityVO" resultType="com.xxm.it.business.vo.BusinessOpportunityVO">
+	  <include refid="select_business_opportunity"></include>
+	  <include refid="select_business_opportunity_condtion"></include>
+	</select>
+	<!-- 添加商机 -->
+	<insert id="addBusinessOpportunity" parameterType="com.xxm.it.business.vo.BusinessOpportunityVO">
+	    INSERT INTO xxm_business_opportunity_t (
+			focus_On_ProductVL,
+			loan_Amount,
+			interest_Rate,
+		    expected_Transaction_Time,
+		    actual_Transaction_Time,
+		    remark,
+			base_Customer_Id,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		)
+		VALUES
+		(
+			#{focusOnProductVL,jdbcType=VARCHAR},
+			#{loanAmount,jdbcType=VARCHAR},
+			#{interestRate,jdbcType=VARCHAR},
+            #{expectedTransactionTime,jdbcType=VARCHAR},
+			#{actualTransactionTime,jdbcType=VARCHAR},
+            #{remark,jdbcType=VARCHAR},
+			#{baseCustomerId,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP (),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP ()
+		)
+	</insert>
+	<update id="updateBusinessOpportunity">
+	    UPDATE xxm_business_opportunity_t 
+	    SET
+			 focus_On_ProductVL = #{focusOnProductVL,jdbcType=VARCHAR},
+			 loan_Amount = #{loanAmount,jdbcType=VARCHAR},
+			 interest_Rate = #{interestRate,jdbcType=VARCHAR},
+	         expected_Transaction_Time = #{expectedTransactionTime,jdbcType=VARCHAR},
+			 actual_Transaction_Time = #{actualTransactionTime,jdbcType=VARCHAR},
+			 remark = #{remark,jdbcType=VARCHAR},
+			 last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+			 last_update_date = sysdate()
+	    WHERE
+   			 business_Opportunity_ID = #{businessOpportunityId,jdbcType=VARCHAR}
+	</update>
+	<delete id="deleteBusinessOpportunity" parameterType="com.xxm.it.business.vo.BusinessOpportunityVO">
+	   UPDATE xxm_business_opportunity_t SET 
+			status= #{status, jdbcType=VARCHAR}
+	   WHERE business_Opportunity_ID in 
+		<foreach collection="ids" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	
+	
+	<!-- 查询服务记录列表 -->
+	<select id="findServiceRecordList" parameterType="com.xxm.it.business.vo.ServiceRecordVO" resultType="com.xxm.it.business.vo.ServiceRecordVO">
+	  <include refid="select_service_record"></include>
+	  <include refid="select_service_record_condtion"></include>
+	  AND t.status=#{status,jdbcType=VARCHAR}
+	  AND t.base_Customer_Id=#{baseCustomerId,jdbcType=VARCHAR}
+	  order by t.create_date desc
+	  limit #{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}
+	</select>
+	<!-- 查询服务记录列表总数 -->
+	<select id="findServiceRecordCount" parameterType="com.xxm.it.business.vo.ServiceRecordVO" resultType="java.lang.Integer">
+	   SELECT count(service_Record_ID) FROM xxm_service_record_t t WHERE 1=1 
+       <include refid="select_service_record_condtion"></include>
+	   AND t.base_Customer_Id=#{baseCustomerId,jdbcType=VARCHAR}
+	   AND t.status=#{status,jdbcType=VARCHAR}
+	</select>
+	<!--添加服务记录  -->
+	<select id="addServiceRecord" parameterType="com.xxm.it.business.vo.ServiceRecordVO">
+	   INSERT INTO xxm_service_record_t (
+			processing_ProgressVl,
+			service_Time,
+			content_Registration,
+            processing_Results,
+			base_Customer_Id,
+			status,
+			create_by,
+			create_date,
+			last_update_by,
+			last_update_date
+		 )
+	   VALUES
+		 (
+			#{processingProgressVL,jdbcType=VARCHAR},
+			#{serviceTime,jdbcType=VARCHAR},
+			#{contentRegistration,jdbcType=VARCHAR},
+            #{processingResults,jdbcType=VARCHAR},
+			#{baseCustomerId,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP (),
+			#{lastUpdateBy,jdbcType=VARCHAR},
+			CURRENT_TIMESTAMP ()
+		)
+	</select>
+	<!-- 根据id去查询详情信息 -->
+	<select id="findServiceRecord" parameterType="com.xxm.it.business.vo.ServiceRecordVO" resultType="com.xxm.it.business.vo.ServiceRecordVO"> 
+	<include refid="select_service_record"></include>
+	<include refid="select_service_record_condtion"></include>
+	</select>
+	<!-- 更新服务记录 -->
+	<update id="updateServiceRecord">
+	  UPDATE xxm_service_record_t 
+	  SET
+		processing_ProgressVl = #{processingProgressVL,jdbcType=VARCHAR},
+		service_Time = #{serviceTime,jdbcType=VARCHAR},
+		content_Registration = #{contentRegistration,jdbcType=VARCHAR},
+        processing_Results = #{processingResults,jdbcType=VARCHAR},
+		last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+		last_update_date = sysdate()
+	 WHERE
+	    service_Record_ID = #{serviceRecordId,jdbcType=VARCHAR}
+	</update>
+	<!--  -->
+	<delete id="deleteServiceRecord" parameterType="com.xxm.it.business.vo.ServiceRecordVO">
+	   UPDATE xxm_service_record_t SET 
+			status= #{status, jdbcType=VARCHAR}
+	   WHERE service_Record_ID in 
+		<foreach collection="ids" item="item" index="index" separator="," open="(" close=")">  
+			#{item}
+		</foreach> 
+	</delete>
+	<update id="updateLastUpdateByName" parameterType="com.xxm.it.business.vo.BaseCustomerVO">
+		UPDATE xxm_base_customer_t SET
+			lock_man = #{lockMan, jdbcType=VARCHAR},
+			last_update_by = #{lastUpdateBy, jdbcType=VARCHAR},
+			last_update_date = sysdate()
+		WHERE
+			base_Customer_Id = #{baseCustomerId, jdbcType=VARCHAR}
+	</update>
+</mapper>

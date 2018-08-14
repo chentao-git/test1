@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	
+   		  <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>车辆抵押登记信息传输</title>
+	    <meta name="keywords" content="车辆抵押登记信息传输">
+	    <meta name="description" content="车辆抵押登记信息传输">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	    <link href="../css/plugins/steps/jquery.steps.css" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link href="../css/plugins/iCheck/custom.css" rel="stylesheet">
+	</head>
+	<style>
+ 		.tab-custom td:nth-child(odd){background-color:#f9f9f9;width:10%;text-align:right; }  
+		.tab-custom td:nth-child(even){width:23%; } 
+		.tab-custom td,th{border:1px solid #DDD!important}
+		.btn{float:right;margin-right:10px;}
+		
+	</style>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+	                
+		                <div class="ibox-content">
+	                        <form id="form"  class="wizard-big">
+	                             <fieldset>
+	                                <h2>放款信息</h2>
+							        <table class="table table-bordered tab-custom" id="mortgageInfo-tab">
+			                            <tbody>
+			                                <tr>
+			                                    <td>投保单号：<input type="hidden" name="mortgageInfoId"></td>
+			                                    <td><input type="text" name="proposalNo" class="form-control"></td>
+			                                    <td>借据号：</td>
+			                                    <td><input type="text" name="loanNo" class="form-control"></td>
+			                                    <td>申请书编号：</td>
+			                                    <td><input type="text" name="applyNo" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>保单号：</td>
+			                                    <td><input type="text" name="policyNo" class="form-control"></td>
+			                                    <td>投保人名称：</td>
+			                                    <td><input type="text" name="appliName" class="form-control"></td>
+			                                    <td>被保险人名称：</td>
+			                                    <td><input type="text" name="insuredName" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                	<td>抵押保证金：</td>
+			                                    <td><input type="number" name="unitAmount" class="form-control"></td>
+			                                    <td>抵押合同号：</td>
+			                                    <td><input type="text" name="loanNo3" class="form-control"></td>
+			                                    <td>抵(质)押物性质：</td>
+			                                    <td><select id="guaranteeType" name="guaranteeType" class="form-control"></select></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>抵(质)押物名称：</td>
+			                                    <td><input type="text" name="guaranteeName" class="form-control"></td>
+			                                    <td>抵(质)押权生效日期：</td>
+			                                    <td><input type="text" name="deliverDate" id="deliverDate" class="laydate-icon form-control layer-date"></td>
+			                                    <td>押品所有人所占份额(%)：</td>
+			                                    <td><input type="text" name="paidTimes" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>是否需要办理保险：</td>
+			                                    <td><select id="repaidType" name="repaidType" class="form-control"></select></td>
+			                                    <td>抵质押品法律有效性：</td>
+			                                    <td><select id="loanBankCode" name="loanBankCode" class="form-control"></select></td>
+			                                    <td>抵质押品变现能力：</td>
+			                                    <td><input type="text" name="loanBankName" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>押品是否已出租：</td>
+			                                    <td><select id="loanNature" name="loanNature" class="form-control"></select></td>
+			                                    <td>是否在其它机构设置抵质押：</td>
+			                                    <td><input type="text" name="otherMortgage" class="form-control"></td>
+			                                    <td>行驶里程数(公里)：</td>
+			                                    <td><input type="number" name="otherNature" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>是否运营车辆：</td>
+			                                    <td><select id="useNatureCode" name="useNatureCode" class="form-control"></select></td>
+			                                    <td>权证完备状态：</td>
+			                                    <td><select id="preChar1" name="preChar1" class="form-control"></select></td>
+			                                    <td>抵押权证信息—抵押权人：</td>
+			                                    <td><input type="text" name="landAgent" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>抵押权证信息—抵押人：</td>
+			                                    <td><input type="text" name="preChar2" class="form-control"></td>
+			                                    <td>抵押权证信息—抵押期限：</td>
+			                                    <td><input type="text" name="preChar3" class="form-control"></td>
+			                                    <td>抵押登记所在地：</td>
+			                                    <td><input type="text" name="preChar4" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>抵押物状态—阶段：</td>
+			                                    <td><select id="loanYear" name="loanYear" class="form-control"></select></td>
+			                                    <td>抵押物状态—是否扣押：</td>
+			                                    <td><select id="nonlocalFlag" name="nonlocalFlag" class="form-control"></select></td>
+			                                    <td>行驶证编号：</td>
+			                                    <td><input type="text" name="licenseNo2" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>所购车辆种类：</td>
+			                                    <td><select id="stepHull" name="stepHull" class="form-control"></select></td>
+			                                    <td>所在/注册省份：</td>
+			                                    <td><input type="text" name="aliasName" class="form-control"></td>
+			                                    <td>所在/注册城市：</td>
+			                                    <td><input type="text" name="modelCodeAlias" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>品牌/生产厂商：</td>
+			                                    <td><input type="text" name="carDealerName" class="form-control"></td>
+			                                    <td>变速类型：</td>
+			                                    <td><input type="text" name="monopolyName" class="form-control"></td>
+			                                    <td>出厂日期或报关日期：</td>
+			                                    <td><input type="text" name="makeDate" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>设计使用到期日期：</td>
+			                                    <td><input type="text" name="suspendStartDate" id="suspendStartDate" class="laydate-icon form-control layer-date"></td>
+			                                    <td>押品所有人：</td>
+			                                    <td><input type="text" name="warrantorName" class="form-control"></td>
+			                                    <td>押品所有人证件类型：</td>
+			                                    <td><select id="loanUsage" name="loanUsage" class="form-control"></select></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>押品所有人证件号码：</td>
+			                                    <td><input type="text" name="loanNo5" class="form-control"></td>
+			                                    <td>机动车登记证书编号：</td>
+			                                    <td><input type="text" name="vehCertNo" class="form-control"></td>
+			                                    <td>拍照号码：</td>
+			                                    <td><input type="text" name="photoNo" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>是否共有财产：</td>
+			                                    <td><select id="communityProperty" name="communityProperty" class="form-control"></select></td>
+			                                    <td>租赁起始日：</td>
+			                                    <td><input type="text" name="makeStartDate" id="makeStartDate" class="laydate-icon form-control layer-date"></td>
+			                                    <td>租赁到期日：</td>
+			                                    <td><input type="text" name="makeEndDate" id="makeEndDate" class="laydate-icon form-control layer-date"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>抵押登记日期：</td>
+			                                    <td><input type="text" name="mortRegDate" id="mortRegDate" class="laydate-icon form-control layer-date"></td>
+			                                    <td>影像名称：</td>
+			                                    <td><input type="text" name="filekeyName" class="form-control"></td>
+			                                </tr>
+			                            </tbody>
+			                        </table>
+			                        
+			                        <h2>车辆信息</h2>
+							        <table class="table table-bordered tab-custom" id="leaseInfo-tab">
+			                            <tbody>
+			                                <tr>
+			                                    <td>车架号：<input type="hidden" name="leaseInfoId"></td>
+			                                    <td><input type="text" name="frameNumber" class="form-control"></td>
+			                                    <td>发动机号：</td>
+			                                    <td><input type="text" name="engineNumber" class="form-control"></td>
+			                                    <td>车辆颜色：</td>
+			                                    <td><input type="text" name="carColor" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>车型代码：</td>
+			                                    <td><input type="text" name="brandName" class="form-control"></td>
+			                                    <td>初登日期：</td>
+			                                    <td><input type="text" name="enrollDate" id="enrollDate" class="laydate-icon form-control layer-date ms-distinguish"></td>
+			                                    <td>排量：</td>
+			                                    <td><input type="text" name="exhaustScale" class="form-control"></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>人保评估价：</td>
+			                                    <td><input type="number" name="rbEvaluate" class="form-control"></td>
+			                                    <td>号牌号码：</td>
+			                                    <td><input type="text" name="plateNumber" class="form-control"></td>
+			                                </tr>
+			                            </tbody>
+			                        </table>
+			                        
+			                        <div id="return-div">
+			                        	<h2>车辆抵押响应历史</h2>
+			                        	<table class="table table-bordered" id="returnTable">
+	                                    	<tr>
+		                                    	<th>投保单号</th>
+		                                    	<th>响应信息描述</th>
+		                                    	<th>创建人</th>
+		                                    	<th>创建时间</th>
+	                                    	</tr>
+	                                    </table>
+			                        </div>
+			                        <button id="saveBu" type="button" class="btn btn-w-m btn-primary">保存</button>
+			                        <button id="submitBu" type="button" class="btn btn-w-m btn-primary">提交</button>
+	                            </fieldset>
+	                         </form>
+	                    </div>	                    
+	                    
+				    </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <script src="../js/plugins/staps/jquery.steps.min.js"></script>
+    	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+    	<script src="../js/plugins/validate/messages_zh.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="mortgageInfo_edit.js"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

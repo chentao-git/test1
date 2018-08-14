@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>用户管理</title>
+	    <meta name="keywords" content="用户管理">
+	    <meta name="description" content="用户管理">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link rel="stylesheet" href="../common/loading/load.css"  media="all">
+	</head>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	           <!--  <div class="ibox-title">
+	                <h5>基本</h5>
+	                <div class="ibox-tools">
+	                    <a class="collapse-link">
+	                        <i class="fa fa-chevron-up"></i>
+	                    </a>
+	                </div>
+	            </div> -->
+	            <div class="ibox-content">
+	                <div class="panel-body">
+                        <div class="panel-group" id="accordion">
+                             <!-- 	
+                             <div class="panel panel-default">
+                                 <div class="panel-heading">
+                                     <h5 class="panel-title">
+                                         <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapseOne">查询条件</a>
+                                     </h5>
+                                 </div>
+                                 <div id="collapseOne" class="panel-collapse collapse in">
+                                     <div class="panel-body">
+                                         <form id="formSearch" class="form-horizontal">
+						                    <div class="form-group" style="margin-top:15px">
+						                        <label class="control-label col-sm-1" for="txt_search_departmentname">用户名称</label>
+						                        <div class="col-sm-5">
+						                            <input type="text" placeholder="请输入用户名称" class="form-control" id="name">
+						                        </div>
+						                        <label class="control-label col-sm-1" for="txt_search_statu">用户账号</label>
+						                        <div class="col-sm-5">
+						                            <input type="text" placeholder="请输入用户账号" class="form-control" id="account">
+						                        </div>
+						                    </div>
+					                        <div style="text-align:center;">
+					                            <button type="button" style="width:80px;" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+					                            <button type="reset" style="width:80px;" id="btnRest" class="btn btn-primary"> 重 置</button>
+					                        </div>
+						                </form>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                         -->
+				        <div id="toolbar" class="btn-group">
+				            <form id="formSearch">
+				        		<div style="float: left;">
+						            <button id="btnAdd" type="button" class="btn btn-primary" >
+						                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+						            </button>
+						            <button id="btnDelete" type="button" class="btn btn-primary">
+						                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+						            </button>
+						        	<button type="button" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+							        <button type="reset" id="btnRest" class="btn btn-primary"> 重 置</button>
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<span style="font-weight:bold;">用户种类:</span>
+						        </div>
+						        <div style="float: left;">
+						        	<select name="type" id="selectType" class="form-control"></select>
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<input type="text" placeholder="请输入用户名称" class="form-control" id="name">
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<input type="text" placeholder="请输入用户账号" class="form-control" id="account">
+						        </div>
+ 				            </form>
+				        </div>
+				        <table id="tbUser"></table>
+				    </div>
+				    
+				    <!-- 弹出框 -->
+				    <div class="modal inmodal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    	 <div class="modal-dialog modal-lg">
+                         	<div class="modal-content animated">
+                            	<div class="modal-header">
+                                 	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                                 	<h4 class="modal-title">添加用户</h4>
+                                </div>
+                               	<div class="modal-body">
+                               		<div id="edit">
+	                                   	 <form class="form-horizontal m-t" id="userForm">
+	                                   	 	<input type="hidden" id="modalType" value="" />
+	                                   	 	<input type="hidden" id="userId" value="" />
+				                            <div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-2 control-label">姓名：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="name" name="name" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">性别：</label>
+					                                <div class="col-sm-4">
+				                                        <select id="sex" class="form-control" name="sex">
+					                                        <option value="0">请选择</option>
+					                                        <option value="1">男</option>
+					                                        <option value="2">女</option>
+					                                    </select>
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                            	<div>
+					                            	<label class="col-sm-2 control-label">年龄：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="age" name="age" class="form-control" type="text" >
+					                                </div>
+					                            </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">联系电话：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="phone" name="phone" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-2 control-label">证件类型：</label>
+					                                <div class="col-sm-4">
+					                                    <select id="paperType" class="form-control" name="paperType">
+					                                        <option value="0">请选择</option>
+					                                        <option value="1">身份证</option>
+					                                        <option value="2">护照</option>
+					                                        <option value="3">港澳通行证</option>
+					                                    </select>
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">证件编号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="paperNo" name="paperNo" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-2 control-label">工号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="employeeNo" name="employeeNo" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">登录账号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="account" name="account" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div id="divPassword" class="form-group">
+				                            	<div>
+					                                <label class="col-sm-2 control-label">登录密码：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="password" name="password" class="form-control" type="password">
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">确认密码：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="confirm_password" name="confirm_password" class="form-control" type="password">
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                            	<div>
+					                            	<label class="col-sm-2 control-label ">角色分配：</label>
+						                            <div class="col-sm-4">
+						                                <select id="useRoleIds" data-placeholder="请选择角色" class="chosen-select" multiple tabindex="4"></select>
+						                            </div>
+					                            </div>
+					                            <div>
+					                            	<label class="col-sm-2 control-label ">角色种类：</label>
+						                            <div class="col-sm-4">
+						                                <select name="type" id="editType"  data-placeholder="请选择角色种类" class="form-control"></select>
+						                            </div>
+					                            </div>
+				                            </div>
+				                        </form>
+			                        </div>
+	                               	<div id="detail" class="form-horizontal m-t">
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">姓名：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="name" name="name" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">性别：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="sex" name="sex" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                            	<label class="col-sm-2 control-label">年龄：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="age" name="age" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">联系电话：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="phone" name="phone" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">证件类型：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="paperType" name="paperType" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">证件编号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="paperNo" name="paperNo" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">工号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="employeeNo" name="employeeNo" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">登录账号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="account" name="account" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                            	<label class="col-sm-2 control-label ">角色：</label>
+				                            <div class="col-sm-4">
+				                                <select id="useRoleIdsDetails" disabled="disabled" data-placeholder="请选择角色" class="chosen-select" multiple tabindex="4"></select>
+				                            </div>
+			                            	<label class="col-sm-2 control-label ">角色种类：</label>
+				                            <div class="col-sm-4">
+				                            	<label id="typeName" name="typeName" class="form-control"></label>
+				                            </div>
+			                            </div>
+	                               	</div>
+                               	</div>
+                               	<div class="modal-footer">
+                                   	<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                   	<button type="submit" class="btn btn-primary" id="btnSave">保存</button>
+                               	</div>
+                             </div>
+                         </div>
+                     </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="user_list.js"></script>
+	    <script src="../common/loading/load.js" charset="utf-8"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

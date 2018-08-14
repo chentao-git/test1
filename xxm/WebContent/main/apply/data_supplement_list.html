@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>资料补充列表</title>
+	    <meta name="keywords" content="资料补充列表">
+	    <meta name="description" content="资料补充列表">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+	</head>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+	                	<!-- 
+                        <div class="panel-group" id="accordion">
+                             <div class="panel panel-default">
+                                 <div class="panel-heading">
+                                     <h5 class="panel-title">
+                                         <a data-toggle="collapse" data-parent="#accordion" href="tabs_panels.html#collapseOne">查询条件</a>
+                                     </h5>
+                                 </div>
+                                 <div id="collapseOne" class="panel-collapse collapse in">
+                                     <div class="panel-body">
+                                         <form id="formSearch" class="form-horizontal">
+						                    <div class="form-group" style="margin-top:15px">
+						                        <label class="control-label col-sm-1" for="txt_search_departmentname">贷款编号</label>
+						                        <div class="col-sm-5">
+						                            <input type="text" placeholder="贷款编号" class="form-control" id="loanContractNo">
+						                        </div>
+						                        <label class="control-label col-sm-1" for="txt_search_statu">姓名</label>
+						                        <div class="col-sm-5">
+						                            <input type="text" placeholder="姓名" class="form-control" id="baseCustomerName">
+						                        </div>
+						                    </div>
+					                        <div style="text-align:center;">
+					                            <button type="button" style="width:80px;" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+					                            <button type="reset" style="width:80px;" id="btnRest" class="btn btn-primary"> 重 置</button>
+					                        </div>
+						                </form>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                         -->
+				        <div id="toolbar" class="btn-group">
+				            <form id="formSearch">
+				        		<div style="float: left;">
+<!-- 						            <button id="btnDelete" type="button" class="btn btn-primary"> -->
+<!-- 						                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除 -->
+<!-- 						            </button> -->
+						        	<button type="button" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+							        <button type="reset" id="btnRest" class="btn btn-primary"> 重 置</button>
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<input type="text" placeholder="贷款编号" class="form-control" id="loanContractNo">
+						        </div>
+						        <div style="float: left;">&nbsp;</div>
+						        <div style="float: left;">
+						        	<input type="text" placeholder="姓名" class="form-control" id="baseCustomerName">
+						        </div>
+ 				            </form>
+				        </div>
+				        <table id="tbDataSupplement"></table>
+				    </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    
+	    <div class="modal inmodal fade" id="auditInfosModal" tabindex="-1" role="dialog" aria-hidden="true">
+        	<div class="modal-dialog modal-lg">
+            	<div class="modal-content animated">
+                	<div class="modal-header">
+                    	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title">预审结果通知日志</h4>
+                    </div>
+                    <div class="modal-body">
+	                	<div id="detail" class="form-horizontal m-t">
+			            	<div class="form-group">
+			                	<div class="col-sm-12">
+			                    	<table class="table table-bordered">
+	                                   	<tr>
+	                                    	<th>审核类型</th>
+	                                    	<th>预审单号</th>
+	                                    	<th>审核结果</th>
+	                                    	<th>审核时间</th>
+	                                    	<th>审核描述</th>
+	                                    	<th>借据号</th>
+	                                    	<th>申请书编号</th>
+<!-- 	                                    	<th>创建时间</th> -->
+	                                   	</tr>
+	                                   	<tbody id="auditinfoTbody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                    <div class="modal-footer">
+                     	<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    </div>
+        		</div>
+        	</div>
+        </div>
+	    
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="data_supplement_list.js"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

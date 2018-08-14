@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>凭租物信息管理</title>
+	    <meta name="keywords" content="凭租物信息管理">
+	    <meta name="description" content="凭租物信息管理">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link rel="stylesheet" href="../common/loading/load.css"  media="all">
+	</head>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+                        <div class="panel-group" id="accordion">
+                             <div class="panel panel-default">
+                                 <div id="collapseOne" class="panel-collapse collapse in">
+                                 
+                                 	<div id="toolbar" class="btn-group">
+							        	<form id="formSearch">
+							        		<div style="float: left;">
+							        			<button id="btnAdd" type="button" class="btn btn-primary">
+													<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+												</button>
+												<button id="btnDelete" type="button" class="btn btn-primary">
+													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+												</button>
+									        	<button type="button" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+										        <button  type="reset" id="btnRest" class="btn btn-primary"> 重 置</button>
+									        </div>
+									        <div style="float: left;">&nbsp;</div>
+									        <div style="float: left;">
+									       		 <input type="text" placeholder="请输入租赁使用用途" class="form-control" id="name">
+									        </div>
+									        <div style="float: left;">&nbsp;</div>
+									        <div style="float: left;">
+									        	 <input type="text" placeholder="请输入租赁物使用区域" class="form-control" id="account">
+									        </div>
+			 				            </form>
+						        	 </div>
+                                 
+                                 </div>
+                             </div>
+                        </div>
+				        <table id="leaseInfo"></table>
+				    </div>
+				    
+				    <!-- 弹出框 -->
+				    <div class="modal inmodal fade" id="leaseInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    	 <div class="modal-dialog modal-lg">
+                         	<div class="modal-content animated">
+                            	<div class="modal-header">
+                                 	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                                 	<h4 class="modal-title">添加凭租物</h4>
+                                </div>
+                               	<div class="modal-body">
+                               		<div id="edit">
+	                                   	 <form class="form-horizontal m-t" id="leaseInfoForm">
+	                                   	 	<input type="hidden" id="modalType" value="" />
+	                                   	 	<input type="hidden" id="leaseInfoId" value="" />
+				                            <div class="form-group">
+				                            	<div>
+					                                <label class="col-sm-2 control-label">凭租车名称：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="carName" name="carName" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                                 <div>
+					                                <label class="col-sm-2 control-label">车产类型：</label>
+					                                <div class="col-sm-4">
+					                                    <select id="carTypeVL" class="form-control" name="carTypeVL">
+					                                        <option value="0">请选择</option>
+					                                    </select>
+					                                </div>
+				                                </div> 
+				                            </div>
+				                             <div class="form-group">
+				                            	<div>
+					                            	<label class="col-sm-2 control-label">制造商：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="manufacturer" name="manufacturer" class="form-control" type="text">
+					                                </div>
+					                            </div>
+				                                <div>
+					                            	<label class="col-sm-2 control-label">品牌：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="brand" name=brand class="form-control" type="text" >
+					                                </div>
+					                            </div>
+				                            </div>
+				                            <div class="form-group">
+				                                <div>
+					                                <label class="col-sm-2 control-label">型号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="model" name="model" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">发动机号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="engineNumber" name="engineNumber" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                                <div>
+					                                <label class="col-sm-2 control-label">租赁使用用途：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="leaseholdUse" name="leaseholdUse" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">租赁物使用区域：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="leaseholdArea" name="leaseholdArea" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div class="form-group">
+				                                <div>
+					                                <label class="col-sm-2 control-label">车架号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="frameNumber" name="frameNumber" class="form-control" type="text" >
+					                                </div>
+				                                </div>
+				                                <div>
+					                                <label class="col-sm-2 control-label">驱动形式：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="drivingForm" name="drivingForm" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                            </div>
+				                            <div id="" class="form-group">
+				                                <div>
+					                                <label class="col-sm-2 control-label">发动机型号：</label>
+					                                <div class="col-sm-4">
+					                                    <input id="engineModel" name="engineModel" class="form-control" type="text">
+					                                </div>
+				                                </div>
+				                                <div>
+				                            	<label class="col-sm-2 control-label ">发动机功率：</label>
+					                            <div class="col-sm-4">
+					                               <input id="enginePower" name="enginePower" class="form-control" type="text">
+					                            </div>
+				                              </div>
+				                            </div>
+				                            
+				                            <div class="form-group">
+				                             <div>
+				                            	<label class="col-sm-2 control-label ">车颜色：</label>
+					                            <div class="col-sm-4">
+					                               <input id="carColor" name="carColor" class="form-control" type="text">
+					                            </div>
+				                              </div>
+				                              <div>
+				                            	<label class="col-sm-2 control-label ">车牌号：</label>
+					                            <div class="col-sm-4">
+					                               <input id="plateNumber" name="plateNumber" class="form-control" type="text">
+					                            </div>
+				                              </div>
+				                            </div>
+				                             <div class="form-group">
+				                             <div>
+				                            	<label class="col-sm-2 control-label ">其他配置说明：</label>
+					                            <div class="col-sm-4">
+					                               <textarea id="otherInstructions" name="otherInstructions" class="form-control" rows="2" cols="2"></textarea>
+					                            </div>
+				                              </div>
+				                             
+				                            </div>
+				                            
+				                        </form>
+			                        </div>
+			                        
+			                        <!-- 详情信息 -->
+	                               	<div id="detail" class="form-horizontal m-t">
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">凭租车名称：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="carName" name="carName" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">车产类型：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="carTypeVL" name="carTypeVL" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                            	<label class="col-sm-2 control-label">制造商：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="manufacturer" name="manufacturer" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">品牌：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="brand" name="brand" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">型号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="model" name="model" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">发动机号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="engineNumber" name="engineNumber" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">租赁使用用途：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="leaseholdUse" name="leaseholdUse" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">租赁物使用区域：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="leaseholdArea" name="leaseholdArea" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">车架号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="frameNumber" name="frameNumber" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">驱动形式：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="drivingForm" name="drivingForm" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">发动机型号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="engineModel" name="engineModel" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">发动机功率：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="enginePower" name="enginePower" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">车颜色：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="carColor" name="carColor" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">车牌号：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="plateNumber" name="plateNumber" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">其他配置说明：</label>
+			                                <div class="col-sm-4">
+			                                <textarea id="otherInstructions" readonly="readonly" name="otherInstructions" class="form-control" rows="2" cols="2"></textarea>
+			                                </div>
+			                            </div>
+	                               	</div>
+                               	</div>
+                               	<div class="modal-footer">
+                                   	<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                   	<button type="submit" class="btn btn-primary" id="btnSave">保存</button>
+                               	</div>
+                             </div>
+                         </div>
+                     </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="leaseInfo_list.js"></script>
+	    <script src="../common/loading/load.js" charset="utf-8"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

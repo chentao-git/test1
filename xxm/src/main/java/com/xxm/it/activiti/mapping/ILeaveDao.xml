@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxm.it.activiti.dao.ILeaveDao" >
+
+	<sql id="query_leave_sql">
+		SELECT
+		    id as id,
+			apply_time as applyTime,
+			end_time as endTime,
+			leave_type as leaveType,
+			process_instance_id as processInstanceId,
+			reality_end_time as realityEndTime,
+			reality_start_time as realityStartTime,
+			reason as reason,
+			start_time as startTime,
+			user_id as userId
+		FROM
+			TEST_OA_LEAVE_T t
+		WHERE 1=1
+	</sql>
+	
+	<sql id="leave_select_condition">
+		<if test="id != null and id !=''">
+	    	AND t.id=#{id,jdbcType=VARCHAR}
+	  	 </if>
+	</sql>
+	
+	<!-- 查询请假流程 -->
+	<select id="findLeaveList" resultType="com.xxm.it.activiti.vo.Leave" parameterType="com.xxm.it.activiti.vo.Leave">
+		<include refid="query_leave_sql"></include>
+		<include refid="leave_select_condition"></include>
+		order by apply_time desc
+		limit
+		#{offset,jdbcType=VARCHAR},#{limit,jdbcType=VARCHAR}<!-- 分页 -->
+	</select>
+
+	<!-- 查询请假流程总数 -->
+	<select id="findLeaveListCount" resultType="java.lang.Integer" parameterType="com.xxm.it.activiti.vo.Leave">
+		SELECT count(1) FROM TEST_OA_LEAVE_T t WHERE 1=1
+		<include refid="leave_select_condition"></include>
+	</select>
+
+	<!-- 查询请假流程详情 -->
+	<select id="findLeaveInfo" resultType="com.xxm.it.activiti.vo.Leave" parameterType="com.xxm.it.activiti.vo.Leave">
+		<include refid="query_leave_sql"></include>
+		<include refid="leave_select_condition"></include>
+	</select>
+	
+	<!-- 添加请假流程 -->
+	<insert id="addLeave" parameterType="com.xxm.it.activiti.vo.Leave" useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO TEST_OA_LEAVE_T (
+			apply_time,
+			end_time,
+			leave_type,
+			process_instance_id,
+			reality_end_time,
+			reality_start_time,
+			reason,
+			start_time,
+			user_id
+		)
+		VALUES
+		(
+			#{applyTime,jdbcType=VARCHAR},
+			#{endTime,jdbcType=VARCHAR},
+			#{leaveType,jdbcType=VARCHAR},
+			#{processInstanceId,jdbcType=VARCHAR},
+			#{realityEndTime,jdbcType=VARCHAR},
+			#{realityStartTime,jdbcType=VARCHAR},
+			#{reason,jdbcType=VARCHAR},
+			#{startTime,jdbcType=VARCHAR},
+			#{userId,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 修改申请 -->
+	<update id="updateLeave">
+		 update TEST_OA_LEAVE_T t set
+				start_time = #{startTime,jdbcType=VARCHAR},
+				end_time = #{endTime,jdbcType=VARCHAR},
+				leave_type = #{leaveType,jdbcType=VARCHAR},
+				process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+				reality_end_time = #{realityEndTime,jdbcType=VARCHAR},
+				reality_start_time = #{realityStartTime,jdbcType=VARCHAR},
+				reason = #{reason,jdbcType=VARCHAR}
+		 where t.id = #{id,jdbcType=VARCHAR} 
+	</update>
+	
+</mapper>

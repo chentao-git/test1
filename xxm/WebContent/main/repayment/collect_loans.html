@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	
+   		  <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>催收</title>
+	    <meta name="keywords" content="催收">
+	    <meta name="description" content="催收">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	    <link href="../css/plugins/steps/jquery.steps.css" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+   		<link href="../css/plugins/iCheck/custom.css" rel="stylesheet">
+   		<link rel="stylesheet" href="../common/loading/load.css"  media="all">
+	</head>
+	<style>
+ 		.ttt td:nth-child(odd){background-color:#f9f9f9;width:10%;text-align:right; }  
+		.ttt td:nth-child(even){width:23%;  
+		.ttt td,th{border:1px solid #DDD!important}
+		.btn{float:right;margin-right:10px;}
+		
+	</style>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+	                
+		                <div class="ibox-content">
+	                        <form id="form"  class="wizard-big">
+	                             <fieldset>
+	                                <h2>基本信息</h2>
+							        <table class="table table-bordered" id="customer-base-tab">
+			                            <tbody class="ttt">
+			                                <tr>
+			                                    <td>贷款单据号：</td>
+			                                    <td id="search"><input id="search1" type="text" name=loanContractNo class="form-control" style="float:left;">
+			                                      <span id="search2" style="display:none; margin-left:-20px; margin-top:10px;color:green;" class="glyphicon glyphicon-search" aria-hidden="true"></span>
+			                                    </td>
+			                                    
+			                                    <td>客户姓名：</td>
+			                                    <td><label type="text" name="baseCustomerName" class="form-control "></label></td>
+			                                    
+			                                    <td>身份证号：</td>
+			                                    <td><label type="text" name="certNo" class="form-control "></label></td>
+			                                </tr>
+			                                 <tr>
+			                                    <td>电话：</td>
+			                                    <td><label type="text" name="fixedLine" class="form-control"></label></td>
+			                                    
+			                                    <td>手机：</td>
+			                                    <td><label type="text" name="mobileNo" class="form-control "></label></td>
+			                                    
+			                                    <td>贷款产品：</td>
+			                                    <td><label type="text" name="productionName" class="form-control "></label></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>贷款金额：</td>
+			                                    <td><label type="text" name="amountPayable" class="form-control"></label></td>
+			                                    
+			                                    <td>贷款期数：</td>
+			                                    <td><label type="text" name="periods" class="form-control "></label></td>
+			                                    
+			                                    <td>已还本金：</td>
+			                                    <td><label type="text" name="" class="form-control "></label></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>已还利息：</td>
+			                                    <td><label type="text" name="" class="form-control"></label></td>
+			                                    
+			                                    <td>已还罚息：</td>
+			                                    <td><label type="text" name="" class="form-control "></label></td>
+			                                    
+			                                    <td>已交手续费：</td>
+			                                    <td><label type="text" name="" class="form-control "></label></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>已交其他费用：</td>
+			                                    <td><label type="text" name="" class="form-control"></label></td>
+			                                </tr>
+			                                
+			                            </tbody>
+			                         </table>
+	                            </fieldset>
+	                     
+                            <h2>逾期信息</h2>
+                                <table id="businessOpportunity" class="table table-bordered"> </table>
+	                         </form>
+	                        <form id="tableform"  class="wizard-big">
+	                        <input type="hidden" id="applyInfoId" value="" />
+	                             <fieldset>
+	                                <h2>催收记录</h2>
+							        <table class="table table-bordered" id="customer-base-tab">
+			                            <tbody class="ttt">
+			                                <tr>
+			                                    <td>催收方式：</td>
+			                                    <td>
+			                                      <select name="collectionMethodVL" id="collectionMethodVL" class="form-control">
+			                                    	        <option value="">请选择</option>
+			                                    	</select>
+			                                    </td>
+			                                    
+			                                    <td>催收时间：</td>
+			                                    <td><input type="text" name="collectingTime" id="collectingTime" class="laydate-icon form-control layer-date"></td>
+			                                    
+			                                    <td>催收人：</td>
+			                                    <td><input type="text" name=collector class="form-control "></td>
+			                                </tr>
+			                                 <tr>
+			                                    <td>联系电话：</td>
+			                                    <td><input type="text" name=contactNumber class="form-control "></td>
+			                                    
+			                                    <td>联系人：</td>
+			                                    <td><input type="text" name=contactscontacts class="form-control "></td>
+			                                    
+			                                    <td>上门人员：</td>
+			                                    <td><input type="text" name=doorToDoorPersonnel class="form-control "></td>
+			                                </tr>
+			                                <tr>
+			                                    <td>上门地址：</td>
+			                                    <td><input type="text" name=doorToDoorAddress class="form-control "></td>
+			                                </tr>
+			                                 <tr>
+			                                    <td>采取措施：</td>
+			                                    <td><textarea name="takeSteps" rows="5" cols="60"></textarea></td>
+			                                    <td>处理结果：</td>
+			                                    <td><textarea name="processingResults" rows="5" cols="60"></textarea></td>
+			                                </tr>
+			                                
+			                            </tbody>
+			                        </table>
+	                     </fieldset>
+                        <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+	                        </form>
+	                        
+	                    </div>	                    
+	                    
+	                    
+	                    
+	                    
+	                    
+	                    
+				    </div>
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <script src="../js/plugins/staps/jquery.steps.min.js"></script>
+    	<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+    	<script src="../js/plugins/validate/messages_zh.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../js/plugins/iCheck/icheck.min.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="collect_loans.js"></script>
+	    <script src="../common/loading/load.js" charset="utf-8"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>sp商服务记录</title>
+	    <meta name="keywords" content="sp商服务记录">
+	    <meta name="description" content="sp商服务记录">
+	    <link rel="shortcut icon" href="favicon.ico"> 
+	    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+	    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+	    <link href="../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	    <link href="../css/animate.min.css" rel="stylesheet">
+	    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+   		<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+   		<link href="../css/plugins/chosen/chosen.css" rel="stylesheet">
+	</head>
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content animated fadeInRight">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content">
+	                <div class="panel-body">
+                        <div class="panel-group" id="accordion">
+                             <div class="panel panel-default">
+                                 <div id="collapseOne" class="panel-collapse collapse in">
+                               		<div id="toolbar" class="btn-group">
+							        	<form id="formSearch">
+							        		<div style="float: left;">
+							        			<button id="btnAdd" type="button" class="btn btn-primary">
+													<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+												</button>
+												<button id="btnDelete" type="button" class="btn btn-primary">
+													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+												</button>
+									        	<button type="button" id="btnQuery" class="btn btn-primary"> 查 询 </button>
+										        <button  type="reset" id="btnRest" class="btn btn-primary"> 重 置</button>
+									        </div>
+<!-- 									        请选择处理进度 -->
+									        <div style="float: left;">&nbsp;</div>
+									        <div style="float: left;">
+									       		<span style="font-weight:bold;">处理进度:</span>
+									        </div>
+									        <div style="float: left;">&nbsp;</div>
+									        <div style="float: left;">
+									       		<select id="spsProgress" class="form-control" name="spsProgressVL">
+			                                    </select>
+									        </div>
+									        <div style="float: left;">&nbsp;</div>
+									        <div style="float: left;">
+									        	 <input type="text" name="spsContent" placeholder="请输入登记内容" class="form-control" id="spsContent">
+									        </div>
+			 				            </form>
+				        			</div>
+                                 </div>
+                             </div>
+                        </div>
+				        <table id="businessOpportunity"></table>
+				    </div>
+				    
+				    <!-- 弹出框 -->
+				    <div class="modal inmodal fade" id="basicDataModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    	 <div class="modal-dialog modal-lg">
+                         	<div class="modal-content animated">
+                            	<div class="modal-header">
+                                 	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                                 	<h4 class="modal-title">添加服务记录</h4>
+                                </div>
+                               	<div class="modal-body">
+                               		<div id="edit">
+	                                   	 <form class="form-horizontal m-t" id="basicDataForm">
+	                                   	 	<input type="hidden" id="modalType" value="" />
+	                                   	 	<input type="hidden" id="modelId" value="" />
+				                            <div class="form-group">
+				                                 <div>
+					                                <label class="col-sm-2 control-label">服务时间：</label>
+					                                <div class="col-sm-4">
+					                                     <input  type="text" name="spsDate" id="spsDate" class="laydate-icon form-control layer-date">
+					                                </div>
+				                                </div> 
+				                                 <div>
+					                                <label class="col-sm-2 control-label">完成情况：</label>
+					                                <div class="col-sm-4">
+					                                    <select style="width:88%" id="spsProgressVL" class="form-control" name="spsProgressVL">
+					                                        <option value="">请选择</option>
+					                                    </select>
+					                                </div>
+				                               </div> 
+				                            </div>
+				                            
+				                            <div class="form-group">
+				                               <div>
+					                                <label class="col-sm-2 control-label">服务内容：</label>
+					                                <div class="col-sm-4">
+					                                   <textarea style="width:88%" id="spsContent" name="spsContent" class="form-control" rows="5" cols="5"></textarea>
+					                                </div>
+				                               </div> 
+				                             <div>
+				                            	<label class="col-sm-2 control-label ">服务结果：</label>
+					                            <div class="col-sm-4">
+					                                <textarea style="width:88%" id="spsResult" name="spsResult" class="form-control" rows="5" cols="5"></textarea>
+					                            </div>
+				                              </div>
+				                            </div>
+				                            
+				                        </form>
+			                        </div>
+			                        
+			                        <!-- 修改信息 -->
+	                               	<div id="detail" class="form-horizontal m-t">
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">服务时间：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="spsDate" name="spsDate" class="form-control"></label>
+			                                </div>
+			                                <label class="col-sm-2 control-label">完成情况：</label>
+			                                <div class="col-sm-4">
+			                                    <label id="spsProgressName" name="spsProgressName" class="form-control"></label>
+			                                </div>
+			                            </div>
+			                            <div class="form-group">
+			                                <label class="col-sm-2 control-label">服务内容：</label>
+			                                <div class="col-sm-4">
+			                                    <textarea readonly="readonly" id="spsContent" name="spsContent" class="form-control" rows="5" cols="5"></textarea>
+			                                </div>
+			                                <label class="col-sm-2 control-label">服务结果：</label>
+			                                <div class="col-sm-4">
+			                                    <textarea readonly="readonly" id="spsResult" name="spsResult" class="form-control" rows="5" cols="5"></textarea>
+			                                </div>
+			                            </div>
+			                            
+			                           
+	                               	</div>
+                               	</div>
+                               	<div class="modal-footer">
+                                   	<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                   	<button type="submit" class="btn btn-primary" id="btnSave">保存</button>
+                               	</div>
+                             </div>
+                         </div>
+                     </div>
+				    
+				    
+	            </div>
+	        </div>
+	        <!-- End Panel Basic -->
+	    </div>
+	    <script src="../js/jquery.min.js?v=2.1.4"></script>
+	    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+	    <script src="../js/content.min.js?v=1.0.0"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	    <script src="../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	    <!-- <script src="../js/demo/bootstrap-table-demo.min.js"></script> -->
+	    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
+	    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+	    <!-- 下拉框js -->
+	    <script src="../js/plugins/chosen/chosen.jquery.js"></script>
+	    <script src="../common/js/CommonUtils.js"></script>
+	    <script src="../js/plugins/layer/laydate/laydate.js"></script>
+	    <script src="sp_service.js"></script>
+	</body>
+	<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>
